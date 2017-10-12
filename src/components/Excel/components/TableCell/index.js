@@ -20,8 +20,8 @@ export default class TableCell extends Component {
   }
 
   render() {
-    return this.state.editing ?
+    return (this.state.editing ?
       <input type="text" ref="input" defaultValue={ this.props.data } onBlur={ () => this.onBlur() }/> :
-      <div className="table-cell" onClick={ () => this.onFocus() }>{ this.props.data }</div>;
+      <div className="table-cell" onClick={ () => this.onFocus() }>{ this.props.data }</div>);
   }
 }
