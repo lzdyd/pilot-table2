@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import TableCell from './components/TableCell/index';
 import Diagram from './components/Diagram/index';
 
 import './style.scss';
@@ -13,6 +14,7 @@ export default class Excel extends Component {
     super(props);
 
     this.state = {
+      editing: false,
       sum: []
     };
   }
@@ -73,8 +75,11 @@ export default class Excel extends Component {
           key={ i }>
           {
             itemValues.map((cellData, key) => {
-              return (
+/*              return (
                 <div className="table-cell" key={ key }>{ cellData }</div>
+              );*/
+              return (
+                <TableCell data={ cellData } key={ key }/>
               );
             })
           }
