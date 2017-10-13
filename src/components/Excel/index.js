@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
-import TableCell from './components/TableCell/index';
-import Diagram from './components/Diagram/index';
+import TableHeaders from './components/TableHeaders/index';
+import TableRows from './components/TableRows/index';
+// import Diagram from './components/Diagram/index';
 
 import './style.scss';
 
@@ -14,7 +15,6 @@ export default class Excel extends Component {
     super(props);
 
     this.state = {
-      editing: false,
       sum: []
     };
   }
@@ -40,6 +40,9 @@ export default class Excel extends Component {
   }
 
   render() {
+    /**
+     * If data is being fetched, render "loading spinner"
+    */
     if (this.props.fetching) {
       return (
         <div className="loading">
@@ -62,35 +65,31 @@ export default class Excel extends Component {
       );
     }
 
+    /**
+      If data was not received, inform user about it
+    */
     if (!this.props.data) {
       return <h1>Something went wrong</h1>;
     }
 
-    const tableData = this.props.data.data.map((item, i) => {
-      const itemValues = Object.values(item);
-
-      return (
-        <div
-          className={ 'table-row' }
-          key={ i }>
-          {
-            itemValues.map((cellData, key) => {
-/*              return (
-                <div className="table-cell" key={ key }>{ cellData }</div>
-              );*/
-              return (
-                <TableCell data={ cellData } key={ key }/>
-              );
-            })
-          }
-        </div>
-      );
-    });
+    const data = this.props.data;
+    const updateStoreData = this.props.updateStoreData;
 
     return (
       <div className="excel">
+        <h1>{ data.title }</h1>
+
+        <p>{ data.description }</p>
+
         <div className="table employees-table">
-          { tableData }
+          <TableHeaders data={ data.tableHeaders }/>
+          {
+            data.attributes.map((item) => {
+              return (
+                <TableRows data={ item } key={ item.id } updateStoreData={ updateStoreData }/>
+              )
+            })
+          }
         </div>
 
         <div className="sum-field">String 1 sum:
@@ -105,7 +104,7 @@ export default class Excel extends Component {
           <span> { ::this.calculateSum(this.props.data.mathFunctions.string3_sum) }</span>
         </div>
 
-        <Diagram data={ this.state.sum }/>
+        {/*<Diagram data={ this.state.sum }/>*/}
 
       </div>
     );

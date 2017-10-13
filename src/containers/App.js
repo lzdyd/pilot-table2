@@ -10,6 +10,7 @@ class App extends Component {
   render() {
     const { data, fetching } = this.props.excel;
     const getData = this.props.excelActions.getData;
+    const updateStoreData = this.props.excelActions.updateStoreData;
 
     return (
       <div className="main-app">
@@ -17,6 +18,7 @@ class App extends Component {
           data={ data }
           fetching={ fetching }
           getData={ getData }
+          updateStoreData={ updateStoreData }
         />
       </div>
     );

@@ -3,7 +3,8 @@ import getDataAPI from 'api/getData';
 import {
   GET_DATA_REQUEST,
   GET_DATA_SUCCESS,
-  GET_DATA_FAILURE
+  GET_DATA_FAILURE,
+  UPDATE_STORE_DATA
 } from '../constants/index';
 
 export function getData() {
@@ -27,4 +28,14 @@ export function getData() {
         });
       });
   });
+}
+
+export function updateStoreData(id, data) {
+  return {
+    type: UPDATE_STORE_DATA,
+    payload: {
+      id,
+      data
+    }
+  };
 }
