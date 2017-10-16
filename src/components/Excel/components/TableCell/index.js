@@ -41,7 +41,7 @@ export default class TableCell extends Component {
   }
 
   evaluateJS(func) {
-    console.log(func);
+    // console.log(func);
     return 123;
   }
 
@@ -59,10 +59,11 @@ export default class TableCell extends Component {
     }
 
     const jsFunc = this.props.data.formula;
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <div className={ `table-cell table-cell-data table-cell-${this.props.data.state}` }>
-        <span>{ this.evaluateJS(jsFunc) }</span>
+        {/*<span>{ this.evaluateJS(jsFunc) }</span>*/}
+        <span>{ this.props.data.value }</span>
       </div>
     )
   }
