@@ -47,7 +47,6 @@ export default class Excel extends Component {
       const requiredIdSet = func.match(/\d+/g);
 
       // TODO: rewrite it using normal algorithm (current - O(n^2))
-      console.log(this.props.data.attributes);
       this.props.data.attributes.filter((item) => {
         for (let i = 0; i < requiredIdSet.length; i++) {
           if (item.id === requiredIdSet[i]) idHash[requiredIdSet[i]] = +item.value;
