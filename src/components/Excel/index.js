@@ -17,6 +17,8 @@ export default class Excel extends Component {
     this.state = {
       sum: []
     };
+
+    this.evalJSON = this.evalJSON.bind(this);
   }
 
   componentDidMount() {
@@ -37,6 +39,27 @@ export default class Excel extends Component {
     });
 
     return sum;
+  }
+
+  evalJSON(func) {
+    if (func) {
+      const idHash = {};
+      const requiredIdSet = func.match(/\d+/g);
+
+      // TODO: rewrite it using normal algorithm (current - O(n^2))
+      console.log(this.props.data.attributes);
+      this.props.data.attributes.filter((item) => {
+        for (let i = 0; i < requiredIdSet.length; i++) {
+          if (item.id === requiredIdSet[i]) idHash[requiredIdSet[i]] = +item.value;
+        }
+      });
+
+      let restructuredFunc = func.replace(/id\d+/g, (str) => {
+        return `idHash[${str.match(/\d+/)}]`;
+      });
+
+      return eval('(' + restructuredFunc + ')');
+    }
   }
 
   render() {
@@ -86,7 +109,8 @@ export default class Excel extends Component {
           {
             data.attributes.map((item) => {
               return (
-                <TableRows data={ item } key={ item.id } updateStoreData={ updateStoreData }/>
+                <TableRows data={ item } key={ item.id } updateStoreData={ updateStoreData }
+                           evalJSON={ this.evalJSON }/>
               )
             })
           }

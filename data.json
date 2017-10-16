@@ -20,19 +20,19 @@
       "label": "str3",
       "type": "number",
       "state": "calculated-field",
-      "formula": "id[1] + id[2]"
+      "formula": "id1 * id2"
     }, {
       "id": "4",
       "label": "str4",
       "type": "number",
       "state": "calculated-field",
-      "formula": "id[1] + id[2]"
+      "formula": "id1 + id2"
     }, {
       "id": "5",
       "label": "str5",
       "type": "number",
       "state": "calculated-field-percents",
-      "formula": "id1 + id2"
+      "formula": "id1 + id22"
     }
   ],
   "data": [
