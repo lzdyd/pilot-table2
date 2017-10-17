@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<docType1>
+  <id>FORM02</id>
+  <name>Отчет о финансовых результатах</name>
+  <periodType>Q4</periodType>
+  <attributes>
+    <attribute>
+      <id>F2110</id>
+      <label>Выручка</label>
+      <type>number</type>
+      <formatMask>0,000.000</formatMask>
+      <isObligatory>false</isObligatory>
+    </attribute>
+    <attribute>
+    <!-- Указывается с минусом -->
+      <id>F2120</id>
+      <label>Себестоимость проданных товаров</label>
+      <type>number</type>
+      <formatMask>0,000.000</formatMask>
+      <isObligatory>false</isObligatory>
+    </attribute>
+    <attribute>
+      <id>F2100</id>
+      <label>Валовая прибыль</label>
+      <type>formula_number</type>
+      <formatMask>0,000.000</formatMask>
+      <formula>F2110 + F2120</formula>
+    </attribute>
+    <!-- Расходы указываются с минусом -->
+    <attribute>
+      <id>F2210</id>
+      <label>Общие и административные расходы</label>
+      <type>number</type>
+      <formatMask>0,000.000</formatMask>
+      <isObligatory>false</isObligatory>
+    </attribute>
+    <attribute>
+      <id>F2220</id>
+      <label>Расходы на маркетинг и продажи</label>
+      <type>number</type>
+      <formatMask>0,000.000</formatMask>
+      <isObligatory>false</isObligatory>
+    </attribute>
+    <attribute>
+      <id>F2230</id>
+      <label>Расходы на перевозку</label>
+      <type>number</type>
+      <formatMask>0,000.000</formatMask>
+      <isObligatory>false</isObligatory>
+    </attribute>
+    <attribute>
+      <id>F2240</id>
+      <label>Налоги (кроме налога на прибыль)</label>
+      <type>number</type>
+      <formatMask>0,000.000</formatMask>
+      <isObligatory>false</isObligatory>
+    </attribute>
+    <attribute>
+      <id>F2250</id>
+      <label>Прочие операционные расходы</label>
+      <type>number</type>
+      <formatMask>0,000.000</formatMask>
+      <isObligatory>false</isObligatory>
+    </attribute>
+    <attribute>
+      <id>F2200</id>
+      <label>Операционная прибыль</label>
+      <type>formula_number</type>
+      <formatMask>0,000.000</formatMask>
+      <formula>F2210 + F2220 + F2230 + F2240 + F2250</formula>
+    </attribute>
+    <attribute>
+    <!-- Доходы с +, расходы с - -->
+      <id>F2310</id>
+      <label>Чистые процентные доходы / (расходы)</label>
+      <type>number</type>
+      <formatMask>0,000.000</formatMask>
+      <isObligatory>false</isObligatory>
+    </attribute>
+    <attribute>
+      <id>F2340</id>
+      <label>Прочие доходы / (расходы)</label>
+      <type>number</type>
+      <formatMask>0,000.000</formatMask>
+      <isObligatory>false</isObligatory>
+    </attribute>
+     <attribute>
+      <id>F2300</id>
+      <label>Прибыль до налогообложения</label>
+      <type>formula_number</type>
+      <formatMask>0,000.000</formatMask>
+      <formula>F2200 + F2310 + F2340</formula>
+    </attribute>
+    <attribute>
+    <!-- Расходы указываются с минусом -->
+      <id>F2410</id>
+      <label>Налог на прибыль</label>
+      <type>number</type>
+      <formatMask>0,000.000</formatMask>
+      <isObligatory>false</isObligatory>
+    </attribute>
+    <attribute>
+      <id>F2400</id>
+      <label>Чистая прибыль/ (убыток)</label>
+      <type>formula_number</type>
+      <formatMask>0,000.000</formatMask>
+      <formula>F2300 + F2410</formula>
+    </attribute>
+  </attributes>
+</docType1>
+
+

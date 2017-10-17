@@ -40,16 +40,62 @@ function checkStoreData(payloadData) {
  * NOT sure that it's a good solution from the point of view of perfomance
  * @param { Object } payloadData - Row id and new value
  */
-function updateStoreData(payloadData) {
 
-  const elementPos = this.data.attributes.map((item) => {
+function updateEvaluates(data, formula) {
+    let arr = formula.split(' ');
+    // let operator = arr[1];
+    let res = 0;
+
+    // arr.forEach((item, i) => {
+    //     data.forEach((obj) => {
+    //         for (let key in obj) {
+    //             if (obj[key] === item) {
+    //                 if (operator === '+') {
+    //                     res += +obj.value;
+    //                 } else if (operator === '-') {
+    //                     if (i === 0) {
+    //                         res = +obj.value;
+    //                     } else {
+    //                         res -= +obj.value;
+    //                     }
+    //                 } else if (operator === '/') {
+    //                     if (i === 0) {
+    //                         res = +obj.value;
+    //                     } else {
+    //                         res /= +obj.value;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     })
+    // });
+
+
+    arr.forEach((item, i) => {
+        data.forEach((obj) => {
+            for (let key in obj) {
+                if (obj[key] === item) {
+                    res += +obj.value;
+                }
+            }
+        })
+    });
+
+    return !arr.includes('/') ? res : res.toFixed(2) + '%';
+}
+
+
+function updateStoreData(payloadData) {
+  const attr = this.data.attributes;
+
+  const elementPos = attr.map((item) => {
     return item.id;
   }).indexOf(payloadData.id);
 
-  this.data.attributes[elementPos].value = payloadData.data;
-  this.data.attributes[2].value = +this.data.attributes[0].value + +this.data.attributes[1].value;
-  this.data.attributes[3].value = +this.data.attributes[0].value - +this.data.attributes[1].value;
-  this.data.attributes[4].value = Math.ceil(+this.data.attributes[2].value / +this.data.attributes[3].value) + "%";
+    attr[elementPos].value = payloadData.data;
+    attr[2].value = updateEvaluates.call(this, attr, attr[2].formula);
+    attr[3].value = updateEvaluates.call(this, attr, attr[3].formula);
+    attr[4].value = updateEvaluates.call(this, attr, attr[4].formula);
 
   return this.data;
 }
@@ -72,6 +118,7 @@ export default function employeesTable(state = initialState, action) {
       }
       return state;
       */
+      // console.log(state.data.attributes);
       return {
           ...state,
           data: updateStoreData.call(state, action.payload)
