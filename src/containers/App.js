@@ -7,19 +7,19 @@ import * as ExcelActions from '../actions/ExcelActions';
 import Excel from '../components/Excel/index';
 
 class App extends Component {
+  componentDidMount() {
+    this.props.excelActions.getData();
+  }
+
   render() {
     const { data, fetching } = this.props.excel;
-    const getData = this.props.excelActions.getData;
     const updateStoreData = this.props.excelActions.updateStoreData;
+    const updateStoreDataCompletely = this.props.excelActions.updateStoreDataCompletely;
 
     return (
       <div className="main-app">
-        <Excel
-          data={ data }
-          fetching={ fetching }
-          getData={ getData }
-          updateStoreData={ updateStoreData }
-        />
+        <Excel data={ data } fetching={ fetching } updateStoreData={ updateStoreData }
+               updateStoreDataCompletely={ updateStoreDataCompletely }/>
       </div>
     );
   }

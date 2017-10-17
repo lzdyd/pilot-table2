@@ -2,7 +2,8 @@ import {
   GET_DATA_REQUEST,
   GET_DATA_SUCCESS,
   GET_DATA_FAILURE,
-  UPDATE_STORE_DATA
+  UPDATE_STORE_DATA,
+  UPDATE_STORE_DATA_COMPLETELY
 } from '../constants/index';
 
 /**
@@ -47,6 +48,7 @@ function updateStoreData(payloadData) {
   this.data.attributes[elementPos].value = payloadData.data;
 
   return this.data;
+  // return '';
 }
 
 export default function employeesTable(state = initialState, action) {
@@ -61,14 +63,10 @@ export default function employeesTable(state = initialState, action) {
       return { ...state, error: action.payload, fetching: false };
 
     case UPDATE_STORE_DATA:
-      /*
-      if (updateStoreData.call(state, action.payload)) {
-        return { ...state, data: '' };
-      }
-      return state;
-      */
-
       return { ...state, data: updateStoreData.call(state, action.payload) };
+
+    case UPDATE_STORE_DATA_COMPLETELY:
+      return { ...state, data: action.payload };
 
     default:
       return state;

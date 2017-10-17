@@ -15,11 +15,11 @@ export default class TableCell extends Component {
   /**
     Checks if cell is editable
    */
-  componentDidMount() {
+  componentWillMount() {
     if (this.props.data.state === 'input-field') {
       this.setState({
         editable: true
-      })
+      });
     }
   }
 
@@ -36,12 +36,8 @@ export default class TableCell extends Component {
 
     if (this.refs.input.value !== this.props.data.value) {
       const id = this.props.data.id;
-      this.props.updateStoreData(id, this.refs.input.value)
+      this.props.updateStoreData(id, this.refs.input.value);
     }
-  }
-
-  getCellValue(func) {
-    return this.props.evalJSON(func);
   }
 
   render() {
@@ -50,7 +46,7 @@ export default class TableCell extends Component {
         <div className={ `table-cell table-cell-data table-cell-${this.props.data.state}` } onClick={ ::this.onFocus }>
           {
             this.state.editing ?
-              <input type="text" ref="input" onBlur={ ::this.onBlur } defaultValue={ this.props.data.value }/> :
+              <input type="text" ref="input" defaultValue={ this.props.data.value } onBlur={ ::this.onBlur }/> :
               <span>{ this.props.data.value }</span>
           }
         </div>
@@ -58,10 +54,11 @@ export default class TableCell extends Component {
     }
 
     const jsFunc = this.props.data.formula;
+
     return (
       <div className={ `table-cell table-cell-data table-cell-${this.props.data.state}` }>
-        <span>{ this.getCellValue(jsFunc) }</span>
+        { this.props.data.value }
       </div>
-    )
+    );
   }
 }

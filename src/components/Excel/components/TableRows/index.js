@@ -12,7 +12,7 @@ export default class TableRows extends Component {
           { this.props.data.label }
         </div>
         <TableCell data={ this.props.data } updateStoreData={ this.props.updateStoreData }
-                   evalJSON={ this.props.evalJSON }/>
+                   evalJSON={ this.props.evalJSON } />
       </div>
     );
   }

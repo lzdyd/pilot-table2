@@ -4,7 +4,8 @@ import {
   GET_DATA_REQUEST,
   GET_DATA_SUCCESS,
   GET_DATA_FAILURE,
-  UPDATE_STORE_DATA
+  UPDATE_STORE_DATA,
+  UPDATE_STORE_DATA_COMPLETELY
 } from '../constants/index';
 
 export function getData() {
@@ -37,5 +38,12 @@ export function updateStoreData(id, data) {
       id,
       data
     }
+  };
+}
+
+export function updateStoreDataCompletely(data) {
+  return {
+    type: UPDATE_STORE_DATA_COMPLETELY,
+    payload: data
   };
 }
