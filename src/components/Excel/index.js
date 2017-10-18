@@ -27,17 +27,17 @@ export default class Excel extends Component {
    * Evaluates JavaScript function received via REST API and saves its result to component's state
    * @param { string } func - JS func to evaluate
    */
-  calculateSum(func) {
-    const cellData = this.props.data.data;
-
-    const sum = eval('(' + func + ')');
-
-    this.state.sum.push({
-      value: sum
-    });
-
-    return sum;
-  }
+  // calculateSum(func) {
+  //   const cellData = this.props.data.data;
+  //
+  //   const sum = eval('(' + func + ')');
+  //
+  //   this.state.sum.push({
+  //     value: sum
+  //   });
+  //
+  //   return sum;
+  // }
 
   render() {
     /**
@@ -92,17 +92,17 @@ export default class Excel extends Component {
           }
         </div>
 
-        <div className="sum-field">String 1 sum:
-          <span> { ::this.calculateSum(this.props.data.mathFunctions.string1_sum) }</span>
-        </div>
+        {/*<div className="sum-field">String 1 sum:*/}
+          {/*<span> { ::this.calculateSum(this.props.data.mathFunctions.string1_sum) }</span>*/}
+        {/*</div>*/}
 
-        <div className="sum-field">String 2 sum:
-          <span> { ::this.calculateSum(this.props.data.mathFunctions.string2_sum) }</span>
-        </div>
+        {/*<div className="sum-field">String 2 sum:*/}
+          {/*<span> { ::this.calculateSum(this.props.data.mathFunctions.string2_sum) }</span>*/}
+        {/*</div>*/}
 
-        <div className="sum-field">String 3 sum:
-          <span> { ::this.calculateSum(this.props.data.mathFunctions.string3_sum) }</span>
-        </div>
+        {/*<div className="sum-field">String 3 sum:*/}
+          {/*<span> { ::this.calculateSum(this.props.data.mathFunctions.string3_sum) }</span>*/}
+        {/*</div>*/}
 
         {/*<Diagram data={ this.state.sum }/>*/}
 

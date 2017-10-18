@@ -36,18 +36,8 @@
       "type": "number",
       "state": "calculated-field-percents",
       "value": "",
-      "formula": "F1 / F2"
+      "formula": "F3 + F4"
     }
-  ],
-  "data": [
-    ["String 1", "String 2", "String 3"],
-    [1000, 25, 35],
-    [350, 350, 350],
-    [100, 310, 525]
-  ],
-  "mathFunctions": {
-    "string1_sum": "cellData[1][0] + cellData[2][0] + cellData[3][0]",
-    "string2_sum": "cellData[1][1] + cellData[2][1] + cellData[3][1]",
-    "string3_sum": "cellData[1][2] + cellData[2][2] + cellData[3][2]"
-  }
+  ]
+
 }
