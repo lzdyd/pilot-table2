@@ -71,7 +71,7 @@ function updateEvaluates(data, formula) {
     // });
 
 
-    arr.forEach((item, i) => {
+    arr.forEach((item) => {
         data.forEach((obj) => {
             for (let key in obj) {
                 if (obj[key] === item) {
@@ -81,23 +81,24 @@ function updateEvaluates(data, formula) {
         })
     });
 
-    return !arr.includes('/') ? res : res.toFixed(2) + '%';
+    return res;
 }
 
 
 function updateStoreData(payloadData) {
-  const attr = this.data.attributes;
+    const attr = this.data.attributes;
 
-  const elementPos = attr.map((item) => {
-    return item.id;
-  }).indexOf(payloadData.id);
+    const elementPos = attr.map((item) => {
+      return item.id;
+    }).indexOf(payloadData.id);
 
     attr[elementPos].value = payloadData.data;
+
     attr[2].value = updateEvaluates.call(this, attr, attr[2].formula);
     attr[3].value = updateEvaluates.call(this, attr, attr[3].formula);
     attr[4].value = updateEvaluates.call(this, attr, attr[4].formula);
 
-  return this.data;
+    return this.data;
 }
 
 export default function employeesTable(state = initialState, action) {
@@ -112,13 +113,7 @@ export default function employeesTable(state = initialState, action) {
       return { ...state, error: action.payload, fetching: false };
 
       case UPDATE_STORE_DATA:
-      /*
-      if (updateStoreData.call(state, action.payload)) {
-        return { ...state, data: '' };
-      }
-      return state;
-      */
-      // console.log(state.data.attributes);
+
       return {
           ...state,
           data: updateStoreData.call(state, action.payload)

@@ -74,6 +74,7 @@ export default class Excel extends Component {
 
     const data = this.props.data;
     const updateStoreData = this.props.updateStoreData;
+    const updateEvaluates = this.props.updateEvaluates;
 
     return (
       <div className="excel">
@@ -86,7 +87,13 @@ export default class Excel extends Component {
           {
             data.attributes.map((item) => {
               return (
-                <TableRows data={ item } key={ item.id } updateStoreData={ updateStoreData }/>
+                <TableRows
+                    dataStore={data}
+                    data={ item }
+                    key={ item.id }
+                    updateStoreData={ updateStoreData }
+                    updateEvaluates={ updateEvaluates }
+                />
               )
             })
           }

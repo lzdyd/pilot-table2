@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import * as ExcelActions from '../../../../actions/ExcelActions';
 
 import './style.scss';
 
-export default class TableCell extends Component {
+class TableCell extends Component {
   constructor(props) {
     super(props);
 
@@ -21,6 +25,8 @@ export default class TableCell extends Component {
         editable: true
       })
     }
+
+    console.log(this.props.excel.data.attributes);
   }
 
   onFocus() {
@@ -46,34 +52,35 @@ export default class TableCell extends Component {
     }
   }
 
-
-  // evaluateJS(func) {
-  //   //console.log(func);
-  //   return 123;
-  // }
-
-     formatStr(str) {
+    formatStr = (str) => {
         str = str.replace(/(\.(.*))/g, '');
-        var arr = str.split('');
-        var str_temp = '';
+        let arr = str.split('');
+        let str_temp = '';
+
         if (str.length > 3) {
-            for (var i = arr.length - 1, j = 1; i >= 0; i--, j++) {
+            for (let i = arr.length - 1, j = 1; i >= 0; i--, j++) {
                 str_temp = arr[i] + str_temp;
-                if (j % 3 == 0) {
+
+                if (j % 3 === 0) {
                     str_temp = ' ' + str_temp;
                 }
             }
+
             return str_temp;
+
         } else {
             return str;
         }
-    }
+    };
 
 
   render() {
     if (this.state.editable) {
       return (
-        <div className={ `table-cell table-cell-data table-cell-${this.props.data.state}` } onClick={ ::this.onFocus }>
+        <div
+            className={ `table-cell table-cell-data table-cell-${this.props.data.state}` }
+            onClick={ ::this.onFocus }
+        >
           {
             this.state.editing ?
               <input
@@ -91,12 +98,25 @@ export default class TableCell extends Component {
     }
 
     const jsFunc = this.props.data.formula;
-    // console.log(new Function this.props.data.formula);
     return (
       <div className={ `table-cell table-cell-data table-cell-${this.props.data.state}` }>
-        {/*<span>{ this.evaluateJS(jsFunc) }</span>*/}
         <span>{ this.formatStr(this.props.data.value + "") }</span>
       </div>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        excel: state.excel
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        excelActions: bindActionCreators(ExcelActions, dispatch)
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TableCell);
+
