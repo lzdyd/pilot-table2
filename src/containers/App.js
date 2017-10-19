@@ -6,22 +6,56 @@ import * as ExcelActions from '../actions/ExcelActions';
 
 import Excel from '../components/Excel/index';
 
+class EventEmitter {
+  constructor() {
+    this.events = {};
+  }
+
+  emit(eventName, data) {
+    const event = this.events[eventName];
+    if (event) {
+      event.forEach((fn) => {
+        fn.call(null, data);
+      });
+    }
+  }
+
+  subscribe(eventName, fn) {
+    if (!this.events[eventName]) {
+      this.events[eventName] = [];
+    }
+
+    this.events[eventName].push(fn);
+    return () => {
+      this.events[eventName] = this.events[eventName].filter(eventFn => fn !== eventFn);
+    };
+  }
+
+  showEvents() {
+    console.log(this.events);
+  }
+}
+
 class App extends Component {
   componentDidMount() {
     this.props.excelActions.getData();
+
+    const emitter = new EventEmitter();
+
+    emitter.subscribe('id1-cell-changed', (data) => {
+      // Update hash table
+      // console.log(data);
+    });
+
+    emitter.emit('id1-cell-changed', { id: '1', value: '100' });
+
+    emitter.showEvents();
   }
 
   render() {
     const { data, fetching } = this.props.excel;
-    const updateStoreData = this.props.excelActions.updateStoreData;
-    const updateStoreDataCompletely = this.props.excelActions.updateStoreDataCompletely;
 
-    return (
-      <div className="main-app">
-        <Excel data={ data } fetching={ fetching } updateStoreData={ updateStoreData }
-               updateStoreDataCompletely={ updateStoreDataCompletely }/>
-      </div>
-    );
+    return <Excel data={ data } fetching={ fetching } />;
   }
 }
 

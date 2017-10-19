@@ -4,10 +4,13 @@ import {
   GET_DATA_REQUEST,
   GET_DATA_SUCCESS,
   GET_DATA_FAILURE,
-  UPDATE_STORE_DATA,
-  UPDATE_STORE_DATA_COMPLETELY
+  CALCULATE_INITIAL_DATA,
+  UPDATE_STORE_DATA
 } from '../constants/index';
 
+/**
+ Makes API request to get data and then calculates initial data
+ */
 export function getData() {
   return ((dispatch) => {
     dispatch({
@@ -20,6 +23,11 @@ export function getData() {
         dispatch({
           type: GET_DATA_SUCCESS,
           payload: JSON.parse(response)
+        });
+      })
+      .then(() => {
+        dispatch({
+          type: CALCULATE_INITIAL_DATA
         });
       })
       .catch((err) => {
@@ -38,12 +46,5 @@ export function updateStoreData(id, data) {
       id,
       data
     }
-  };
-}
-
-export function updateStoreDataCompletely(data) {
-  return {
-    type: UPDATE_STORE_DATA_COMPLETELY,
-    payload: data
   };
 }
