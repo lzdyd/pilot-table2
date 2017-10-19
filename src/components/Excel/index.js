@@ -76,42 +76,28 @@ export default class Excel extends Component {
     const updateStoreData = this.props.updateStoreData;
     const updateEvaluates = this.props.updateEvaluates;
 
+
     return (
       <div className="excel">
-        <h1>{ data.title }</h1>
+        {/*<h1>{ data.title }</h1>*/}
 
-        <p>{ data.description }</p>
+        {/*<p>{ data.description }</p>*/}
 
         <div className="table employees-table">
-          <TableHeaders data={ data.tableHeaders }/>
+          {/*<TableHeaders data={ data }/>*/}
           {
-            data.attributes.map((item) => {
-              return (
-                <TableRows
-                    dataStore={data}
-                    data={ item }
-                    key={ item.id }
-                    updateStoreData={ updateStoreData }
-                    updateEvaluates={ updateEvaluates }
-                />
-              )
+            data.map((item, i) => {
+                return (
+                    <TableRows
+                        dataStore={data}
+                        data={ item }
+                        key={ i }
+                        updateStoreData={ updateStoreData }
+                    />
+                )
             })
           }
         </div>
-
-        {/*<div className="sum-field">String 1 sum:*/}
-          {/*<span> { ::this.calculateSum(this.props.data.mathFunctions.string1_sum) }</span>*/}
-        {/*</div>*/}
-
-        {/*<div className="sum-field">String 2 sum:*/}
-          {/*<span> { ::this.calculateSum(this.props.data.mathFunctions.string2_sum) }</span>*/}
-        {/*</div>*/}
-
-        {/*<div className="sum-field">String 3 sum:*/}
-          {/*<span> { ::this.calculateSum(this.props.data.mathFunctions.string3_sum) }</span>*/}
-        {/*</div>*/}
-
-        {/*<Diagram data={ this.state.sum }/>*/}
 
       </div>
     );

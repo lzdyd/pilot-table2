@@ -8,28 +8,28 @@ import Excel from '../components/Excel/index';
 
 class App extends Component {
   render() {
-    const { data, fetching } = this.props.excel;
-    const getData = this.props.excelActions.getData;
-    const updateStoreData = this.props.excelActions.updateStoreData;
-    const updateEvaluates = this.props.excelActions.updateEvaluates;
+      // const { , fetching } = this.props.excel;
+      const getData = this.props.excelActions.getData;
+      const updateStoreData = this.props.excelActions.updateStoreData;
+      const updateEvaluates = this.props.excelActions.updateEvaluates;
 
-    return (
-      <div className="main-app">
-        <Excel
-          data={ data }
-          fetching={ fetching }
-          getData={ getData }
-          updateStoreData={ updateStoreData }
-          updateEvaluates = {updateEvaluates}
-        />
-      </div>
-    );
+          return (
+              <div className="main-app">
+                <Excel
+                    data={ this.props.excel && this.props.excel }
+                    fetching={ this.props.excel && this.props.excel.fetching }
+                    getData={ getData }
+                    updateStoreData={ updateStoreData }
+                    updateEvaluates = {updateEvaluates}
+                />
+              </div>
+          );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    excel: state.excel
+    excel: state.excel.nodes
   };
 };
 

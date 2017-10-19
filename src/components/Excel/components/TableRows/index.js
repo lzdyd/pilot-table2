@@ -15,7 +15,6 @@ export default class TableRows extends Component {
             data={ this.props.data }
             dataStore={ this.props.dataStore }
             updateStoreData={ this.props.updateStoreData }
-            updateEvaluates={ this.props.updateEvaluates }
         />
       </div>
     );

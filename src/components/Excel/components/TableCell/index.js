@@ -46,12 +46,13 @@ class TableCell extends Component {
     });
 
     if (this.refs.input.value !== this.props.data.value) {
-        const id = this.props.data.id;
+        const id = this.props.data.key;
         this.props.updateStoreData(id, this.refs.input.value)
     }
   }
 
   render() {
+      // console.log(this.props.data.state);
     if (this.state.editable) {
       return (
         <div
@@ -74,7 +75,6 @@ class TableCell extends Component {
       );
     }
 
-    const jsFunc = this.props.data.formula;
     return (
       <div className={ `table-cell table-cell-data table-cell-${this.props.data.state}` }>
         <span>{ formatStr(this.props.data.value + '') }</span>
