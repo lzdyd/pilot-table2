@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { formatStr } from '../../../../services/api/formatstr'
 
 import * as ExcelActions from '../../../../actions/ExcelActions';
 
@@ -25,8 +26,6 @@ class TableCell extends Component {
         editable: true
       })
     }
-
-    console.log(this.props.excel.data.attributes);
   }
 
   onFocus() {
@@ -52,28 +51,6 @@ class TableCell extends Component {
     }
   }
 
-    formatStr = (str) => {
-        str = str.replace(/(\.(.*))/g, '');
-        let arr = str.split('');
-        let str_temp = '';
-
-        if (str.length > 3) {
-            for (let i = arr.length - 1, j = 1; i >= 0; i--, j++) {
-                str_temp = arr[i] + str_temp;
-
-                if (j % 3 === 0) {
-                    str_temp = ' ' + str_temp;
-                }
-            }
-
-            return str_temp;
-
-        } else {
-            return str;
-        }
-    };
-
-
   render() {
     if (this.state.editable) {
       return (
@@ -91,7 +68,7 @@ class TableCell extends Component {
                   onKeyDown={::this.onKeyDownHandler}
                   defaultValue={ this.props.data.value }
               /> :
-              <span>{ ::this.formatStr(this.props.data.value)}</span>
+              <span>{ formatStr(this.props.data.value)}</span>
           }
         </div>
       );
@@ -100,7 +77,7 @@ class TableCell extends Component {
     const jsFunc = this.props.data.formula;
     return (
       <div className={ `table-cell table-cell-data table-cell-${this.props.data.state}` }>
-        <span>{ this.formatStr(this.props.data.value + "") }</span>
+        <span>{ formatStr(this.props.data.value + '') }</span>
       </div>
     )
   }

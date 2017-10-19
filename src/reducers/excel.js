@@ -5,6 +5,8 @@ import {
   UPDATE_STORE_DATA
 } from '../constants/index';
 
+import { calculate } from '../services/api/calc';
+
 /**
  * @description Creates initial state for excel table
  * @property { object }  data      - Contains excel data
@@ -42,44 +44,45 @@ function checkStoreData(payloadData) {
  */
 
 function updateEvaluates(data, formula) {
-    let arr = formula.split(' ');
-    // let operator = arr[1];
-    let res = 0;
+    let parseFormula = formula.split(' ');
+    let parseOpe = parseFormula.splice(parseFormula.indexOf('+'), 1);
+    // let parseFormulaCopy = [...parseFormula];
+    let newArr = [];
+    let res;
+    // console.log(parseOpe);
 
-    // arr.forEach((item, i) => {
-    //     data.forEach((obj) => {
-    //         for (let key in obj) {
-    //             if (obj[key] === item) {
-    //                 if (operator === '+') {
-    //                     res += +obj.value;
-    //                 } else if (operator === '-') {
-    //                     if (i === 0) {
-    //                         res = +obj.value;
-    //                     } else {
-    //                         res -= +obj.value;
-    //                     }
-    //                 } else if (operator === '/') {
-    //                     if (i === 0) {
-    //                         res = +obj.value;
-    //                     } else {
-    //                         res /= +obj.value;
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     })
-    // });
+    parseFormula.forEach((item) => {
+        // data.forEach((obj) => {
+        //     for (let key in obj) {
+        //         console.log(obj);
+        //         if (obj[key] === item) {
+        //             // parseFormulaCopy.splice(parseFormula.indexOf(item), 1, obj.value);
+        //             // res += +obj.value;
+        //             newArr.push(+obj.value);
+        //             // console.log(+obj.value)
+        //         }
+        //     }
+        //
+        //     res = newArr.reduce((a, b) => a + b);
+        // })
 
+        // console.log(item);
+        // console.log(data);
 
-    arr.forEach((item) => {
-        data.forEach((obj) => {
+    });
+
+    data.forEach((obj) => {
+        parseFormula.forEach((item) => {
             for (let key in obj) {
-                if (obj[key] === item) {
-                    res += +obj.value;
-                }
+                console.log(key === item)
             }
         })
     });
+
+
+    // console.log(newArr);
+    // res = calculate(parseFormulaCopy.join(""));
+
 
     return res;
 }
@@ -95,8 +98,8 @@ function updateStoreData(payloadData) {
     attr[elementPos].value = payloadData.data;
 
     attr[2].value = updateEvaluates.call(this, attr, attr[2].formula);
-    attr[3].value = updateEvaluates.call(this, attr, attr[3].formula);
-    attr[4].value = updateEvaluates.call(this, attr, attr[4].formula);
+    // attr[10].value = updateEvaluates.call(this, attr, attr[3].formula);
+    // attr[12].value = updateEvaluates.call(this, attr, attr[4].formula);
 
     return this.data;
 }

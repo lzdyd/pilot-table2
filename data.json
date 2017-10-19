@@ -4,40 +4,87 @@
   "tableHeaders": ["", "[название периода]"],
   "attributes": [
     {
-      "id": "F1",
-      "label": "str1",
+      "id": "F2110",
+      "label": "F2110",
       "type": "number",
       "state": "input-field",
-      "value": "500"
+      "value": "10500"
     }, {
-      "id": "F2",
-      "label": "str2",
+      "id": "F2120",
+      "label": "F2120",
       "type": "number",
       "state": "input-field",
-      "value": "1500"
+      "value": "-7800"
     }, {
-      "id": "F3",
-      "label": "str3",
+      "id": "F2100",
+      "label": "F2110 + F2120",
       "type": "number",
       "state": "calculated-field",
       "value": "",
-      "formula": "F1 + F2"
+      "formula": "F2110 + F2120"
     }, {
-      "id": "F4",
-      "label": "str4",
+      "id": "F2210",
+      "label": "F2210",
       "type": "number",
-      "state": "calculated-field",
-      "value": "",
-      "formula": "F1 + F3"
+      "state": "input-field",
+      "value": "-500"
 
     }, {
-      "id": "F5",
-      "label": "str5",
+      "id": "F2220",
+      "label": "F2220",
       "type": "number",
-      "state": "calculated-field-percents",
+      "state": "input-field",
+      "value": "-600"
+    }, {
+      "id": "F2230",
+      "label": "F2230",
+      "type": "number",
+      "state": "input-field",
+      "value": "-200"
+    }, {
+      "id": "F2240",
+      "label": "F2240",
+      "type": "number",
+      "state": "input-field",
+      "value": "-300"
+    }, {
+      "id": "F2250",
+      "label": "F2250",
+      "type": "number",
+      "state": "input-field",
+      "value": "-90"
+    }, {
+      "id": "F2310",
+      "label": "F2310",
+      "type": "number",
+      "state": "input-field",
+      "value": "-150"
+    }, {
+      "id": "F2340",
+      "label": "F2340",
+      "type": "number",
+      "state": "input-field",
+      "value": "-50"
+    }, {
+      "id": "F2300",
+      "label": "F2220 + F2310 + F2340",
+      "type": "number",
+      "state": "calculated-field",
       "value": "",
-      "formula": "F3 + F4"
+      "formula": "F2220 + F2310 + F2340"
+    }, {
+      "id": "F2410",
+      "label": "F2410",
+      "type": "number",
+      "state": "input-field",
+      "value": "-320"
+    }, {
+      "id": "F2400",
+      "label": "F2300 + F2410",
+      "type": "number",
+      "state": "calculated-field",
+      "value": "",
+      "formula": "F2300 + F2410"
     }
   ]
-
 }
