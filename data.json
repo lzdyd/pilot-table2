@@ -34,14 +34,14 @@
       "label": "str5",
       "type": "number",
       "state": "calculated-field-percents",
-      "formula": "id1 + id22",
+      "formula": "id1 + id2",
       "value": ""
     }, {
       "id": "6",
       "label": "str5",
       "type": "number",
       "state": "calculated-field",
-      "formula": "id1 + id4",
+      "formula": "id1 + id3",
       "value": ""
     }
   ]

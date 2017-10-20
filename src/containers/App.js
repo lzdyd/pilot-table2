@@ -32,30 +32,20 @@ class EventEmitter {
   }
 
   showEvents() {
-    console.log(this.events);
+    // console.log(this.events);
   }
 }
 
 class App extends Component {
   componentDidMount() {
     this.props.excelActions.getData();
-
-    const emitter = new EventEmitter();
-
-    emitter.subscribe('id1-cell-changed', (data) => {
-      // Update hash table
-      // console.log(data);
-    });
-
-    emitter.emit('id1-cell-changed', { id: '1', value: '100' });
-
-    emitter.showEvents();
   }
 
   render() {
     const { data, fetching } = this.props.excel;
+    const updateStoreData = this.props.excelActions.updateStoreData;
 
-    return <Excel data={ data } fetching={ fetching } />;
+    return <Excel data={ data } fetching={ fetching } updateStoreData={ updateStoreData } />;
   }
 }
 

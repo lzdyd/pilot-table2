@@ -42,14 +42,48 @@ function checkStoreData(payloadData) {
  * @param { Object } payloadData - Row id and new value
  */
 function updateStoreData(payloadData) {
-  const elementPos = this.data.attributes.map((item) => {
+  this.valuesHash[`id${payloadData.id}`].value = payloadData.data;
+
+  Object.values(this.valuesHash).forEach((item) => {
+    if (item.dependencies) {
+      for (let i = 0; i < item.dependencies.length; i += 1) {
+        checkDependecies(item, payloadData.id);
+
+        if (item.dependencies[i] === `id${payloadData.id}`) {
+          //console.log('1233')
+        }
+
+      }
+    }
+  });
+
+  const updatedData = Object.assign({}, this.data);
+
+  const elementPos = updatedData.attributes.map((item) => {
     return item.id;
   }).indexOf(payloadData.id);
 
-  this.data.attributes[elementPos].value = payloadData.data;
+  updatedData.attributes[elementPos].value = payloadData.data;
 
-  return this.data;
-  // return '';
+  return updatedData;
+}
+
+function checkDependecies(dependency, updatedField) {
+  for (let i = 0; i < dependency.dependencies.length; i += 1) {
+    console.log(dependency.dependencies[i] === `id${updatedField}`);
+  }
+}
+
+const calculateDependecies = function calculateDependecies(dependency){
+
+};
+
+function updateStoreDataAttributes(calculatedData) {
+  const updatedData = Object.assign({}, this.data);
+
+  updatedData.attributes = calculatedData;
+
+  return updatedData;
 }
 
 function getDependencies(formula) {
@@ -64,7 +98,7 @@ function getDependencies(formula) {
  * @returns {{}}
  */
 function createHash(data) {
-  let hash = {};
+  const hash = {};
 
   Object.values(data.attributes).forEach((item) => {
     const dependencies = getDependencies(item.formula);
@@ -78,8 +112,61 @@ function createHash(data) {
   return hash;
 }
 
-function calculateData(data) {
+/**
+ * TODO: describe this function
+ * Evaluates JavaScript function received via REST API and returns its result
+ * Just a prototype - needs refactoring
+ * @param { Object } item
+ */
+const evalJSON = function evalJSON(item) {
+  if (item.formula) {
+    const dependencies = item.formula.match(/id\d+/g);
 
+    dependencies.forEach((currentItem) => {
+      if (!this.valuesHash[currentItem].value) {
+        const dependency = this.data.attributes.filter((x) => {
+          return x.id === currentItem.match(/\d/)[0];
+        });
+
+        evalJSON.call(this, dependency[0]);
+      }
+    });
+
+    const restructuredFunc = item.formula.replace(/id\d+/g, (str) => {
+      return `+this.valuesHash.id${str.match(/\d+/)}.value`;
+    });
+
+    let result;
+
+    try {
+      result = eval('(' + restructuredFunc + ')') || 'Ошибка вычислений';
+    } catch (e) {
+      result = 'Ошибка вычислений';
+    }
+
+    this.valuesHash[`id${item.id}`].value = JSON.stringify(result);
+
+    return result;
+  }
+
+  return null;
+};
+
+/**
+ @description Returns new object with calculated values
+ */
+function calculateInitialData() {
+  const calculatedData = this.data.attributes.map((item) => {
+    const currentItem = Object.assign({}, item);
+
+    if (!currentItem.value) {
+      currentItem.value = JSON.stringify(evalJSON.call(this, currentItem));
+    }
+
+    return currentItem;
+  });
+
+  return calculatedData;
 }
 
 export default function employeesTable(state = initialState, action) {
@@ -97,12 +184,11 @@ export default function employeesTable(state = initialState, action) {
     case GET_DATA_FAILURE:
       return { ...state, error: action.payload, fetching: false };
 
+    case CALCULATE_INITIAL_DATA:
+      return { ...state, data: updateStoreDataAttributes.call(state, calculateInitialData.call(state)) };
+
     case UPDATE_STORE_DATA:
       return { ...state, data: updateStoreData.call(state, action.payload) };
-
-    case CALCULATE_INITIAL_DATA:
-      calculateData.call(state);
-      return { ...state };
 
     default:
       return state;

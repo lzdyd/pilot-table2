@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import TableHeaders from './components/TableHeaders/index';
+import TableRows from './components/TableRows/index';
 
 import './style.scss';
 
@@ -40,6 +41,9 @@ export default class Excel extends Component {
 
     const data = this.props.data;
 
+    // Change store if cell was changed
+    const updateStoreData = this.props.updateStoreData;
+
     return (
       <div className="excel">
         <h1>{ data.title }</h1>
@@ -48,6 +52,13 @@ export default class Excel extends Component {
 
         <div className="excel-table">
           <TableHeaders data={ data.tableHeaders }/>
+          {
+            data.attributes.map((item) => {
+              return (
+                <TableRows data={ item } key={ item.id } updateStoreData={ updateStoreData } />
+              );
+            })
+          }
         </div>
       </div>
     );
