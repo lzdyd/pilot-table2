@@ -7,6 +7,7 @@ import {
 import Graph from '../services/graph'
 
 import { calculate } from '../services/api/calc';
+import { evaluatesDependence } from '../services/evalDependence';
 
 /**
  * @description Creates initial state for excel table
@@ -19,10 +20,21 @@ const initialState = {
 };
 
 
-function graphTable(data) {
+// function createGraphDependence(state) {
+//     state.forEach((node) => {
+//         if (node.formula) {
+//             for (let i = 0; i < formula.length; i++) {
+//                 graph.addLine(node.id, formula[i]);
+//             }
+//         }
+//     })
+//
+//     // console.log(state)
+// }
+
+
+ function graphTable(data) {
     const graph = new Graph();
-    let formula;
-    // let formulasCopy;
 
     for (let key in data) {
         if (key === 'attributes') {
@@ -30,29 +42,32 @@ function graphTable(data) {
                 let obj = data[key][i];
 
                 graph.addNode(obj.id, obj.value, obj.label, obj.state, obj.formula);
-
-                if (obj.hasOwnProperty('formula')) {
-                    formula = obj.formula.split(" ");
-                    formula.splice(formula.indexOf('+'), 1);
-
-                    for (let i = 0; i < formula.length; i++) {
-                        graph.addLine(obj.id, formula[i]);
-                    }
-                }
             }
-
         }
     }
 
-    return graph;
+//TODO createGraphDependence ???
+     data.attributes.forEach((node) => {
+         if (node.state === 'calculated-field') {
+             let formula = node.formula.replace(/\+/g, '').split(" ").filter(item => item && item);
+
+             for (let i = 0; i < formula.length; i++) {
+                 graph.addLine(node.id, formula[i]);
+             }
+         }
+     });
+
+     // evaluatesDependence.call(this, data.attributes);
+
+     return graph;
 }
 
 
-/**
- Additional check - checks if value can be changed
- Not really sure that this check is needed
- @param { Object } payloadData - Updated data received from input
- */
+// /**
+//  Additional check - checks if value can be changed
+//  Not really sure that this check is needed
+//  @param { Object } payloadData - Updated data received from input
+//  */
 // function checkStoreData(payloadData) {
 //     console.log(this.data);
 //
@@ -67,12 +82,13 @@ function graphTable(data) {
 //   // }
 // }
 
-/**
- * @description Finds in store object with id === payload.id
- * and updates it with new value
- * NOT sure that it's a good solution from the point of view of perfomance
- * @param { Object } payloadData - Row id and new value
- */
+// /**
+//  * @description Finds in store object with id === payload.id
+//  * and updates it with new value
+//  * NOT sure that it's a good solution from the point of view of perfomance
+//  * @param { Object } payloadData - Row id and new value
+//  */
+
 
 
 
@@ -84,6 +100,14 @@ function updateStoreData(payloadData) {
     }).indexOf(payloadData.id);
 
     attr[elementPos].value = payloadData.data;
+
+    attr.forEach((node) => {
+        for (let key in node) {
+            if (node[key] === 'calculated-field') {
+                node.value = evaluatesDependence(node);
+            }
+        }
+    })
 
 }
 

@@ -21,16 +21,13 @@ export default class Graph {
     }
 
     addLine(startValue, endValue) {
-        // Найдём вершины для каждого из значений.
-        var startNode = this.find(startValue);
-        var endNode = this.find(endValue);
+        let startNode = this.find(startValue);
+        let endNode = this.find(endValue);
 
-        // Ругнёмся, если не нашли одной или другой.
         if (!startNode || !endNode) {
             throw new Error('Обе вершины должны существовать');
         }
 
-        // В стартовую вершину startNode добавим ссылку на конечную вершину endNode.
         startNode.dependence.push(endNode);
     }
 }
