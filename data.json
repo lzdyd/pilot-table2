@@ -23,6 +23,13 @@
       "value": "",
       "formula": "F2110 + F2120"
     }, {
+      "id": "F2101",
+      "label": "F2101 = F2110 + F2100 + F2200",
+      "type": "number",
+      "state": "calculated-field",
+      "value": "",
+      "formula": "F2110 + F2100 + F2200"
+    }, {
       "id": "F2210",
       "label": "F2210",
       "type": "number",

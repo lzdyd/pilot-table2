@@ -6,7 +6,7 @@ import {
 } from '../constants/index';
 import Graph from '../services/graph'
 
-import { calculate } from '../services/api/calc';
+
 import { evaluatesDependence } from '../services/evalDependence';
 
 /**
@@ -56,8 +56,6 @@ const initialState = {
              }
          }
      });
-
-     // evaluatesDependence.call(this, data.attributes);
 
      return graph;
 }

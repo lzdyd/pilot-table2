@@ -10,11 +10,12 @@ import Excel from '../components/Excel/index';
 class App extends Component {
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps.excel);
+        // console.log(nextProps.excel);
 
         nextProps.excel.forEach((node) => {
             for (let key in node) {
                 if (node[key] === 'calculated-field') {
+                    // console.log(node.value);
                     node.value = evaluatesDependence(node);
                 }
             }
@@ -25,7 +26,7 @@ class App extends Component {
   render() {
       const getData = this.props.excelActions.getData;
       const updateStoreData = this.props.excelActions.updateStoreData;
-      const updateEvaluates = this.props.excelActions.updateEvaluates;
+      // const updateEvaluates = this.props.excelActions.updateEvaluates;
 
           return (
               <div className="main-app">
@@ -34,7 +35,7 @@ class App extends Component {
                     fetching={ this.props.excel && this.props.excel.fetching }
                     getData={ getData }
                     updateStoreData={ updateStoreData }
-                    updateEvaluates = {updateEvaluates}
+                    // updateEvaluates = {updateEvaluates}
                 />
               </div>
           );
