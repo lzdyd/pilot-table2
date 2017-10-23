@@ -6,36 +6,6 @@ import * as ExcelActions from '../actions/ExcelActions';
 
 import Excel from '../components/Excel/index';
 
-class EventEmitter {
-  constructor() {
-    this.events = {};
-  }
-
-  emit(eventName, data) {
-    const event = this.events[eventName];
-    if (event) {
-      event.forEach((fn) => {
-        fn.call(null, data);
-      });
-    }
-  }
-
-  subscribe(eventName, fn) {
-    if (!this.events[eventName]) {
-      this.events[eventName] = [];
-    }
-
-    this.events[eventName].push(fn);
-    return () => {
-      this.events[eventName] = this.events[eventName].filter(eventFn => fn !== eventFn);
-    };
-  }
-
-  showEvents() {
-    // console.log(this.events);
-  }
-}
-
 class App extends Component {
   componentDidMount() {
     this.props.excelActions.getData();
@@ -43,9 +13,12 @@ class App extends Component {
 
   render() {
     const { data, fetching } = this.props.excel;
-    const updateStoreData = this.props.excelActions.updateStoreData;
 
-    return <Excel data={ data } fetching={ fetching } updateStoreData={ updateStoreData } />;
+    return (
+      <div className="main-app">
+        <Excel data={ data } fetching={ fetching } />
+      </div>
+    );
   }
 }
 

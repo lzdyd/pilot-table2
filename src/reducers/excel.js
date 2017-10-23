@@ -10,15 +10,16 @@ import {
  * @description Creates initial state for excel table
  * @property { object }  data      - Contains excel data
  * @property { boolean } fetching  - If true, inform that data is being fetched
+ * @property { Object } valuesHash - Hash table of received attributes
  */
+
 const initialState = {
   data: {},
-  fetching: true,
+  fetching: false,
   valuesHash: {}
 };
 
 /**
- Idle status
  Additional check - checks if value can be changed
  Not really sure that this check is needed
  @param { Object } payloadData - Updated data received from input
@@ -38,54 +39,23 @@ function checkStoreData(payloadData) {
 /**
  * @description Finds in store object with id === payload.id
  * and updates it with new value
- * NOT sure that it's a good solution from the point of view of performance
+ * NOT sure that it's a good solution from the point of view of perfomance
  * @param { Object } payloadData - Row id and new value
  */
 function updateStoreData(payloadData) {
-  this.valuesHash[`id${payloadData.id}`].value = payloadData.data;
-
-  Object.values(this.valuesHash).forEach((item) => {
-    if (item.dependencies) {
-      for (let i = 0; i < item.dependencies.length; i += 1) {
-        checkDependecies(item, payloadData.id);
-
-        if (item.dependencies[i] === `id${payloadData.id}`) {
-          //console.log('1233')
-        }
-
-      }
-    }
-  });
-
-  const updatedData = Object.assign({}, this.data);
-
-  const elementPos = updatedData.attributes.map((item) => {
+  const elementPos = this.data.attributes.map((item) => {
     return item.id;
   }).indexOf(payloadData.id);
 
-  updatedData.attributes[elementPos].value = payloadData.data;
+  this.data.attributes[elementPos].value = payloadData.data;
 
-  return updatedData;
+  return this.data;
 }
 
-function checkDependecies(dependency, updatedField) {
-  for (let i = 0; i < dependency.dependencies.length; i += 1) {
-    console.log(dependency.dependencies[i] === `id${updatedField}`);
-  }
-}
-
-const calculateDependecies = function calculateDependecies(dependency){
-
-};
-
-function updateStoreDataAttributes(calculatedData) {
-  const updatedData = Object.assign({}, this.data);
-
-  updatedData.attributes = calculatedData;
-
-  return updatedData;
-}
-
+/**
+ * @param { String } formula - cell's formula
+ * @returns { Array } Array of cells on which current cell depends
+ */
 function getDependencies(formula) {
   if (!formula) return null;
 
@@ -93,11 +63,16 @@ function getDependencies(formula) {
 }
 
 /**
- * @description Creates hash table, where key is cell's id, value is cell's value
+ * @description Creates hash table, where key is cell's id, value is object of cell's attributes
+ * Attributes:
+ * 1) Dependencies - array of cells on which current cell depends
+ * 2) Value - cell's value
+ * 3) State - if cell contains formula, this attributes says if the cell needs recalculation
+ * State takes 2 parameters - "Waiting" and "Calculated"
  * @param { Object } data - received data from REST API server
  * @returns {{}}
  */
-function createHash(data) {
+function createValuesHash(data) {
   const hash = {};
 
   Object.values(data.attributes).forEach((item) => {
@@ -107,77 +82,99 @@ function createHash(data) {
       dependencies,
       value: item.value || null
     };
+
+    if (dependencies) {
+      hash[`id${item.id}`].state = null;
+      hash[`id${item.id}`].formula = item.formula;
+    }
   });
 
   return hash;
 }
 
-/**
- * TODO: describe this function
- * Evaluates JavaScript function received via REST API and returns its result
- * Just a prototype - needs refactoring
- * @param { Object } item
- */
-const evalJSON = function evalJSON(item) {
-  if (item.formula) {
-    const dependencies = item.formula.match(/id\d+/g);
+function evalJSON(item) {
+  const restructuredFunc = item.formula.replace(/id\d+/g, (str) => {
+    return `+this.id${str.match(/\d+/)}.value`;
+  });
 
-    dependencies.forEach((currentItem) => {
-      if (!this.valuesHash[currentItem].value) {
-        const dependency = this.data.attributes.filter((x) => {
-          return x.id === currentItem.match(/\d/)[0];
-        });
+  let result;
 
-        evalJSON.call(this, dependency[0]);
+  try {
+    result = eval('(' + restructuredFunc + ')') || 'Ошибка вычислений';
+  } catch (e) {
+    result = 'Ошибка вычислений';
+  }
+
+  return result;
+}
+
+const calculateDependency = function calculateDependency(dependency) {
+  if (this[dependency].dependencies) {
+    const hash = JSON.parse(JSON.stringify(this));
+    const dependencyDependencies = this[dependency].dependencies;
+
+    dependencyDependencies.forEach((item) => {
+      if (hash[item].dependencies) {
+        // const child = calculateDependency(item);
+        // console.log(child);
       }
     });
 
-    const restructuredFunc = item.formula.replace(/id\d+/g, (str) => {
-      return `+this.valuesHash.id${str.match(/\d+/)}.value`;
-    });
+    const result = evalJSON.call(this, hash[dependency]);
+    hash[dependency].value = result;
+    hash[dependency].state = 'calculated';
 
-    let result;
-
-    try {
-      result = eval('(' + restructuredFunc + ')') || 'Ошибка вычислений';
-    } catch (e) {
-      result = 'Ошибка вычислений';
-    }
-
-    this.valuesHash[`id${item.id}`].value = JSON.stringify(result);
-
-    return result;
+    return hash;
   }
 
   return null;
 };
 
-/**
- @description Returns new object with calculated values
- */
-function calculateInitialData() {
-  const calculatedData = this.data.attributes.map((item) => {
-    const currentItem = Object.assign({}, item);
+function calculateData() {
+  // let valuesHash = Object.assign({}, this.valuesHash);
+  let valuesHash = JSON.parse(JSON.stringify(this.valuesHash));
 
-    if (!currentItem.value) {
-      currentItem.value = JSON.stringify(evalJSON.call(this, currentItem));
+  for (let key in valuesHash) {
+    if (Object.prototype.hasOwnProperty.call(valuesHash, key)) {
+      if (valuesHash[key].dependencies) valuesHash[key].state = 'waiting';
     }
+  }
 
-    return currentItem;
-  });
+  for (let key in valuesHash) {
+    if (Object.prototype.hasOwnProperty.call(valuesHash, key)) {
+      const item = Object.assign({}, valuesHash[key]);
 
-  return calculatedData;
+      if (item.dependencies && item.state !== 'calculated') {
+        item.dependencies.forEach((dependency) => {
+          // calculateDependency вычисляет недостающие ячейки. Необходимо возвращать объект с новым хэшом
+          // и мерджить его с valuesHash. В случае когда зависимые ячейки зависят от других, по другому не получится
+          const currentDependency = calculateDependency.call(valuesHash, dependency);
+
+          if (currentDependency) {
+            valuesHash[dependency].value = currentDependency[dependency].value;
+            valuesHash[dependency].state = 'calculated';
+          }
+        });
+
+        const evaluatedJSON = evalJSON.call(valuesHash, item);
+        valuesHash[key].value = evaluatedJSON;
+        valuesHash[key].state = 'calculated';
+      }
+    }
+  }
+
+  return valuesHash;
 }
 
 export default function employeesTable(state = initialState, action) {
   switch (action.type) {
     case GET_DATA_REQUEST:
-      return { ...state, data: '', fetching: true };
+      return { ...state, fetching: true };
 
     case GET_DATA_SUCCESS:
       return { ...state,
         data: action.payload,
-        valuesHash: createHash(action.payload),
+        valuesHash: createValuesHash(action.payload),
         fetching: false
       };
 
@@ -185,7 +182,7 @@ export default function employeesTable(state = initialState, action) {
       return { ...state, error: action.payload, fetching: false };
 
     case CALCULATE_INITIAL_DATA:
-      return { ...state, data: updateStoreDataAttributes.call(state, calculateInitialData.call(state)) };
+      return { ...state, valuesHash: calculateData.call(state) };
 
     case UPDATE_STORE_DATA:
       return { ...state, data: updateStoreData.call(state, action.payload) };

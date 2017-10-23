@@ -8,9 +8,6 @@ import {
   UPDATE_STORE_DATA
 } from '../constants/index';
 
-/**
- Makes API request to get data and then calculates initial data
- */
 export function getData() {
   return ((dispatch) => {
     dispatch({
