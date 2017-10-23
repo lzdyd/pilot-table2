@@ -1,30 +1,23 @@
-import { calculate } from './api/calc';
 
 export function evaluatesDependence(data) {
     let formula;
     let copyFormula;
-    let strFormula;
 
+    formula = data.formula.split(" ");
+    copyFormula = formula.slice();
 
-    for (let key in data) {
-        formula = data.formula.split(" ");
-        copyFormula = formula.slice();
-        formula.forEach((elem) => {
-            if (data.dependence) {
-                data.dependence.forEach((item) => {
-                    if (!item.value) {
-                        item.value = evaluatesDependence(item);
-                    }
-                });
-
-                data.dependence.forEach((node) => {
-                    if (elem === node.key) {
-                        copyFormula.splice(formula.indexOf(elem), 1, +node.value);
-                    }
-                });
-            }
-        })
-    }
+    formula.forEach((elem) => {
+        if (data.dependence.length > 0) {
+            data.dependence.forEach((item) => {
+                if (!item.value) {
+                    item.value = evaluatesDependence(item);
+                }
+                if (elem === item.key) {
+                    copyFormula.splice(formula.indexOf(elem), 1, +item.value);
+                }
+            });
+        }
+    });
 
     return  eval( '('+ copyFormula.join("") +')' );
 }

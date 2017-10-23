@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { formatStr } from '../../../../services/api/formatstr'
+import numeral from 'numeral';
 
 import * as ExcelActions from '../../../../actions/ExcelActions';
 
@@ -69,7 +69,7 @@ class TableCell extends Component {
                   onKeyDown={::this.onKeyDownHandler}
                   defaultValue={ this.props.data.value }
               /> :
-              <span>{ formatStr(this.props.data.value)}</span>
+              <span>{ numeral(this.props.data.value).format('(0,0)')    }</span>
           }
         </div>
       );
@@ -77,7 +77,7 @@ class TableCell extends Component {
 
     return (
       <div className={ `table-cell table-cell-data table-cell-${this.props.data.state}` }>
-        <span>{ formatStr(this.props.data.value + '') }</span>
+        <span>{ numeral(this.props.data.value).format('(0,0)') }</span>
       </div>
     )
   }
