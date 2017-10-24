@@ -1,3 +1,7 @@
+//* {
+//  box-sizing: border-box;
+//}
+
 .table-cell {
   position: relative;
   display: table-cell;
@@ -5,6 +9,12 @@
   padding: 10px;
   font-size: 1rem;
   border-bottom: 1px solid #ddd;
+  //box-sizing: border-box;
+  //
+  //&:focus {
+  //  border: 2px solid royalblue;
+  //  //box-sizing: border-box;
+  //}
 
   &:not(:last-child) {
     border-right: 1px solid #ddd;

@@ -52,12 +52,12 @@ class TableCell extends Component {
   }
 
   render() {
-      // console.log(this.props.data.state);
     if (this.state.editable) {
       return (
         <div
             className={ `table-cell table-cell-data table-cell-${this.props.data.state}` }
             onClick={ ::this.onFocus }
+            tabIndex={this.props.data.state === 'input-field' ? 1 : -1}
         >
           {
             this.state.editing ?

@@ -63,6 +63,7 @@ function updateStoreData({ id, data }) {
             node.dependence.forEach((item) => {
                 if (item.key === idValue) {
                     node.value = evaluatesDependence(node);
+
                     data.forEach((obj) => {
                         obj.dependence.forEach((items) => {
                             if (node.key === items.key) obj.value = evaluatesDependence(obj);
