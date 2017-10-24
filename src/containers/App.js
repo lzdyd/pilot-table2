@@ -11,12 +11,9 @@ class App extends Component {
 
     componentWillReceiveProps(nextProps) {
         nextProps.excel.forEach((node) => {
-            if (node.state === 'calculated-field') {
-                node.value = evaluatesDependence(node);
-            }
+            if (node.state === 'calculated-field') node.value = evaluatesDependence(node);
         })
     }
-
 
     render() {
         const excel = this.props.excel;

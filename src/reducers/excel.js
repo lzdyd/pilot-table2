@@ -5,8 +5,6 @@ import {
   UPDATE_STORE_DATA
 } from '../constants/index';
 import Graph from '../services/graph'
-
-
 import { evaluatesDependence } from '../services/evalDependence';
 
 /**
@@ -23,25 +21,22 @@ const initialState = {
     const graph = new Graph();
     const attr = data.attributes;
 
-    for(let i=0; i < attr.length; i++) {
-        let obj = attr[i];
+     attr.forEach(({ id, value, label, state, formula }) => {
+         graph.addNode(
+             id,
+             value,
+             label,
+             state,
+             formula
+         );
+     });
 
-        graph.addNode(
-            obj.id,
-            obj.value,
-            obj.label,
-            obj.state,
-            obj.formula
-        );
-    }
 
-     attr.forEach((node) => {
-         if (node.state === 'calculated-field') {
-             let formula = node.formula.replace(/\+/g, '').split(" ").filter(item => item && item);
+     attr.forEach(({ state, id, formula }) => {
+         if (state === 'calculated-field') {
+             let formulas = formula.replace(/\+/g, '').split(" ").filter(item => item && item);
 
-             for (let i = 0; i < formula.length; i++) {
-                 graph.addLine(node.id, formula[i]);
-             }
+             formulas.forEach(item => graph.addLine(id, item));
          }
      });
 
@@ -49,25 +44,41 @@ const initialState = {
 }
 
 
-function updateStoreData(payloadData) {
+function updateStoreData({ id, data }) {
     const attr = this.nodes;
-
     const elementPos = attr.map((item) => {
       return item.key;
-    }).indexOf(payloadData.id);
+    }).indexOf(id);
 
-    attr[elementPos].value = payloadData.data;
+    attr[elementPos].value = data;
 
-    attr.forEach((node) => {
-        if (node.state === 'calculated-field') {
+    function getNodeWithDependence(data) {
+        return data.filter((node) => {
+            return node.state === 'calculated-field' && node;
+        });
+    }
+
+    function isCalcForDependence(data, idValue) {
+        data.forEach((node) => {
             node.dependence.forEach((item) => {
-                if (item.key === payloadData.id) {
-                    // console.log(node);
+                if (item.key === idValue) {
                     node.value = evaluatesDependence(node);
+                    data.forEach((obj) => {
+                        obj.dependence.forEach((items) => {
+                            if (node.key === items.key) obj.value = evaluatesDependence(obj);
+                        })
+                    })
                 }
-            });
-        }
-    })
+            })
+        })
+    }
+
+
+    function dependencies(data) {
+        isCalcForDependence(getNodeWithDependence(data), id);
+    }
+
+    dependencies(attr);
 }
 
 export default function employeesTable(state = initialState, action) {
