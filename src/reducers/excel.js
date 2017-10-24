@@ -3,7 +3,7 @@ import {
   GET_DATA_SUCCESS,
   GET_DATA_FAILURE,
   CALCULATE_INITIAL_DATA,
-  UPDATE_STORE_DATA
+  UPDATE_STORE
 } from '../constants/index';
 
 /**
@@ -109,25 +109,34 @@ function evalJSON(item) {
 }
 
 const calculateDependency = function calculateDependency(dependency) {
+  let hash = JSON.parse(JSON.stringify(this));
+
   if (this[dependency].dependencies) {
-    const hash = JSON.parse(JSON.stringify(this));
     const dependencyDependencies = this[dependency].dependencies;
 
     dependencyDependencies.forEach((item) => {
       if (hash[item].dependencies) {
-        // const child = calculateDependency(item);
-        // console.log(child);
+        hash[item].dependencies.forEach((currentItem) => {
+          if (hash[currentItem].dependencies) {
+            hash = calculateDependency.call(hash, currentItem);
+          }
+        });
+
+        const currentItemResult = evalJSON.call(hash, hash[item]);
+
+        hash[item].value = currentItemResult;
+        hash[item].state = 'calculated';
       }
     });
 
-    const result = evalJSON.call(this, hash[dependency]);
+    const result = evalJSON.call(hash, hash[dependency]);
     hash[dependency].value = result;
     hash[dependency].state = 'calculated';
 
     return hash;
   }
 
-  return null;
+  return hash[dependency];
 };
 
 function calculateData() {
@@ -146,13 +155,8 @@ function calculateData() {
 
       if (item.dependencies && item.state !== 'calculated') {
         item.dependencies.forEach((dependency) => {
-          // calculateDependency вычисляет недостающие ячейки. Необходимо возвращать объект с новым хэшом
-          // и мерджить его с valuesHash. В случае когда зависимые ячейки зависят от других, по другому не получится
-          const currentDependency = calculateDependency.call(valuesHash, dependency);
-
-          if (currentDependency) {
-            valuesHash[dependency].value = currentDependency[dependency].value;
-            valuesHash[dependency].state = 'calculated';
+          if (valuesHash[dependency].dependencies) {
+            valuesHash = JSON.parse(JSON.stringify(calculateDependency.call(valuesHash, dependency)));
           }
         });
 
@@ -163,7 +167,43 @@ function calculateData() {
     }
   }
 
+  // TODO: it mutates store. Rewrite it
+  this.data.attributes.map((item) => {
+    return item.value = valuesHash[`id${item.id}`].value;
+  });
+
   return valuesHash;
+}
+
+const checkDependencies = function checkDependencies(node, updatedNode) {
+  const hash = JSON.parse(JSON.stringify(this));
+  const dependencyDependencies = hash[node].dependencies;
+
+  dependencyDependencies.forEach((item) => {
+    if (hash[item].dependencies) {
+      hash[item].dependencies.forEach((currentItem) => {
+        if (hash[currentItem].dependencies) {
+          checkDependencies.call(hash, currentItem, updatedNode);
+        }
+      });
+    }
+  });
+};
+
+function updateStore(payload) {
+  let valuesHash = JSON.parse(JSON.stringify(this.valuesHash));
+
+  valuesHash[`id${payload.id}`].value = payload.data;
+
+  for (let key in valuesHash) {
+    if (Object.prototype.hasOwnProperty.call(valuesHash, key)) {
+      if (valuesHash[key].dependencies) {
+        checkDependencies.call(valuesHash, key, payload.id);
+      }
+      // if (valuesHash[key].dependencies) valuesHash[key].state = 'waiting';
+    }
+  }
+  // console.log(valuesHash);
 }
 
 export default function employeesTable(state = initialState, action) {
@@ -184,8 +224,9 @@ export default function employeesTable(state = initialState, action) {
     case CALCULATE_INITIAL_DATA:
       return { ...state, valuesHash: calculateData.call(state) };
 
-    case UPDATE_STORE_DATA:
-      return { ...state, data: updateStoreData.call(state, action.payload) };
+    case UPDATE_STORE:
+      updateStore.call(state, action.payload);
+      return { ...state };
 
     default:
       return state;

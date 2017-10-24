@@ -5,7 +5,7 @@ import {
   GET_DATA_SUCCESS,
   GET_DATA_FAILURE,
   CALCULATE_INITIAL_DATA,
-  UPDATE_STORE_DATA
+  UPDATE_STORE
 } from '../constants/index';
 
 export function getData() {
@@ -36,9 +36,9 @@ export function getData() {
   });
 }
 
-export function updateStoreData(id, data) {
+export function updateStore(id, data) {
   return {
-    type: UPDATE_STORE_DATA,
+    type: UPDATE_STORE,
     payload: {
       id,
       data

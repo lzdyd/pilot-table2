@@ -15,12 +15,19 @@
       "type": "number",
       "state": "input-field",
       "value": 1500
+    },  {
+      "id": "8",
+      "label": "str8",
+      "type": "number",
+      "state": "calculated-field",
+      "formula": "id7 + id2",
+      "value": ""
     }, {
       "id": "3",
       "label": "str3",
       "type": "number",
       "state": "calculated-field",
-      "formula": "id1 + id4 ",
+      "formula": "id1 + id4 + id5",
       "value": ""
     }, {
       "id": "4",
@@ -38,10 +45,17 @@
       "value": ""
     }, {
       "id": "6",
-      "label": "str5",
+      "label": "str6",
       "type": "number",
       "state": "calculated-field",
       "formula": "id1 + id2",
+      "value": ""
+    }, {
+      "id": "7",
+      "label": "str7",
+      "type": "number",
+      "state": "calculated-field",
+      "formula": "id3 + id4",
       "value": ""
     }
   ]

@@ -11,12 +11,18 @@ class App extends Component {
     this.props.excelActions.getData();
   }
 
+  onCellChange(id, value) {
+    this.props.excelActions.updateStore(id, value);
+  }
+
   render() {
-    const { data, fetching } = this.props.excel;
+    const { data, fetching, valuesHash } = this.props.excel;
+    const updateStore = this.props.excelActions.updateStore;
 
     return (
       <div className="main-app">
-        <Excel data={ data } fetching={ fetching } />
+        <Excel data={ data } fetching={ fetching } valuesHash={ valuesHash }
+               onCellChange={ ::this.onCellChange } />
       </div>
     );
   }

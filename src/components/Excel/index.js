@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 
+import TableHeaders from './components/TableHeaders';
+import TableRows from './components/TableRows';
+
+import './style.scss';
+
 export default class Excel extends Component {
   render() {
     /**
@@ -30,10 +35,31 @@ export default class Excel extends Component {
     /**
      If data was not received, inform user about it
      */
-    if (!this.props.data) {
+    if (!Object.keys(this.props.data).length) {
       return <h1>Something went wrong</h1>;
     }
 
-    return <h1>test</h1>;
+    const data = this.props.data;
+    const valuesHash = this.props.valuesHash;
+
+    return (
+      <div className="excel">
+        <h1>{ data.title }</h1>
+
+        <p>{ data.description }</p>
+
+        <div className="excel-table">
+          <TableHeaders data={ data.tableHeaders }/>
+          {
+            data.attributes.map((item) => {
+              return (
+                <TableRows data={ item } value={ valuesHash[`id${item.id}`].value } key={ item.id }
+                           onCellChange={ this.props.onCellChange } />
+              );
+            })
+          }
+        </div>
+      </div>
+    );
   }
 }
