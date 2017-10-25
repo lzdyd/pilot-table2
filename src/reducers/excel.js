@@ -176,34 +176,54 @@ function calculateData() {
 }
 
 const checkDependencies = function checkDependencies(node, updatedNode) {
-  const hash = JSON.parse(JSON.stringify(this));
-  const dependencyDependencies = hash[node].dependencies;
+  let hash = JSON.parse(JSON.stringify(this));
+  const dependencyDependencies = hash[node].dependencies || null;
 
-  dependencyDependencies.forEach((item) => {
-    if (hash[item].dependencies) {
-      hash[item].dependencies.forEach((currentItem) => {
-        if (hash[currentItem].dependencies) {
-          checkDependencies.call(hash, currentItem, updatedNode);
-        }
-      });
-    }
-  });
+  if (dependencyDependencies) {
+    dependencyDependencies.forEach((item) => {
+      if (item === `id${updatedNode}`) {
+        hash[node].state = 'waiting';
+      }
+
+      if (hash[item].dependencies) {
+        hash[item].dependencies.forEach((currentItem) => {
+          if (currentItem === `id${updatedNode}`) {
+            hash[node].state = 'waiting';
+            hash[item].state = 'waiting';
+          } else {
+            hash = checkDependencies.call(hash, currentItem, updatedNode);
+          }
+
+          if (hash[currentItem].state === 'waiting') {
+            hash[node].state = 'waiting';
+            hash[item].state = 'waiting';
+          }
+        });
+      }
+    });
+  }
+
+  return hash;
 };
 
 function updateStore(payload) {
+  // TODO: create array of dependencies, go through each elem and set elem's state to 'waiting'
+  const store = JSON.parse(JSON.stringify(this));
   let valuesHash = JSON.parse(JSON.stringify(this.valuesHash));
 
   valuesHash[`id${payload.id}`].value = payload.data;
 
   for (let key in valuesHash) {
     if (Object.prototype.hasOwnProperty.call(valuesHash, key)) {
-      if (valuesHash[key].dependencies) {
-        checkDependencies.call(valuesHash, key, payload.id);
+      if (valuesHash[key].dependencies && valuesHash[key].state !== 'waiting') {
+        valuesHash = checkDependencies.call(valuesHash, key, payload.id);
       }
-      // if (valuesHash[key].dependencies) valuesHash[key].state = 'waiting';
     }
   }
-  // console.log(valuesHash);
+
+  store.valuesHash = valuesHash;
+
+  return calculateData.call(store);
 }
 
 export default function employeesTable(state = initialState, action) {
@@ -225,8 +245,8 @@ export default function employeesTable(state = initialState, action) {
       return { ...state, valuesHash: calculateData.call(state) };
 
     case UPDATE_STORE:
-      updateStore.call(state, action.payload);
-      return { ...state };
+      // updateStore.call(state, action.payload);
+      return { ...state, valuesHash: updateStore.call(state, action.payload) };
 
     default:
       return state;

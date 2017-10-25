@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import numeral from 'numeral';
+
 import './style.scss';
 
 export default class TableCell extends Component {
@@ -43,11 +45,18 @@ export default class TableCell extends Component {
   render() {
     if (this.state.editable) {
       return (
-        <div className={ `table-cell table-cell-data table-cell-${this.props.data.state}` } onClick={ ::this.onFocus }>
+        <div className={ `table-cell table-cell-data table-cell-${this.props.data.state}` }
+             onClick={ ::this.onFocus }>
           {
             this.state.editing ?
-              <input type="text" ref="input" defaultValue={ this.props.data.value } onBlur={ ::this.onBlur }/> :
-              <span>{ this.props.value }</span>
+              <input
+                className="table-cell__input"
+                type="text"
+                ref="input"
+                defaultValue={ this.props.value }
+                onBlur={ ::this.onBlur }
+              /> :
+              <span>{ numeral(this.props.value).format('(0,0)') }</span>
           }
         </div>
       );
@@ -56,7 +65,7 @@ export default class TableCell extends Component {
     return (
       <div className={ `table-cell table-cell-data table-cell-${this.props.data.state}` }>
         {
-          this.props.value
+          numeral(this.props.value).format('(0,0)')
         }
       </div>
     );

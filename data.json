@@ -8,7 +8,7 @@
       "label": "str1",
       "type": "number",
       "state": "input-field",
-      "value": 500
+      "value": -500
     }, {
       "id": "2",
       "label": "str2",
