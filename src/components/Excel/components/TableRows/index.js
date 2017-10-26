@@ -12,9 +12,9 @@ export default class TableRows extends Component {
           { this.props.data.label }
         </div>
         <TableCell
-            data={ this.props.data }
-            dataStore={ this.props.dataStore }
-            updateStoreData={ this.props.updateStoreData }
+          data={ this.props.data }
+          dataStore={ this.props.dataStore }
+          updateStoreData={ this.props.updateStoreData }
         />
       </div>
     );

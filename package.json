@@ -30,8 +30,12 @@
     "webpack-dev-server": "^2.8.2"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "babel-polyfill": "^6.26.0",
+    "body-parser": "^1.18.2",
+    "bootstrap": "^3.3.7",
     "express": "^4.15.4",
+    "jquery": "^3.2.1",
     "numeral": "^2.0.6",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",

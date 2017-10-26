@@ -40,7 +40,6 @@ export default class Excel extends Component {
   // }
 
   render() {
-
     /**
       If data was not received, inform user about it
     */
@@ -50,27 +49,25 @@ export default class Excel extends Component {
 
     const data = this.props.data;
     const updateStoreData = this.props.updateStoreData;
-    const updateEvaluates = this.props.updateEvaluates;
-
 
     return (
       <div className="excel">
-        {/*<h1>{ data.title }</h1>*/}
+        {/* <h1>{ data.title }</h1> */}
 
-        {/*<p>{ data.description }</p>*/}
+        {/* <p>{ data.description }</p> */}
 
         <div className="table employees-table">
-          {/*<TableHeaders data={ data }/>*/}
+          {/* <TableHeaders data={ data }/> */}
           {
             data.map((item, i) => {
-                return (
-                    <TableRows
-                        dataStore={data}
-                        data={ item }
-                        key={ i }
-                        updateStoreData={ updateStoreData }
-                    />
-                )
+              return (
+                <TableRows
+                  dataStore={data}
+                  data={ item }
+                  key={ i }
+                  updateStoreData={ updateStoreData }
+                />
+              );
             })
           }
         </div>
