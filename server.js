@@ -20,6 +20,14 @@ app.get('/data.json', (req, res) => {
   res.sendFile(path.join(__dirname, 'data.json'));
 });
 
+app.get('/doctype_opu.xml', (req, res) => {
+  res.sendFile(path.join(__dirname, 'docs/doctype_opu.xml'));
+});
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
+});
+
 app.listen(3000, (err) => {
   if (err) {
     return console.error(err);

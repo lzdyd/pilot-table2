@@ -2,6 +2,8 @@ import getDataAPI from 'api/getData';
 
 import {
   GET_DATA_REQUEST,
+  GET_XML_DATA_SUCCESS,
+  GET_XML_DATA_FAILURE,
   GET_DATA_SUCCESS,
   GET_DATA_FAILURE,
   CALCULATE_INITIAL_DATA,
@@ -15,7 +17,21 @@ export function getData() {
       payload: 'Loading...'
     });
 
-    getDataAPI()
+    getDataAPI('./doctype_opu.xml')
+      .then((response) => {
+        dispatch({
+          type: GET_XML_DATA_SUCCESS,
+          payload: response
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: GET_XML_DATA_FAILURE,
+          payload: err
+        });
+      });
+
+    getDataAPI('./data.json')
       .then((response) => {
         dispatch({
           type: GET_DATA_SUCCESS,

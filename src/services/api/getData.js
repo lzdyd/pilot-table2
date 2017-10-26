@@ -1,8 +1,8 @@
-const getDataAPI = () => {
+const getDataAPI = (url) => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
 
-    xhr.open('GET', './data.json');
+    xhr.open('GET', url);
 
     xhr.onload = () => {
       if (xhr.status === 200) {
@@ -20,6 +20,6 @@ const getDataAPI = () => {
   });
 };
 
-export default function () {
-  return getDataAPI();
+export default function (url) {
+  return getDataAPI(url);
 }

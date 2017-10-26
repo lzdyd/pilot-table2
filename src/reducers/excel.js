@@ -1,5 +1,7 @@
 import {
   GET_DATA_REQUEST,
+  GET_XML_DATA_SUCCESS,
+  GET_XML_DATA_FAILURE,
   GET_DATA_SUCCESS,
   GET_DATA_FAILURE,
   CALCULATE_INITIAL_DATA,
@@ -226,10 +228,55 @@ function updateStore(payload) {
   return calculateData.call(store);
 }
 
+function parseXML(payload) {
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(payload, 'text/xml');
+
+  const attributes = Array.from(xmlDoc.querySelectorAll('attribute')).map((item) => {
+    const currentAttribute = {
+      id: item.querySelector('id').childNodes[0].nodeValue,
+      label: item.querySelector('label').childNodes[0].nodeValue,
+      type: item.querySelector('type').childNodes[0].nodeValue,
+      formatMask: item.querySelector('formatMask').childNodes[0].nodeValue
+    };
+
+    const additionalAttr = {
+      formula: item.querySelector('formula') || null,
+      isObligatory: item.querySelector('isObligatory') || null
+    };
+
+    for (let key in additionalAttr) {
+      if (Object.prototype.hasOwnProperty.call(additionalAttr, key)) {
+        if (additionalAttr[key] !== null) {
+          currentAttribute[key] = additionalAttr[key].childNodes[0].nodeValue;
+        }
+      }
+    }
+
+    return currentAttribute;
+  });
+
+  const doctype = {
+    attributes,
+    id: xmlDoc.querySelector('id').childNodes[0].nodeValue,
+    name: xmlDoc.querySelector('name').childNodes[0].nodeValue,
+    periodType: xmlDoc.querySelector('periodType').childNodes[0].nodeValue
+  };
+
+  console.log(doctype);
+}
+
 export default function employeesTable(state = initialState, action) {
   switch (action.type) {
     case GET_DATA_REQUEST:
       return { ...state, fetching: true };
+
+    case GET_XML_DATA_SUCCESS:
+      parseXML(action.payload);
+      return { ...state };
+
+    case GET_XML_DATA_FAILURE:
+      return { ...state, error: action.payload };
 
     case GET_DATA_SUCCESS:
       return { ...state,
