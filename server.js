@@ -20,9 +20,9 @@ app.get('/data.json', (req, res) => {
   res.sendFile(path.join(__dirname, 'data.json'));
 });
 
-// app.get('/data2.json', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'data2.json'));
-// });
+app.get('./userdata.json', (req, res) => {
+    res.sendFile(path.join(__dirname, './userdata.json'));
+});
 
 app.listen(3000, (err) => {
   if (err) {

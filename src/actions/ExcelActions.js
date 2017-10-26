@@ -1,4 +1,4 @@
-import getDataAPI from 'api/getData';
+import { getDataAPI } from 'api/getData';
 
 import {
   GET_DATA_REQUEST,
@@ -39,3 +39,27 @@ export function updateStoreData(id, data) {
     }
   };
 }
+
+
+// export function getDataUsers() {
+//     return ((dispatch) => {
+//         dispatch({
+//             type: 'GET_USER_REQUEST',
+//             payload: 'Loading...'
+//         });
+//
+//         getDataAPI()
+//             .then((response) => {
+//                 dispatch({
+//                     type: 'GET_USER_SUCCESS',
+//                     payload: JSON.parse(response)
+//                 });
+//             })
+//             .catch((err) => {
+//                 dispatch({
+//                     type: 'GET_USER_FAILURE',
+//                     payload: err
+//                 });
+//             });
+//     });
+// }
