@@ -21,7 +21,10 @@ export function getData() {
       .then((response) => {
         dispatch({
           type: GET_XML_DATA_SUCCESS,
-          payload: response
+          payload: {
+            response,
+            type: 'docType1'
+          }
         });
       })
       .catch((err) => {
@@ -31,7 +34,24 @@ export function getData() {
         });
       });
 
-    getDataAPI('./data.json')
+    getDataAPI('./doctype_view_opu.xml')
+      .then((response) => {
+        dispatch({
+          type: GET_XML_DATA_SUCCESS,
+          payload: {
+            response,
+            type: 'ReportType1'
+          }
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: GET_XML_DATA_FAILURE,
+          payload: err
+        });
+      });
+
+    getDataAPI('./doc-data_opu.json')
       .then((response) => {
         dispatch({
           type: GET_DATA_SUCCESS,

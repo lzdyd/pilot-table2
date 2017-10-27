@@ -18,7 +18,7 @@ export default class TableCell extends Component {
     Checks if cell is editable
    */
   componentWillMount() {
-    if (this.props.data.state === 'input-field') {
+    if (!this.props.data.formula) {
       this.setState({
         editable: true
       });
@@ -45,7 +45,7 @@ export default class TableCell extends Component {
   render() {
     if (this.state.editable) {
       return (
-        <div className={ `table-cell table-cell-data table-cell-${this.props.data.state}` }
+        <div className={ `table-cell table-cell-data ${this.props.data.formula ? '' : 'table-cell-input-field'}` }
              onClick={ ::this.onFocus }>
           {
             this.state.editing ?
@@ -63,7 +63,7 @@ export default class TableCell extends Component {
     }
 
     return (
-      <div className={ `table-cell table-cell-data table-cell-${this.props.data.state}` }>
+      <div className={ `table-cell table-cell-data ${this.props.data.formula ? 'table-cell-data-bold' : 'table-cell-input-field'}` }>
         {
           numeral(this.props.value).format('(0,0)')
         }

@@ -61,7 +61,7 @@ function updateStoreData(payloadData) {
 function getDependencies(formula) {
   if (!formula) return null;
 
-  return formula.match(/id\d+/g);
+  return formula.match(/F\d+/g);
 }
 
 /**
@@ -77,17 +77,24 @@ function getDependencies(formula) {
 function createValuesHash(data) {
   const hash = {};
 
+  Object.values(this.docType1.attributes).forEach((item) => {
+    hash[item.id] = {};
+    hash[item.id].value = null;
+  });
+
   Object.values(data.attributes).forEach((item) => {
+    hash[item[0]] = {
+      value: item[1] || null
+    };
+  });
+
+  Object.values(this.docType1.attributes).forEach((item) => {
     const dependencies = getDependencies(item.formula);
 
-    hash[`id${item.id}`] = {
-      dependencies,
-      value: item.value || null
-    };
-
     if (dependencies) {
-      hash[`id${item.id}`].state = null;
-      hash[`id${item.id}`].formula = item.formula;
+      hash[item.id].dependencies = dependencies;
+      hash[item.id].state = null;
+      hash[item.id].formula = item.formula;
     }
   });
 
@@ -95,8 +102,8 @@ function createValuesHash(data) {
 }
 
 function evalJSON(item) {
-  const restructuredFunc = item.formula.replace(/id\d+/g, (str) => {
-    return `+this.id${str.match(/\d+/)}.value`;
+  const restructuredFunc = item.formula.replace(/F\d+/g, (str) => {
+    return `+this.F${str.match(/\d+/)}.value`;
   });
 
   let result;
@@ -157,6 +164,7 @@ function calculateData() {
 
       if (item.dependencies && item.state !== 'calculated') {
         item.dependencies.forEach((dependency) => {
+
           if (valuesHash[dependency].dependencies) {
             valuesHash = JSON.parse(JSON.stringify(calculateDependency.call(valuesHash, dependency)));
           }
@@ -170,9 +178,9 @@ function calculateData() {
   }
 
   // TODO: it mutates store. Rewrite it
-  this.data.attributes.map((item) => {
-    return item.value = valuesHash[`id${item.id}`].value;
-  });
+  // this.data.attributes.map((item) => {
+  //   return item.value = valuesHash[`F${item.id}`].value;
+  // });
 
   return valuesHash;
 }
@@ -213,7 +221,7 @@ function updateStore(payload) {
   const store = JSON.parse(JSON.stringify(this));
   let valuesHash = JSON.parse(JSON.stringify(this.valuesHash));
 
-  valuesHash[`id${payload.id}`].value = payload.data;
+  valuesHash[payload.id].value = payload.data;
 
   for (let key in valuesHash) {
     if (Object.prototype.hasOwnProperty.call(valuesHash, key)) {
@@ -228,42 +236,120 @@ function updateStore(payload) {
   return calculateData.call(store);
 }
 
-function parseXML(payload) {
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(payload, 'text/xml');
-
-  const attributes = Array.from(xmlDoc.querySelectorAll('attribute')).map((item) => {
+/**
+ * @description Goes through every attribute and saves its value to JS object
+ * @param { DOM } xml - Received XML via REST API
+ * @returns { Object } regular JS object
+ */
+function parseDoctypeXML(xml) {
+  const attributes = Array.from(xml.querySelectorAll('attribute')).map((item) => {
     const currentAttribute = {
-      id: item.querySelector('id').childNodes[0].nodeValue,
-      label: item.querySelector('label').childNodes[0].nodeValue,
-      type: item.querySelector('type').childNodes[0].nodeValue,
-      formatMask: item.querySelector('formatMask').childNodes[0].nodeValue
+      id: item.querySelector('id').firstChild.nodeValue,
+      label: item.querySelector('label').firstChild.nodeValue,
+      type: item.querySelector('type').firstChild.nodeValue,
+      formatMask: item.querySelector('formatMask').firstChild.nodeValue
     };
 
-    const additionalAttr = {
+    const additionalAttrs = {
       formula: item.querySelector('formula') || null,
       isObligatory: item.querySelector('isObligatory') || null
     };
 
-    for (let key in additionalAttr) {
-      if (Object.prototype.hasOwnProperty.call(additionalAttr, key)) {
-        if (additionalAttr[key] !== null) {
-          currentAttribute[key] = additionalAttr[key].childNodes[0].nodeValue;
-        }
+    Object.keys(additionalAttrs).forEach((key) => {
+      if (additionalAttrs[key] !== null) {
+        currentAttribute[key] = additionalAttrs[key].firstChild.nodeValue;
       }
-    }
+    });
 
     return currentAttribute;
   });
 
   const doctype = {
     attributes,
-    id: xmlDoc.querySelector('id').childNodes[0].nodeValue,
-    name: xmlDoc.querySelector('name').childNodes[0].nodeValue,
-    periodType: xmlDoc.querySelector('periodType').childNodes[0].nodeValue
+    id: xml.querySelector('id').firstChild.nodeValue,
+    name: xml.querySelector('name').firstChild.nodeValue,
+    periodType: xml.querySelector('periodType').firstChild.nodeValue
   };
 
-  console.log(doctype);
+  return doctype;
+}
+
+/**
+ * @description Goes through every attribute and saves its value to JS object
+ * @param { DOM } xml - Received XML via REST API
+ * @returns { Object } regular JS object
+ */
+function parseReportTypeXML(xml) {
+  const rowParams = Array.from(xml.querySelectorAll('rowParam')).map((item) => {
+    const currentRowParam = {
+      rowNumber: item.querySelector('rowNumber').firstChild.nodeValue,
+      rowHeight: item.querySelector('rowHeight').firstChild.nodeValue
+    };
+
+    return currentRowParam;
+  });
+
+  const columnParams = Array.from(xml.querySelectorAll('columnParam')).map((item) => {
+    const currentColumnParam = {
+      rowNumber: item.querySelector('colNumber').firstChild.nodeValue,
+      rowHeight: item.querySelector('colWidth').firstChild.nodeValue
+    };
+
+    return currentColumnParam;
+  });
+
+  const cells = Array.from(xml.querySelectorAll('cell')).map((item) => {
+    const currentCell = {
+      row: item.querySelector('row').firstChild.nodeValue,
+      column: item.querySelector('column').firstChild.nodeValue
+    };
+
+    return currentCell;
+  });
+
+  const doctypeView = {
+    id: xml.querySelector('id').firstChild.nodeValue,
+    title: xml.querySelector('title').firstChild.nodeValue,
+    doStickHeader: xml.querySelector('doStickHeader').firstChild.nodeValue,
+    doStickLeft: xml.querySelector('doStickLeft').firstChild.nodeValue,
+    table: {
+      rowParams,
+      columnParams,
+      cells,
+      rowCnt: xml.querySelector('rowCnt').firstChild.nodeValue,
+      colCnt: xml.querySelector('colCnt').firstChild.nodeValue,
+      resizable: xml.querySelector('resizable').firstChild.nodeValue
+    }
+  };
+
+  return doctypeView;
+}
+
+/**
+ * @param { Object } payload     - received XML via REST API and its type
+ * @returns { Object } parsedXML - regular JS object
+ */
+function parseXML(payload) {
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(payload.response, 'text/xml');
+  const xmlDocType = payload.type;
+
+  let parsedXML;
+
+  switch (xmlDocType) {
+    case 'docType1':
+      parsedXML = parseDoctypeXML(xmlDoc);
+      break;
+
+    case 'ReportType1':
+      parsedXML = parseReportTypeXML(xmlDoc);
+      break;
+
+    default:
+      break;
+  }
+
+  return parsedXML;
 }
 
 export default function employeesTable(state = initialState, action) {
@@ -272,8 +358,16 @@ export default function employeesTable(state = initialState, action) {
       return { ...state, fetching: true };
 
     case GET_XML_DATA_SUCCESS:
-      parseXML(action.payload);
-      return { ...state };
+      switch (action.payload.type) {
+        case 'docType1':
+          return { ...state, docType1: parseXML(action.payload) };
+
+        case 'ReportType1':
+          return { ...state, ReportType1: parseXML(action.payload) };
+
+        default:
+          return { ...state };
+      }
 
     case GET_XML_DATA_FAILURE:
       return { ...state, error: action.payload };
@@ -281,7 +375,7 @@ export default function employeesTable(state = initialState, action) {
     case GET_DATA_SUCCESS:
       return { ...state,
         data: action.payload,
-        valuesHash: createValuesHash(action.payload),
+        valuesHash: createValuesHash.call(state, action.payload),
         fetching: false
       };
 

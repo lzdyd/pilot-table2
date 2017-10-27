@@ -8,8 +8,11 @@ export default class TableRows extends Component {
   render() {
     return (
       <div className="table-row">
-        <div className={ `table-cell table-cell-label table-cell-${this.props.data.state}` }>
-          { this.props.data.label + ` (formula - ${this.props.data.formula || ''})`}
+        <div className={ `table-cell table-cell-label ${this.props.data.formula ? 'table-cell-label-bold' : ''}` }>
+          { this.props.data.label }
+        </div>
+        <div className={ `table-cell table-cell-label ${this.props.data.formula ? 'table-cell-label-bold' : ''}` }>
+          { this.props.data.id }
         </div>
         <TableCell data={ this.props.data } value={ this.props.value } onCellChange={ this.props.onCellChange } />
       </div>

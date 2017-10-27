@@ -16,12 +16,16 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
-app.get('/data.json', (req, res) => {
-  res.sendFile(path.join(__dirname, 'data.json'));
+app.get('/doc-data_opu.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'docs/doc-data_opu.json'));
 });
 
 app.get('/doctype_opu.xml', (req, res) => {
   res.sendFile(path.join(__dirname, 'docs/doctype_opu.xml'));
+});
+
+app.get('/doctype_view_opu.xml', (req, res) => {
+  res.sendFile(path.join(__dirname, 'docs/doctype_view_opu.xml'));
 });
 
 app.get('/*', (req, res) => {
