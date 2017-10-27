@@ -53,10 +53,10 @@ function renderFormList(data) {
     let lelPeriod = period.length - 1;
     let arr = [];
     for (let i = 0, len = period.length * data.length; i < len; i++) {
-      let key = formId + '_' + len[lelPeriod].period + '_' + len[lelPeriod].year;
+      // let key = formId + '_' + len[lelPeriod].period + '_' + len[lelPeriod].year;
       arr.push(
         <span
-          data-key={key}
+          // data-key={key}
           className="table-header__items table-rows__items"
           key={++i}
           id={formId + '_' + lelPeriod}
