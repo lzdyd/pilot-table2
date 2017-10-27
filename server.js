@@ -2,23 +2,23 @@ const path = require('path');
 const webpack = require('webpack');
 const express = require('express');
 const config = require('./webpack.config');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 
 const app = express();
 const compiler = webpack(config);
 
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
-app.post('/Authentication', (req, res) => {
-  const userName = req.body.email;
-  const password = req.body.password;
-  if (userName === 'admin' && password === 'admin'){
-    res.send('success');
-  }
-  else {
-    res.send('Failure');
-  }
-});
+// app.post('/Authentication', (req, res) => {
+//   const userName = req.body.email;
+//   const password = req.body.password;
+//   if (userName === 'admin' && password === 'admin'){
+//     res.send('success');
+//   }
+//   else {
+//     res.send('Failure');
+//   }
+// });
 
 app.use(require('webpack-dev-middleware')(compiler, {
   publicPath: config.output.publicPath
@@ -34,9 +34,9 @@ app.get('/data.json', (req, res) => {
   res.sendFile(path.join(__dirname, 'data.json'));
 });
 
-app.get('./userdata.json', (req, res) => {
-    res.sendFile(path.join(__dirname, './userdata.json'));
-});
+// app.get('./userdata.json', (req, res) => {
+//     res.sendFile(path.join(__dirname, './userdata.json'));
+// });
 
 app.listen(3000, (err) => {
   if (err) {

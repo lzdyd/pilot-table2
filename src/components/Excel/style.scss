@@ -364,3 +364,59 @@
     -moz-transform: rotate(900deg);
   }
 }
+.clients {
+  position: absolute;
+  display: none;
+  border: 1px solid;
+  padding: 20px;
+  background-color: aliceblue;
+}
+
+
+.clients-list {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  margin-bottom: 20px;
+}
+
+.show {
+  display: block !important;
+}
+
+.clients-list__item {
+  padding: 5px;
+  padding-left: 10px;
+  border-left: 2px solid;
+  margin-bottom: 5px;
+}
+
+.is-checked-client {
+  background-color: rgba(85, 107, 47, 0.32);
+}
+
+.clients-btn button {
+  margin-right: 10px;
+}
+
+.report-period {
+  margin-bottom: 50px;
+}
+
+.report-period select,
+.report-period button {
+  margin-right: 10px;
+}
+
+.table-header {
+  display: flex;
+}
+
+.table-header__items {
+  width: 110px;
+  display: block;
+  padding: 10px;
+  border: 1px solid;
+  background-color: rgba(169, 169, 169, 0.69);
+}
