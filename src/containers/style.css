@@ -1,7 +1,7 @@
 .form-signin {
     display: flex;
     flex-direction: column;
-    max-width: 230px;
+    max-width: 250px;
     align-items: center;
     box-sizing: border-box;
     border: 1px solid;
@@ -9,15 +9,29 @@
     margin: 0 auto;
 }
 
+.form-signin-heading {
+    margin-top: 0;
+}
+
 .form-control {
     width: 100%;
     box-sizing: border-box;
+    margin-bottom: 10px;
+    padding: 5px;
 }
 
 .btn {
     width: 100%;
+    padding: 5px;
 }
 
 .checkbox {
     align-self: flex-start;
+    margin-bottom: 10px;
+}
+
+.error {
+    margin: 0;
+    margin-bottom: 10px;
+    color: red;
 }

@@ -10,13 +10,15 @@ export default class Authentication extends Component {
     this.state = {
       login: '',
       password: '',
-      isRemember: false
+      isRemember: false,
+      error: false
     };
 
     this.handleLoginChange = this.handleLoginChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleRememberChange = this.handleRememberChange.bind(this);
     this.signIn = this.signIn.bind(this);
+    this.handlerOnKeyDown = this.handlerOnKeyDown.bind(this);
   }
 
   handleRememberChange() {
@@ -31,6 +33,12 @@ export default class Authentication extends Component {
     this.setState({ password: e.target.value });
   }
 
+  handlerOnKeyDown(e) {
+    if (e.key === 'Enter') {
+      this.signIn();
+    }
+  }
+
   signIn() {
     const userName = this.state.login;
     const password = this.state.password;
@@ -40,7 +48,9 @@ export default class Authentication extends Component {
     } else if (userName === 'jamik' && password === 'jamik') {
       this.props.onClick();
     } else {
-
+      this.setState({
+        error: !this.state.error
+      });
     }
   }
 
@@ -48,6 +58,7 @@ export default class Authentication extends Component {
     return (
       <form className="form-signin">
         <h2 className="form-signin-heading"> Войти в систему </h2>
+        {this.state.error && <p className="error">Неверный логин или пароль</p>}
         <input
           type="text"
           id="inputText"
@@ -64,6 +75,7 @@ export default class Authentication extends Component {
           placeholder="Пароль"
           required="true"
           onChange={this.handlePasswordChange}
+          onKeyDown={this.handlerOnKeyDown}
         />
         <label htmlFor="checkbox-field" className="checkbox">
           <input
