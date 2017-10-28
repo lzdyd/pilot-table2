@@ -1,4 +1,4 @@
-const getDataAPI = () => {
+export const getDataAPI = () => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
 
@@ -20,6 +20,25 @@ const getDataAPI = () => {
   });
 };
 
-export default function () {
-  return getDataAPI();
-}
+export const getDataUsers = () => {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('GET', './userdata.json');
+
+        xhr.onload = () => {
+            if (xhr.status === 200) {
+                resolve(xhr.responseText);
+            } else {
+                reject(Error(xhr.statusText));
+            }
+        };
+
+        xhr.onerror = () => {
+            reject(Error('Network error'));
+        };
+
+        xhr.send();
+    });
+};
+

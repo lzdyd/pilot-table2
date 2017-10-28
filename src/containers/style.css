@@ -27,11 +27,38 @@
 
 .checkbox {
     align-self: flex-start;
-    margin-bottom: 10px;
+/*<<<<<<< HEAD*/
+    /*margin-bottom: 10px;*/
+/*}*/
+
+/*.error {*/
+    /*margin: 0;*/
+    /*margin-bottom: 10px;*/
+    /*color: red;*/
+/*=======*/
 }
 
-.error {
-    margin: 0;
-    margin-bottom: 10px;
-    color: red;
+.clients-items-btn {
+    margin-bottom: 20px;
+}
+
+.table {
+    display: inline-block;
+}
+
+.table-rows-item {
+    display: flex;
+}
+
+.table-header__items.table-header__items-fix {
+    width: 200px;
+    background-color: white;
+}
+
+.table-header .table-header__items-fix {
+    background-color: rgba(169, 169, 169, 0.69);
+}
+
+.table-rows__items {
+    background-color: transparent !important;
 }

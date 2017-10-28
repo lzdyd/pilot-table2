@@ -5,8 +5,9 @@ import { bindActionCreators } from 'redux';
 import * as ExcelActions from '../actions/ExcelActions';
 import { evaluatesDependence } from '../services/evalDependence';
 
-import Excel from '../components/Excel/index';
+// import Excel from '../components/Excel/index';
 import Authentication from './Authentication';
+import { DocList } from './DocList';
 
 class App extends Component {
   constructor(props) {
@@ -27,24 +28,29 @@ class App extends Component {
     this.setState({
       invalid: !this.state.invalid
     });
-  };
+  }
+
+  // <Excel
+  // data={ excel && excel }
+  // fetching={ excel && excel.fetching }
+  // getData={ getData }
+  // updateStoreData={ updateStoreData }
+  // />
+  // {!this.state.invalid ?
+  // <Authentication onClick={this.onClickHandler.bind(this)}/> :
+//
+// {!this.state.invalid ?
+// <Authentication onClick={this.onClickHandler.bind(this)}/> : <DocList /> }
+
 
   render() {
-    const excel = this.props.excel;
-    const getData = this.props.excelActions.getData;
-    const updateStoreData = this.props.excelActions.updateStoreData;
+    // const excel = this.props.excel;
+    // const getData = this.props.excelActions.getData;
+    // const updateStoreData = this.props.excelActions.updateStoreData;
 
     return (
       <div className="main-app">
-        {!this.state.invalid ?
-          <Authentication onClick={this.onClickHandler.bind(this)}/> :
-          <Excel
-            data={ excel && excel }
-            fetching={ excel && excel.fetching }
-            getData={ getData }
-            updateStoreData={ updateStoreData }
-          />
-        }
+        <DocList />
       </div>
     );
   }
