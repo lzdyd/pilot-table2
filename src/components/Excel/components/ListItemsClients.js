@@ -2,7 +2,6 @@ import React from 'react';
 
 import '../style.scss';
 
-
 export default function ListItemsClients({
   clientIsChecked,
   listClient,
@@ -53,4 +52,3 @@ export default function ListItemsClients({
     </div>
   );
 }
-

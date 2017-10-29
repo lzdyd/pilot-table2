@@ -12,7 +12,8 @@ export default class DocTable extends Component {
       curYear,
       formsList,
       docHeadersList,
-      setPeriods
+      setPeriods,
+      docList
     } = this.props;
 
     return (
@@ -24,6 +25,7 @@ export default class DocTable extends Component {
         />
         {dataPeriodAndYear &&
         <FormList
+          docList={docList}
           formsList={formsList}
           dataPeriodAndYear={dataPeriodAndYear}
           docHeadersList={docHeadersList}

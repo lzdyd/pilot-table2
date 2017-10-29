@@ -38,15 +38,16 @@ export default function ReportPeriod({
 
   return (
     <div className='report-period'>
+      Отчетный период:
       <select onChange={handlerPeriodIsChecked}>
         { perodItemsTemplate }
       </select>
       <select onChange={handlerYearIsChecked}>
         { getYear() }
       </select>
-      <button onClick={receiveOnClick}>применить</button>
-      <button onClick={onclickHandlerDec}>назад</button>
-      <button onClick={onclickHandlerInc}>вперед</button>
+      <button onClick={receiveOnClick}>применить ✔</button>
+      <button onClick={onclickHandlerDec}>◄ назад</button>
+      <button onClick={onclickHandlerInc}>вперед ►</button>
     </div>
   );
 }

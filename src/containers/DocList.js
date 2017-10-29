@@ -49,7 +49,7 @@ const docHeadersList = [
     id: 1,
     status: 0,
     version: '1',
-    period: '2',
+    period: '1',
     year: '2017',
     client: 'Клиент 1',
     type: 'FORM01',
@@ -57,11 +57,11 @@ const docHeadersList = [
     modify_date: formatDate
   },
   {
-    id: 3,
+    id: 2,
     status: 0,
     version: '1',
     period: '3',
-    year: '2016',
+    year: '2017',
     client: 'Клиент 6',
     type: 'FORM01',
     creation_date: formatDate,
@@ -71,8 +71,8 @@ const docHeadersList = [
     id: 2,
     status: 7,
     version: '1',
-    period: '3',
-    year: '2017',
+    period: '2',
+    year: '2016',
     client: 'Клиент 2',
     type: 'FORM02',
     creation_date: formatDate,
@@ -82,8 +82,8 @@ const docHeadersList = [
     id: 6,
     status: 7,
     version: '1',
-    period: '3',
-    year: '2017',
+    period: '4',
+    year: '2015',
     client: 'Клиент 2',
     type: 'FORM02',
     creation_date: formatDate,
@@ -93,21 +93,10 @@ const docHeadersList = [
     id: 2,
     status: 7,
     version: '1',
-    period: '3',
+    period: '2',
     year: '2017',
     client: 'Клиент 2',
     type: 'FORM01',
-    creation_date: formatDate,
-    modify_date: formatDate
-  },
-  {
-    id: 2,
-    status: 7,
-    version: '1',
-    period: '3',
-    year: '2017',
-    client: 'Клиент 2',
-    type: 'FORM02',
     creation_date: formatDate,
     modify_date: formatDate
   }
@@ -130,7 +119,8 @@ export class DocList extends Component {
       dataPeriodAndYear: null,
       formsList,
       docHeadersList,
-      docPeriods: null
+      docPeriods: null,
+      docList: null
     };
 
     this.handlerOnClickShow = this.handlerOnClickShow.bind(this);
@@ -163,8 +153,37 @@ export class DocList extends Component {
   //   });
   // }
 
+  createMapOfDocs_v3(data) {
+    const listDocs = {};
+    let doclist;
+
+    data.forEach((item) => {
+      doclist = {
+        id: item.id,
+        status: item.status,
+        version: item.version,
+        period: item.period,
+        year: item.year,
+        client: item.client,
+        type: item.type,
+        creation_date: item.creation_date,
+        modify_date: item.modify_date
+      };
+
+      const key = `${doclist.type}_${doclist.period}_${doclist.year}`;
+
+      listDocs[key] = doclist;
+    });
+
+    this.setState({
+      docList: listDocs
+    });
+  }
+
+
   componentDidMount() {
     this.receiveOnClick();
+    this.createMapOfDocs_v3(this.state.docHeadersList);
   }
 
   receiveOnClick() {
@@ -236,15 +255,18 @@ export class DocList extends Component {
       periodIsChecked,
       yearIsChecked,
       dataPeriodAndYear,
-      formsList
+      formsList,
+      docList
     } = this.state;
 
     return (
       <div className="">
+        Клиент:
         <button
           onClick={this.handlerOnClickShow}
           className='clients-items-btn'
         >{!this.state.clientIsChecked ? 'Выберите клиента из справочника' : listClient[clientIsChecked]}
+          ▼
         </button>
         <ReportPeriod
           receiveOnClick={this.receiveOnClick}
@@ -271,6 +293,7 @@ export class DocList extends Component {
           curYear={curYear}
           formsList={formsList}
           docHeadersList={docHeadersList}
+          docList={docList}
         />
       </div>
     );

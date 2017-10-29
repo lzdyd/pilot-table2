@@ -46,19 +46,129 @@
     display: inline-block;
 }
 
+.TBL {
+    position: relative;
+}
+
 .table-rows-item {
     display: flex;
 }
 
+.table-header .table-header__items {
+    height: 15px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.table-header__items {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+}
+
 .table-header__items.table-header__items-fix {
-    width: 200px;
+    width: 170px;
     background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    text-align: center;
+    background-color: rgba(169, 169, 169, 0.22);
 }
 
 .table-header .table-header__items-fix {
-    background-color: rgba(169, 169, 169, 0.69);
+    background-color: rgba(169, 169, 169, 0.22);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.table-header .table-header__items-fix:first-child {
+    border-color: white;
+    background-color: white;
+
 }
 
 .table-rows__items {
     background-color: transparent !important;
+}
+
+.doc {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.doc-status {
+    float: left;
+    height: 100%;
+    width: 15px;
+}
+
+.doc-date {
+    float: right;
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.doc-version {
+    float: left;
+    margin-left: 10px;
+    /*margin-top: 10%;*/
+}
+
+/*.doc-date,*/
+/*.doc-version {*/
+    /*text-align: center;*/
+/*}*/
+
+.doc-date-version {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-around;
+    width: 80px;
+    height: 100%;
+}
+
+.red-status {
+    background-color: red;
+}
+
+.green-status {
+    background-color: green;
+}
+
+.popup {
+    display: none;
+    padding: 30px;
+    border: 1px solid;
+    box-shadow: -5px -5px 20px rgba(0, 0, 0, 0.2), 5px 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.none {
+    display: none;
+}
+
+.popup-show {
+    display: block;
+    width: 400px;
+    position: absolute;
+    top: 0;
+    background-color: white;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.popup-btn {
+    display: flex;
+    justify-content: center;
 }

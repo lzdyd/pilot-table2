@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 
 import { AllPeriods } from '../components/Excel/components/TableHeader';
-//
-// let forms;
-// let periodsList;
 
 function generateFormList(data) {
   const formsArray = [];
@@ -23,77 +20,94 @@ function generateFormList(data) {
     }
   });
 
-  // console.log(formsArray);
-
   return formsArray;
 }
 
 
-function renderFormList(data) {
-//   let newData = [];
-//   let arrCommon = [];
-//
-// data.forEach((item1) => {
-//   let arr = [];
-//   arr.push(item1);
-//   newData.push(arr);
-// });
-//
-//
-// rows.forEach((item2) => {
-//   item2.forEach((innerItems) => {
-//     data.push(innerItems);
-//   });
-// });
-//
-// arr.push(...innerarr);
+// function showPopup(doc) {
+//   console.log(doc);
+//   return (
+//     <div className="popup">
+//       <p>{setLabel(doc.status)}</p>
+//     </div>
+//   );
+// }
 
-  function setspan(period, formId) {
-    // console.log(period);
-    let lelPeriod = period.length - 1;
-    let arr = [];
-    for (let i = 0, len = period.length * data.length; i < len; i++) {
-      // let key = formId + '_' + len[lelPeriod].period + '_' + len[lelPeriod].year;
+function clickHandler(docList_v2, e) {
+  const cellCur = e.target;
+  const dataKey = cellCur.dataset.key || cellCur.parentNode.dataset.key;
+  // console.log(docList_v2);
+  // console.log(dataKey);
+  // if (docList_v2[dataKey]) {
+  //   showPopup.call(this, docList_v2[dataKey])
+  // } else {
+  //   showPopup.call(this, docList_v2[dataKey])
+  // }
+}
+
+
+function renderFormList(data, docList_v2) {
+  function foo(key, isExist, docList_v2) {
+    if (docList_v2.hasOwnProperty(key)) {
+      isExist = true;
+      const doc = docList_v2[key];
+      return (
+        <div
+          className="doc"
+          data-key={key}
+          // onClick={clickHandler.bind(this, docList_v2)}
+        >
+          <div className={`doc-status ${doc.status === 0 ? 'red-status' : 'green-status'}`}></div>
+          <div className="doc-date">{doc.modify_date}</div>
+          <div className="doc-version">вер.:{doc.version}</div>
+        </div>
+      );
+    }
+  }
+
+
+  function setDocFromList(period, formId) {
+    const arr = [];
+    for (let i = 0; i < period.length; i++) {
+      const key = `${formId}_${period[i].period}_${period[i].year}`;
+      const isExist = false;
       arr.push(
         <span
-          // data-key={key}
+          // onClick={clickHandler.bind(this, docList_v2)}
           className="table-header__items table-rows__items"
-          key={++i}
-          id={formId + '_' + lelPeriod}
+          key={i}
+          data-key={key}
+          id={`${formId}_${i}`}
         >
-
+          {foo(key, isExist, docList_v2)}
         </span>
       );
-      lelPeriod--;
-
     }
 
     return arr;
   }
 
-  // console.log(AllPeriods);
 
-// console.log(data);
   const rowsTemplate = data.map((item, i) => {
     if (item.type !== null && item.type === 'INPUT') {
       return (
         <div id={item.formid} key={i} className="table-rows-item">
-          <span className="table-header__items  table-header__items-fix">{item.fullName}</span>
-          {setspan(AllPeriods, item.formid)}
+          <span
+            className="table-header__items  table-header__items-fix"
+          >{item.fullName}
+          </span>
+          {setDocFromList(AllPeriods, item.formid)}
         </div>
       );
     }
   });
 
-
-  // console.log(rows);
-
   return rowsTemplate;
 }
 
 
-function createMapOfDocs(data) {
-  const mapOfDocs = [];
+function createMapOfDocs_v2(data) {
+  const mapOfDocs = {};
   let doclist;
 
   data.forEach((item) => {
@@ -111,29 +125,88 @@ function createMapOfDocs(data) {
 
     const key = `${doclist.type}_${doclist.period}_${doclist.year}`;
 
-    mapOfDocs.push({
-      key,
-      doc: doclist
-    });
+    mapOfDocs[key] = doclist;
   });
-
-  // console.log(mapOfDocs);
 
   return mapOfDocs;
 }
 
 
 export default class FormList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      curDoc: null,
+      curDocObj: null,
+      popupIsShow: false
+    };
+
+    this.foo = this.foo.bind(this);
+    this.setLabel = this.setLabel.bind(this);
+    this.popupClose = this.popupClose.bind(this);
+  }
+
+  foo({ target }) {
+    const dataKey = target.dataset.key || target.parentNode.dataset.key;
+    console.log(dataKey);
+    this.setState({
+      curDoc: dataKey,
+      curDocObj: this.getCurDoc(dataKey),
+      popupIsShow: dataKey && true
+    });
+  }
+
+  popupClose() {
+    this.setState({
+      popupIsShow: false
+    });
+  }
+
+  getCurDoc(id) {
+    return this.props.docList[id];
+  }
+
+  setLabel(status) {
+    switch (status) {
+      case 0:
+        return 'Документ \'Отчёт о финансовых результатах\' уже существует,  ' +
+          'открыть документ на редактирование или открыть документ на просмотр?';
+
+      case 7:
+        return 'Документ \'Отчёт о финансовых результатах\' уже существует в статусе утверждён, ' +
+          'создать новую версию документа или открыть документ на просмотр?';
+
+      default:
+        return;
+    }
+  }
+
+  setLabelDefault() {
+    return 'Документ \'Отчёт о финансовых результатах\' отсутствует в выбранном периоде, ' +
+      'создать новый документ ?';
+  }
+
+
   render() {
-    const curPeriod = Math.ceil((new Date().getMonth() + 1) / 3);
-    const { formsList, dataPeriodAndYear, docHeadersList, curYear } = this.props;
+    const { curDoc, curDocObj, popupIsShow } = this.state;
+    const { formsList, dataPeriodAndYear, docHeadersList } = this.props;
     const forms = generateFormList(formsList);
-    const rows = createMapOfDocs(docHeadersList);
+    const docList_v2 = createMapOfDocs_v2(docHeadersList);
 
 
     return (
-      <div className="TBL">
-        {dataPeriodAndYear && renderFormList(forms)}
+      <div className="TBL" onClick={this.foo}>
+        {dataPeriodAndYear && renderFormList(forms, docList_v2)}
+        <div className={`popup ${popupIsShow ? 'popup-show' : null}`}>
+          <p>{popupIsShow && curDocObj && this.setLabel(curDocObj.status) || this.setLabelDefault()}</p>
+          <div className="popup-btn">
+            <button className={'' + (popupIsShow && !curDocObj && 'none')}>Редактировать</button>
+            <button className={'' + (popupIsShow && curDocObj && 'none')}>Создать</button>
+            <button className={'' + (!curDocObj ? 'none': null)}>Просмотреть</button>
+            <button onClick={this.popupClose}>Отмена</button>
+          </div>
+        </div>
       </div>
     );
   }
