@@ -272,20 +272,20 @@ export class DocList extends Component {
           receiveOnClick={this.receiveOnClick}
           handlerYearIsChecked={this.handlerYearIsChecked}
           handlerPeriodIsChecked={this.handlerPeriodIsChecked}
+          // decPeriod={this.decPeriod}
+          // incPeriod={this.incPeriod}
           isPeriod={isPeriod}
           maxLastYear={maxLastYear}
           curYear={curYear}
           clientIsChecked={clientIsChecked}
-          decPeriod={this.decPeriod}
-          incPeriod={this.incPeriod}
         />
         <ListItemsClients
           handlerclientRemove={this.handlerclientRemove}
           handlerOnClickHide={this.handlerOnClickHide}
+          handlerclientIsChecked={this.handlerclientIsChecked}
           clientIsChecked={clientIsChecked}
           listClient={listClient}
           clientShow={clientShow}
-          handlerclientIsChecked={this.handlerclientIsChecked}
         />
         <DocTable
           setPeriods={this.setPeriods}

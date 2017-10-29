@@ -15,7 +15,10 @@ export class TableHeader extends Component {
   }
 
 
-
+  /**
+   * Generate headers for table
+   * @returns {Array.<*>}
+   */
   generateHeaders() {
     const periods = [];
     let p = +this.props.dataPeriodAndYear.period || curPeriod;
@@ -36,7 +39,10 @@ export class TableHeader extends Component {
     return periods.reverse();
   }
 
-
+  /**
+   * Render headers
+   * @param data {<Array>}
+   */
   renderHeaders(data) {
     const templateHeaders = data.map((item, i) => {
       let text = '';

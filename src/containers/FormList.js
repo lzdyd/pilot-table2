@@ -33,21 +33,21 @@ function generateFormList(data) {
 //   );
 // }
 
-function clickHandler(docList_v2, e) {
-  const cellCur = e.target;
-  const dataKey = cellCur.dataset.key || cellCur.parentNode.dataset.key;
-  // console.log(docList_v2);
-  // console.log(dataKey);
-  // if (docList_v2[dataKey]) {
-  //   showPopup.call(this, docList_v2[dataKey])
-  // } else {
-  //   showPopup.call(this, docList_v2[dataKey])
-  // }
-}
+// function clickHandler(docList_v2, e) {
+// const cellCur = e.target;
+// const dataKey = cellCur.dataset.key || cellCur.parentNode.dataset.key;
+// console.log(docList_v2);
+// console.log(dataKey);
+// if (docList_v2[dataKey]) {
+//   showPopup.call(this, docList_v2[dataKey])
+// } else {
+//   showPopup.call(this, docList_v2[dataKey])
+// }
+// }
 
 
 function renderFormList(data, docList_v2) {
-  function foo(key, isExist, docList_v2) {
+  function docRender(key, isExist, docList_v2) {
     if (docList_v2.hasOwnProperty(key)) {
       isExist = true;
       const doc = docList_v2[key];
@@ -55,7 +55,6 @@ function renderFormList(data, docList_v2) {
         <div
           className="doc"
           data-key={key}
-          // onClick={clickHandler.bind(this, docList_v2)}
         >
           <div className={`doc-status ${doc.status === 0 ? 'red-status' : 'green-status'}`}></div>
           <div className="doc-date">{doc.modify_date}</div>
@@ -68,18 +67,18 @@ function renderFormList(data, docList_v2) {
 
   function setDocFromList(period, formId) {
     const arr = [];
+
     for (let i = 0; i < period.length; i++) {
       const key = `${formId}_${period[i].period}_${period[i].year}`;
       const isExist = false;
+
       arr.push(
         <span
-          // onClick={clickHandler.bind(this, docList_v2)}
           className="table-header__items table-rows__items"
           key={i}
           data-key={key}
           id={`${formId}_${i}`}
-        >
-          {foo(key, isExist, docList_v2)}
+        >{docRender(key, isExist, docList_v2)}
         </span>
       );
     }
@@ -106,7 +105,7 @@ function renderFormList(data, docList_v2) {
 }
 
 
-function createMapOfDocs_v2(data) {
+function createDocList(data) {
   const mapOfDocs = {};
   let doclist;
 
@@ -178,7 +177,7 @@ export default class FormList extends Component {
           'создать новую версию документа или открыть документ на просмотр?';
 
       default:
-        return;
+        break;
     }
   }
 
@@ -189,10 +188,14 @@ export default class FormList extends Component {
 
 
   render() {
-    const { curDoc, curDocObj, popupIsShow } = this.state;
+    const {
+      curDoc,
+      curDocObj,
+      popupIsShow
+    } = this.state;
     const { formsList, dataPeriodAndYear, docHeadersList } = this.props;
     const forms = generateFormList(formsList);
-    const docList_v2 = createMapOfDocs_v2(docHeadersList);
+    const docList_v2 = createDocList(docHeadersList);
 
 
     return (
@@ -201,9 +204,10 @@ export default class FormList extends Component {
         <div className={`popup ${popupIsShow ? 'popup-show' : null}`}>
           <p>{popupIsShow && curDocObj && this.setLabel(curDocObj.status) || this.setLabelDefault()}</p>
           <div className="popup-btn">
-            <button className={'' + (popupIsShow && !curDocObj && 'none')}>Редактировать</button>
-            <button className={'' + (popupIsShow && curDocObj && 'none')}>Создать</button>
-            <button className={'' + (!curDocObj ? 'none': null)}>Просмотреть</button>
+            <button className={`${popupIsShow && !curDocObj && 'none'}`}>Редактировать</button>
+            <button className={`${popupIsShow && curDocObj && 'none'}`}>Создать</button>
+            <button className={`${popupIsShow && curDocObj && curDocObj.status !== 7 && 'none'}`}>Создать</button>
+            <button className={`${!curDocObj ? 'none' : null}`}>Просмотреть</button>
             <button onClick={this.popupClose}>Отмена</button>
           </div>
         </div>
