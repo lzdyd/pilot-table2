@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ListItemsClients from '../components/Excel/components/ListItemsClients';
 import ReportPeriod from '../components/Excel/components/ReportPeriod';
-// import TableHeader from '../components/Excel/components/TableHeader';
+import Report from './Report';
 import DocTable from './DocTable';
 import './style.css';
 
@@ -121,7 +121,9 @@ export class DocList extends Component {
       formsList,
       docHeadersList,
       docPeriods: null,
-      docList: null
+      docList: null,
+      showGenerateReport: false,
+      analyticReportYear: null
     };
 
     this.handlerOnClickShow = this.handlerOnClickShow.bind(this);
@@ -132,6 +134,9 @@ export class DocList extends Component {
     this.handlerOnClickHide = this.handlerOnClickHide.bind(this);
     this.handlerclientRemove = this.handlerclientRemove.bind(this);
     this.setPeriods = this.setPeriods.bind(this);
+    this.showGenerateAnalyticReport = this.showGenerateAnalyticReport.bind(this);
+    this.HideGenerateAnalyticReport = this.HideGenerateAnalyticReport.bind(this);
+    this.setAnalitycReportYear = this.setAnalitycReportYear.bind(this);
   }
 
 
@@ -162,11 +167,29 @@ export class DocList extends Component {
     });
   }
 
-
   componentDidMount() {
     // this.receiveOnClick();
     this.createMapOfDocs_v3(this.state.docHeadersList);
   }
+
+  setAnalitycReportYear(date) {
+    this.setState({
+      analyticReportYear: date
+    });
+  }
+
+  showGenerateAnalyticReport() {
+    this.setState({
+      showGenerateReport: true
+    });
+  }
+
+  HideGenerateAnalyticReport() {
+    this.setState({
+      showGenerateReport: false
+    });
+  }
+
 
   receiveOnClick() {
     const obj = {
@@ -239,7 +262,8 @@ export class DocList extends Component {
       dataPeriodAndYear,
       formsList,
       docList,
-      curPeriod
+      curPeriod,
+      showGenerateReport,
     } = this.state;
 
     return (
@@ -252,9 +276,17 @@ export class DocList extends Component {
             'Выберите клиента из справочника' : listClient[clientIsChecked]}
           ▼
         </button>
-        <button disabled={!this.state.clientIsChecked && 'true'}>
+        <button
+          onClick={this.showGenerateAnalyticReport}
+          disabled={!this.state.clientIsChecked && 'true'}>
           Сформировать аналитический отчет
         </button>
+        {showGenerateReport &&
+          <Report
+            clientIsChecked={clientIsChecked}
+            setAnalitycReportYear={this.setAnalitycReportYear}
+            HideGenerateAnalyticReport={this.HideGenerateAnalyticReport}
+          />}
         <ReportPeriod
           receiveOnClick={this.receiveOnClick}
           handlerYearIsChecked={this.handlerYearIsChecked}

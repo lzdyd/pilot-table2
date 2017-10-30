@@ -181,3 +181,43 @@
     margin: 0;
     margin-bottom: 30px;
 }
+
+.report-popup {
+    width: 300px;
+    position: absolute;
+    background-color: white;
+    top: 50px;
+    left: 330px;
+    padding: 20px;
+    box-shadow: -5px -5px 20px rgba(0, 0, 0, 0.2), 5px 5px 20px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+}
+.report-popup__text {
+    text-align: center;
+}
+
+.report-btn {
+    display: flex;
+    justify-content: center;
+}
+
+.create-report {
+    margin-right: 10px;
+}
+
+.label-year-popup {
+    display: block;
+    margin-bottom: 30px;
+    margin-left: 90px;
+}
+
+.label-year-popup input {
+    margin-left: 10px;
+    width: 50px;
+}
+
+.year-popup-error {
+    color: red;
+    text-align: center;
+    display: block;
+}
