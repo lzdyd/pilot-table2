@@ -364,16 +364,50 @@
     -moz-transform: rotate(900deg);
   }
 }
+button:hover:not(:disabled) {
+  background-color: rgba(169, 169, 169, 0.54);
+}
+
+button,
+select {
+  padding: 5px;
+  cursor: pointer;
+}
+
+select {
+  padding: 5px 15px;
+}
+
+button {
+  padding: 10px;
+  cursor: pointer;
+  border: 0;
+  border-radius: 3px;
+}
+
+select {
+  //font-weight: bold;
+}
+
+.select-periods {
+  margin-left: 10px;
+}
+
 .clients {
   position: absolute;
   top: 30px;
   display: none;
   border: 1px solid;
   padding: 20px;
-  background-color: aliceblue;
   z-index: 100;
+  background-color: white;
 }
 
+.clients-items-btn {
+  min-width: 240px;
+  margin-right: 20px;
+  margin-left: 10px;
+}
 
 .clients-list {
   display: inline-block;
@@ -392,7 +426,12 @@
   padding-left: 10px;
   border-left: 2px solid;
   margin-bottom: 5px;
+  cursor: pointer;
 }
+.clients-list__item:hover {
+  background-color: darkgrey;
+}
+
 
 .is-checked-client {
   background-color: rgba(85, 107, 47, 0.32);
@@ -404,8 +443,9 @@
 
 .report-period {
   margin-bottom: 20px;
-  border-bottom: 3px solid;
+  border-bottom: 3px solid darkgray;
   padding-bottom: 20px;
+  font-weight: bold;
 }
 
 .report-period select,
@@ -421,10 +461,14 @@
   width: 90px;
   display: block;
   padding: 10px;
-  border: 1px solid;
+  border: 1px solid rgba(169, 169, 169, 0.68);
   background-color: rgba(169, 169, 169, 0.22);
 }
 
 .table-header__items:not(:last-child) {
   border-right: 0;
+}
+
+.table-row-item:not(:last-child) .table-header__items {
+  border-bottom: none;
 }

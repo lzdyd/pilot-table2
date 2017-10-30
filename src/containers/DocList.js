@@ -5,7 +5,7 @@ import ReportPeriod from '../components/Excel/components/ReportPeriod';
 import DocTable from './DocTable';
 import './style.css';
 
-
+const curPeriod = Math.ceil((new Date().getMonth() + 1) / 3);
 export let data;
 
 const clients = {
@@ -111,6 +111,7 @@ export class DocList extends Component {
       listClient: clients,
       isPeriod: period,
       curYear: currentTime.getFullYear(),
+      curPeriod,
       maxLastYear: 1996,
       clientShow: false,
       clientIsChecked: null,
@@ -131,27 +132,8 @@ export class DocList extends Component {
     this.handlerOnClickHide = this.handlerOnClickHide.bind(this);
     this.handlerclientRemove = this.handlerclientRemove.bind(this);
     this.setPeriods = this.setPeriods.bind(this);
-    // this.incPeriod = this.incPeriod.bind(this);
-    // this.decPeriod = this.decPeriod.bind(this);
   }
 
-  // incPeriod() {
-  //   if (this.state.periodIsChecked === 4) {
-  //     return;
-  //   }
-  //   this.setState({
-  //     periodIsChecked: ++this.state.periodIsChecked
-  //   });
-  // }
-  //
-  // decPeriod() {
-  //   if (this.state.periodIsChecked === 1) {
-  //     return;
-  //   }
-  //   this.setState({
-  //     periodIsChecked: --this.state.periodIsChecked
-  //   });
-  // }
 
   createMapOfDocs_v3(data) {
     const listDocs = {};
@@ -182,7 +164,7 @@ export class DocList extends Component {
 
 
   componentDidMount() {
-    this.receiveOnClick();
+    // this.receiveOnClick();
     this.createMapOfDocs_v3(this.state.docHeadersList);
   }
 
@@ -212,7 +194,7 @@ export class DocList extends Component {
     });
   }
 
-  handlerclientRemove(e) {
+  handlerclientRemove() {
     this.setState({
       clientIsChecked: null
     });
@@ -225,9 +207,9 @@ export class DocList extends Component {
     });
   }
 
-  handlerclientIsChecked(e) {
+  handlerclientIsChecked(id) {
     this.setState({
-      clientIsChecked: e.target.id
+      clientIsChecked: id
     });
   }
 
@@ -256,7 +238,8 @@ export class DocList extends Component {
       yearIsChecked,
       dataPeriodAndYear,
       formsList,
-      docList
+      docList,
+      curPeriod
     } = this.state;
 
     return (
@@ -265,19 +248,22 @@ export class DocList extends Component {
         <button
           onClick={this.handlerOnClickShow}
           className='clients-items-btn'
-        >{!this.state.clientIsChecked ? 'Выберите клиента из справочника' : listClient[clientIsChecked]}
+        >{!this.state.clientIsChecked ?
+            'Выберите клиента из справочника' : listClient[clientIsChecked]}
           ▼
+        </button>
+        <button disabled={!this.state.clientIsChecked && 'true'}>
+          Сформировать аналитический отчет
         </button>
         <ReportPeriod
           receiveOnClick={this.receiveOnClick}
           handlerYearIsChecked={this.handlerYearIsChecked}
           handlerPeriodIsChecked={this.handlerPeriodIsChecked}
-          // decPeriod={this.decPeriod}
-          // incPeriod={this.incPeriod}
           isPeriod={isPeriod}
           maxLastYear={maxLastYear}
           curYear={curYear}
           clientIsChecked={clientIsChecked}
+          curPeriod={curPeriod}
         />
         <ListItemsClients
           handlerclientRemove={this.handlerclientRemove}
@@ -294,6 +280,7 @@ export class DocList extends Component {
           formsList={formsList}
           docHeadersList={docHeadersList}
           docList={docList}
+          curPeriod={curPeriod}
         />
       </div>
     );

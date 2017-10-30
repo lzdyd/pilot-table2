@@ -150,7 +150,7 @@
 .popup {
     display: none;
     padding: 30px;
-    border: 1px solid;
+    /*border: 1px solid;*/
     box-shadow: -5px -5px 20px rgba(0, 0, 0, 0.2), 5px 5px 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -171,4 +171,13 @@
 .popup-btn {
     display: flex;
     justify-content: center;
+}
+
+.popup button {
+    margin-right: 10px;
+}
+
+.popup-text {
+    margin: 0;
+    margin-bottom: 30px;
 }

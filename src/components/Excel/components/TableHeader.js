@@ -76,8 +76,10 @@ export class TableHeader extends Component {
 
     return (
       <div className='table-header'>
-        {dataPeriodAndYear && <span className="table-header__items table-header__items-fix"></span>}
-        {dataPeriodAndYear && (Allperiod = AllPeriods = this.generateHeaders()) && this.renderHeaders(Allperiod) }
+        {dataPeriodAndYear &&
+          <span className="table-header__items table-header__items-fix"></span>}
+        {dataPeriodAndYear &&
+          (Allperiod = AllPeriods = this.generateHeaders()) && this.renderHeaders(Allperiod) }
       </div>
     );
   }

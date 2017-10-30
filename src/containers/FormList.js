@@ -24,28 +24,6 @@ function generateFormList(data) {
 }
 
 
-// function showPopup(doc) {
-//   console.log(doc);
-//   return (
-//     <div className="popup">
-//       <p>{setLabel(doc.status)}</p>
-//     </div>
-//   );
-// }
-
-// function clickHandler(docList_v2, e) {
-// const cellCur = e.target;
-// const dataKey = cellCur.dataset.key || cellCur.parentNode.dataset.key;
-// console.log(docList_v2);
-// console.log(dataKey);
-// if (docList_v2[dataKey]) {
-//   showPopup.call(this, docList_v2[dataKey])
-// } else {
-//   showPopup.call(this, docList_v2[dataKey])
-// }
-// }
-
-
 function renderFormList(data, docList_v2) {
   function docRender(key, isExist, docList_v2) {
     if (docList_v2.hasOwnProperty(key)) {
@@ -104,7 +82,6 @@ function renderFormList(data, docList_v2) {
   return rowsTemplate;
 }
 
-
 function createDocList(data) {
   const mapOfDocs = {};
   let doclist;
@@ -123,7 +100,6 @@ function createDocList(data) {
     };
 
     const key = `${doclist.type}_${doclist.period}_${doclist.year}`;
-
     mapOfDocs[key] = doclist;
   });
 
@@ -141,14 +117,16 @@ export default class FormList extends Component {
       popupIsShow: false
     };
 
-    this.foo = this.foo.bind(this);
+    this.getcurDocData = this.getcurDocData.bind(this);
     this.setLabel = this.setLabel.bind(this);
     this.popupClose = this.popupClose.bind(this);
+    this.keyDownClose = this.keyDownClose.bind(this);
   }
 
-  foo({ target }) {
+
+  getcurDocData({ target }) {
     const dataKey = target.dataset.key || target.parentNode.dataset.key;
-    console.log(dataKey);
+
     this.setState({
       curDoc: dataKey,
       curDocObj: this.getCurDoc(dataKey),
@@ -160,6 +138,13 @@ export default class FormList extends Component {
     this.setState({
       popupIsShow: false
     });
+  }
+
+  keyDownClose(e) {
+    if (e.keyCode === 27) {
+      // this.popupClose();
+      console.log(e);
+    }
   }
 
   getCurDoc(id) {
@@ -181,9 +166,36 @@ export default class FormList extends Component {
     }
   }
 
+  // generateTextLabel() {
+  //
+  // }
+
   setLabelDefault() {
     return 'Документ \'Отчёт о финансовых результатах\' отсутствует в выбранном периоде, ' +
       'создать новый документ ?';
+  }
+
+  getActionCurStatus(curDocObj, curDoc) {
+    if (curDocObj.status === 0) {
+      return <button onClick={this.EditDocs.bind(this, curDocObj, curDoc)}>Редактировать</button>;
+    }
+    return <button onClick={this.createDocs.bind(this, curDocObj, curDoc)}>Создать</button>;
+  }
+
+
+  lookDocs(curDocObj, curDoc) {
+    console.log(curDocObj);
+    console.log(curDoc);
+  }
+
+  EditDocs(curDocObj, curDoc) {
+    console.log(curDocObj);
+    console.log(curDoc);
+  }
+
+  createDocs(curDocObj, curDoc) {
+    console.log(curDoc);
+    console.log(curDocObj && curDocObj);
   }
 
 
@@ -197,17 +209,27 @@ export default class FormList extends Component {
     const forms = generateFormList(formsList);
     const docList_v2 = createDocList(docHeadersList);
 
-
     return (
-      <div className="TBL" onClick={this.foo}>
+      <div
+        onKeyPress={this.keyDownClose}
+        className="TBL"
+        onClick={this.getcurDocData}>
         {dataPeriodAndYear && renderFormList(forms, docList_v2)}
         <div className={`popup ${popupIsShow ? 'popup-show' : null}`}>
-          <p>{popupIsShow && curDocObj && this.setLabel(curDocObj.status) || this.setLabelDefault()}</p>
+          <p className="popup-text">
+            {popupIsShow && curDocObj && this.setLabel(curDocObj.status) || this.setLabelDefault()}
+          </p>
           <div className="popup-btn">
-            <button className={`${popupIsShow && !curDocObj && 'none'}`}>Редактировать</button>
-            <button className={`${popupIsShow && curDocObj && 'none'}`}>Создать</button>
-            <button className={`${popupIsShow && curDocObj && curDocObj.status !== 7 && 'none'}`}>Создать</button>
-            <button className={`${!curDocObj ? 'none' : null}`}>Просмотреть</button>
+            {popupIsShow && curDocObj && this.getActionCurStatus(curDocObj, curDoc)}
+            <button
+              onClick={this.createDocs.bind(this, curDoc)}
+              className={`${popupIsShow && curDocObj && 'none'}`}>Создать
+            </button>
+            <button
+              onClick={this.lookDocs.bind(this, curDocObj, curDoc)}
+              className={`${!curDocObj ? 'none' : null}`}
+            >Просмотреть
+            </button>
             <button onClick={this.popupClose}>Отмена</button>
           </div>
         </div>
