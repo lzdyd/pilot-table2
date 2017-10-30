@@ -12,6 +12,9 @@ export default class TableCell extends Component {
       editable: false,
       editing: false
     };
+
+    this.getLabel = this.getLabel.bind(this);
+    this.getRowNumber = this.getRowNumber.bind(this);
   }
 
   /**
@@ -37,13 +40,94 @@ export default class TableCell extends Component {
     });
 
     if (+this.refs.input.value !== this.props.value) {
-      const id = this.props.data.id;
+      const id = this.props.data.docField;
       this.props.onCellChange(id, +this.refs.input.value);
     }
   }
 
+  getLabel(total) {
+    if (total && !this.props.data.docFieldLabel) {
+      return this.props.data.cellText;
+    }
+
+    const label = this.props.dataAttrs.attributes.filter((item) => {
+      return item.id === this.props.data.docFieldLabel;
+    });
+
+    return label[0].label;
+  }
+
+  getRowNumber() {
+    return this.props.data.cellText;
+  }
+
   render() {
-    if (this.state.editable) {
+    const cellType = this.props.data.style;
+
+    switch (cellType) {
+      case 'TextField':
+        return (
+          <div className="table-cell table-cell-label">
+            { this.getLabel() }
+          </div>
+        );
+
+      case 'TextTotal':
+        return (
+          <div className="table-cell table-cell-label table-cell-label-bold">
+            { this.getLabel(true) }
+          </div>
+        );
+
+      case 'RowNumber':
+        return (
+          <div className="table-cell table-cell-rowNumber">
+            { this.getRowNumber() }
+          </div>
+        );
+
+      case 'RowNumberTotal':
+        return (
+          <div className="table-cell table-cell-rowNumber table-cell-rowNumber-total">
+            { this.getRowNumber() }
+          </div>
+        );
+
+      case 'NumberField':
+        return (
+          <div className={ 'table-cell table-cell-data table-cell-input-field' }
+               onClick={ ::this.onFocus }>
+            {
+              this.state.editing ?
+                <input
+                  className="table-cell__input"
+                  type="text"
+                  ref="input"
+                  defaultValue={ this.props.valuesHash[this.props.data.docField].value }
+                  onBlur={ ::this.onBlur }
+                /> :
+                <span>{ numeral(this.props.valuesHash[this.props.data.docField].value).format('(0,0)') }</span>
+            }
+          </div>
+        );
+
+      case 'TotalField':
+        return (
+          <div className="table-cell table-cell-data table-cell-data-bold">
+            {
+              numeral(this.props.valuesHash[this.props.data.docField].value).format('(0,0)')
+            }
+          </div>
+        );
+
+      default:
+        break;
+    }
+
+    return (
+      <div className="table-cell"></div>
+    );
+/*    if (this.state.editable) {
       return (
         <div className={ `table-cell table-cell-data ${this.props.data.formula ? '' : 'table-cell-input-field'}` }
              onClick={ ::this.onFocus }>
@@ -68,6 +152,6 @@ export default class TableCell extends Component {
           numeral(this.props.value).format('(0,0)')
         }
       </div>
-    );
+    );*/
   }
 }

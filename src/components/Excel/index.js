@@ -7,8 +7,6 @@ import './style.scss';
 
 export default class Excel extends Component {
   render() {
-
-    console.log('test');
     /**
      * If data is being fetched, render "Loading spinner"
      */
@@ -42,6 +40,7 @@ export default class Excel extends Component {
     }
 
     const data = this.props.data;
+    const modelView = this.props.modelView;
     const valuesHash = this.props.valuesHash;
 
     // TODO: remove this code to reducer
@@ -49,26 +48,24 @@ export default class Excel extends Component {
 
     switch (data.periodType) {
       case 'Q1':
-        periodType = 'За 1 квартал (year)';
+        periodType = `За 1 квартал (${this.props.jsonData.year})`;
         break;
 
       case 'Q2':
-        periodType = 'За 1 полугодие (year)';
+        periodType = `За 1 полугодие (${this.props.jsonData.year})`;
         break;
 
       case 'Q3':
-        periodType = 'За 9 месяцев (year)';
+        periodType = `За 9 месяцев (${this.props.jsonData.year})`;
         break;
 
       case 'Q4':
-        periodType = 'За год (year)';
+        periodType = `За год (${this.props.jsonData.year})`;
         break;
 
       default:
         break;
     }
-
-    console.log(this.props);
 
     return (
       <div className="excel">
@@ -76,14 +73,28 @@ export default class Excel extends Component {
 
         <p>Документ заполняется в тысячах рублей</p>
 
+        <p>{ periodType }</p>
+
         <div className="excel-table">
-          <TableHeaders data={ ['', '', periodType] }/>
-          {
+          <TableHeaders data={ modelView }/>
+{/*          {
             data.attributes.map((item) => {
               return (
                 <TableRows data={ item } value={ valuesHash[item.id].value } key={ item.id }
                            onCellChange={ this.props.onCellChange}/>
               );
+            })
+          }*/}
+          {
+            modelView.table.rowParams.map((item, i) => {
+              if (+item.rowNumber !== 1) {
+                return (
+                  <TableRows row={ item } data={ modelView } dataAttrs={ this.props.data }
+                             valuesHash={ valuesHash } key={ i } onCellChange={ this.props.onCellChange }/>
+                );
+              }
+
+              return null;
             })
           }
         </div>

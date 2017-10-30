@@ -3,10 +3,12 @@ import React from 'react';
 import './style.scss';
 
 export default function({ data }) {
-  const tableHeaders = data.map((item, i) => {
+  const headerCells = data.table.cells.filter(item => +item.row === 1);
+
+  const tableHeaders = data.table.columnParams.map((item, i) => {
     return (
       <div className="table-cell table-cell-headers" key={ i }>
-        { item }
+        { headerCells[i].cellText }
       </div>
     );
   });

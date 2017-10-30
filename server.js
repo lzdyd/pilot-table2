@@ -28,6 +28,18 @@ app.get('/doctype_view_opu.xml', (req, res) => {
   res.sendFile(path.join(__dirname, 'docs/doctype_view_opu.xml'));
 });
 
+app.get('/doc-data_balance.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'docs/doc-data_balance.json'));
+});
+
+app.get('/doctype_balans.xml', (req, res) => {
+  res.sendFile(path.join(__dirname, 'docs/doctype_balans.xml'));
+});
+
+app.get('/doctype_view_balans_edit.xml', (req, res) => {
+  res.sendFile(path.join(__dirname, 'docs/doctype_view_balans_edit.xml'));
+});
+
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });

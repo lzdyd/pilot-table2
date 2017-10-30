@@ -17,13 +17,13 @@ export function getData() {
       payload: 'Loading...'
     });
 
-    getDataAPI('./doctype_opu.xml')
+    getDataAPI('./doctype_view_opu.xml')
       .then((response) => {
         dispatch({
           type: GET_XML_DATA_SUCCESS,
           payload: {
             response,
-            type: 'docType1'
+            type: 'ReportType1'
           }
         });
       })
@@ -34,13 +34,13 @@ export function getData() {
         });
       });
 
-    getDataAPI('./doctype_view_opu.xml')
+    getDataAPI('./doctype_opu.xml')
       .then((response) => {
         dispatch({
           type: GET_XML_DATA_SUCCESS,
           payload: {
             response,
-            type: 'ReportType1'
+            type: 'docType1'
           }
         });
       })

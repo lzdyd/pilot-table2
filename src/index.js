@@ -25,6 +25,7 @@ ReactDOM.render(
     <Router history={ history }>
       <Switch>
         <Route exact path='/' component={ App } />
+        <Route path='/balance' component={ Excel }/>
         <Route path='/opu' component={ Excel }/>
         <Route render={() => <NotFound/>}/>
       </Switch>

@@ -304,6 +304,23 @@ function parseReportTypeXML(xml) {
       column: item.querySelector('column').firstChild.nodeValue
     };
 
+    const additionalAttrs = {
+      cellText: item.querySelector('cellText') || null,
+      style: item.querySelector('style') || null,
+      docFieldLabel: item.querySelector('docFieldLabel') || null,
+      docField: item.querySelector('docField') || null
+    };
+
+    Object.keys(additionalAttrs).forEach((key) => {
+      if (additionalAttrs[key] !== null) {
+        if (additionalAttrs[key].firstChild) {
+          currentCell[key] = additionalAttrs[key].firstChild.nodeValue;
+        } else {
+          currentCell[key] = '';
+        }
+      }
+    });
+
     return currentCell;
   });
 
@@ -386,7 +403,6 @@ export default function employeesTable(state = initialState, action) {
       return { ...state, valuesHash: calculateData.call(state) };
 
     case UPDATE_STORE:
-      // updateStore.call(state, action.payload);
       return { ...state, valuesHash: updateStore.call(state, action.payload) };
 
     default:
