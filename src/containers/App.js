@@ -38,9 +38,9 @@ class App extends Component {
   // />
   // {!this.state.invalid ?
   // <Authentication onClick={this.onClickHandler.bind(this)}/> :
-//
-// {!this.state.invalid ?
-// <Authentication onClick={this.onClickHandler.bind(this)}/> : <DocList /> }
+  //
+  // {!this.state.invalid ?
+  // <Authentication onClick={this.onClickHandler.bind(this)}/> : <DocList /> }
 
 
   render() {

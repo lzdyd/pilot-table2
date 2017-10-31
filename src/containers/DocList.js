@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+
 import ListItemsClients from '../components/Excel/components/ListItemsClients';
 import ReportPeriod from '../components/Excel/components/ReportPeriod';
 import Report from './Report';
 import DocTable from './DocTable';
 import './style.css';
+
+
+import * as DocsList from '../actions/DocsList';
 
 const curPeriod = Math.ceil((new Date().getMonth() + 1) / 3);
 export let data;
@@ -103,7 +110,7 @@ const docHeadersList = [
 ];
 
 
-export class DocList extends Component {
+class DocList extends Component {
   constructor(props) {
     super(props);
 
@@ -263,7 +270,7 @@ export class DocList extends Component {
       formsList,
       docList,
       curPeriod,
-      showGenerateReport,
+      showGenerateReport
     } = this.state;
 
     return (
@@ -318,3 +325,15 @@ export class DocList extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return state;
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    DocsList: bindActionCreators(DocsList, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DocList);
