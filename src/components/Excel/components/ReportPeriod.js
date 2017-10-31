@@ -1,7 +1,7 @@
 import React from 'react';
 
 import '../style.scss';
-
+import axios from 'axios';
 export default function ReportPeriod({
   isPeriod,
   maxLastYear,
@@ -9,7 +9,11 @@ export default function ReportPeriod({
   handlerPeriodIsChecked,
   handlerYearIsChecked,
   receiveOnClick,
-  clientIsChecked
+  clientIsChecked,
+  getdocList,
+  createMapOfDocs_v3,
+  docHeadersList,
+  setDocsList
 }) {
 
   const curPeriod = Math.ceil((new Date().getMonth() + 1) / 3);
@@ -27,6 +31,13 @@ export default function ReportPeriod({
     return periods;
   }
 
+  function getDocs() {
+    // createMapOfDocs_v3(docHeadersList);
+    // setDocsList();
+    receiveOnClick();
+    getdocList();
+  }
+
 
   return (
     <div className='report-period'>
@@ -42,7 +53,7 @@ export default function ReportPeriod({
         onChange={handlerYearIsChecked}
       >{ getYear() }
       </select>
-      <button onClick={receiveOnClick}>применить ✔</button>
+      <button onClick={getDocs}>применить ✔</button>
       <button>◄ назад</button>
       <button>вперед ►</button>
     </div>

@@ -119,7 +119,7 @@ export class DocList extends Component {
       yearIsChecked: null,
       dataPeriodAndYear: null,
       formsList,
-      docHeadersList,
+      docHeadersList: this.props.docList,
       docPeriods: null,
       docList: null,
       showGenerateReport: false,
@@ -137,6 +137,14 @@ export class DocList extends Component {
     this.showGenerateAnalyticReport = this.showGenerateAnalyticReport.bind(this);
     this.HideGenerateAnalyticReport = this.HideGenerateAnalyticReport.bind(this);
     this.setAnalitycReportYear = this.setAnalitycReportYear.bind(this);
+    this.createMapOfDocs_v3 = this.createMapOfDocs_v3.bind(this);
+    this.setDocsList = this.setDocsList.bind(this);
+  }
+
+  setDocsList() {
+    this.setState({
+      docHeadersList: this.props.docList
+    });
   }
 
 
@@ -144,23 +152,25 @@ export class DocList extends Component {
     const listDocs = {};
     let doclist;
 
-    data.forEach((item) => {
-      doclist = {
-        id: item.id,
-        status: item.status,
-        version: item.version,
-        period: item.period,
-        year: item.year,
-        client: item.client,
-        type: item.type,
-        creation_date: item.creation_date,
-        modify_date: item.modify_date
-      };
+    if (data) {
+      data.forEach((item) => {
+        doclist = {
+          id: item.id,
+          status: item.status,
+          version: item.version,
+          period: item.period,
+          year: item.year,
+          client: item.client,
+          type: item.type,
+          creation_date: item.creation_date,
+          modify_date: item.modify_date
+        };
 
-      const key = `${doclist.type}_${doclist.period}_${doclist.year}`;
+        const key = `${doclist.type}_${doclist.period}_${doclist.year}`;
 
-      listDocs[key] = doclist;
-    });
+        listDocs[key] = doclist;
+      });
+    }
 
     this.setState({
       docList: listDocs
@@ -168,8 +178,7 @@ export class DocList extends Component {
   }
 
   componentDidMount() {
-    // this.receiveOnClick();
-    this.createMapOfDocs_v3(this.state.docHeadersList);
+    // this.createMapOfDocs_v3(this.state.docHeadersList);
   }
 
   setAnalitycReportYear(date) {
@@ -250,6 +259,7 @@ export class DocList extends Component {
 
 
   render() {
+    const { getdocList, doclist } = this.props;
     const {
       listClient,
       clientShow,
@@ -257,14 +267,13 @@ export class DocList extends Component {
       isPeriod,
       maxLastYear,
       curYear,
-      periodIsChecked,
-      yearIsChecked,
       dataPeriodAndYear,
       formsList,
       docList,
       curPeriod,
       showGenerateReport,
     } = this.state;
+
 
     return (
       <div className="">
@@ -291,11 +300,15 @@ export class DocList extends Component {
           receiveOnClick={this.receiveOnClick}
           handlerYearIsChecked={this.handlerYearIsChecked}
           handlerPeriodIsChecked={this.handlerPeriodIsChecked}
+          createMapOfDocs_v3={this.createMapOfDocs_v3}
           isPeriod={isPeriod}
           maxLastYear={maxLastYear}
           curYear={curYear}
           clientIsChecked={clientIsChecked}
           curPeriod={curPeriod}
+          getdocList={getdocList}
+          docHeadersList={docHeadersList}
+          setDocsList={this.setDocsList}
         />
         <ListItemsClients
           handlerclientRemove={this.handlerclientRemove}
@@ -310,9 +323,10 @@ export class DocList extends Component {
           dataPeriodAndYear={dataPeriodAndYear}
           curYear={curYear}
           formsList={formsList}
-          docHeadersList={docHeadersList}
+          // docHeadersList={docHeadersList}
           docList={docList}
           curPeriod={curPeriod}
+          doclist={doclist}
         />
       </div>
     );

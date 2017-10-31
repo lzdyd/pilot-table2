@@ -8,6 +8,7 @@ import { evaluatesDependence } from '../services/evalDependence';
 import Excel from '../components/Excel/index';
 // import Authentication from './Authentication';
 import { DocList } from './DocList';
+import axios from 'axios';
 
 class App extends Component {
   constructor(props) {
@@ -16,12 +17,7 @@ class App extends Component {
     this.state = {
       invalid: false
     };
-  }
 
-  componentWillReceiveProps(nextProps) {
-    nextProps.excel.forEach((node) => {
-      if (node.state === 'calculated-field') node.value = evaluatesDependence(node);
-    });
   }
 
   onClickHandler() {
@@ -38,24 +34,23 @@ class App extends Component {
   // />
   // {!this.state.invalid ?
   // <Authentication onClick={this.onClickHandler.bind(this)}/> :
-//
-// {!this.state.invalid ?
-// <Authentication onClick={this.onClickHandler.bind(this)}/> : <DocList /> }
+  //
+  // {!this.state.invalid ?
+  // <Authentication onClick={this.onClickHandler.bind(this)}/> : <DocList /> }
 
 
   render() {
-    const excel = this.props.excel;
-    const getData = this.props.excelActions.getData;
-    const updateStoreData = this.props.excelActions.updateStoreData;
+    const { getDocList } = this.props.excelActions;
+    // const excel = this.props.excel;
+    // const getData = this.props.excelActions.getData;
+    // const updateStoreData = this.props.excelActions.updateStoreData;
+    // console.log(this.props.doclist);
 
     return (
       <div className="main-app">
-        <DocList />
-        <Excel
-          data={ excel && excel }
-          fetching={ excel && excel.fetching }
-          getData={ getData }
-          updateStoreData={ updateStoreData }
+        <DocList
+          getdocList={getDocList}
+          doclist={this.props.doclist}
         />
       </div>
     );
@@ -64,7 +59,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    excel: state.excel.nodes
+    doclist: state.doclist.docs
   };
 };
 

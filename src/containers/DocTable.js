@@ -7,6 +7,7 @@ import FormList from './FormList';
 
 export default class DocTable extends Component {
   render() {
+    // console.log(this.props.doclist);
     const {
       dataPeriodAndYear,
       curYear,
@@ -14,7 +15,8 @@ export default class DocTable extends Component {
       docHeadersList,
       setPeriods,
       docList,
-      curPeriod
+      curPeriod,
+      doclist
     } = this.props;
 
     return (
@@ -26,13 +28,14 @@ export default class DocTable extends Component {
           curPeriod={curPeriod}
         />
         {dataPeriodAndYear &&
-        <FormList
-          docList={docList}
-          formsList={formsList}
-          dataPeriodAndYear={dataPeriodAndYear}
-          docHeadersList={docHeadersList}
-          curYear={curYear}
-        />}
+          <FormList
+            docList={docList}
+            formsList={formsList}
+            dataPeriodAndYear={dataPeriodAndYear}
+            docHeadersList={docHeadersList}
+            curYear={curYear}
+            doclist={doclist}
+          />}
       </div>
     );
   }

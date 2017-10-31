@@ -86,22 +86,24 @@ function createDocList(data) {
   const mapOfDocs = {};
   let doclist;
 
-  data.forEach((item) => {
-    doclist = {
-      id: item.id,
-      status: item.status,
-      version: item.version,
-      period: item.period,
-      year: item.year,
-      client: item.client,
-      type: item.type,
-      creation_date: item.creation_date,
-      modify_date: item.modify_date
-    };
+  if (data) {
+    data.forEach((item) => {
+      doclist = {
+        id: item.id,
+        status: item.status,
+        version: item.version,
+        period: item.period,
+        year: item.year,
+        client: item.client,
+        type: item.type,
+        creation_date: item.creation_date,
+        modify_date: item.modify_date
+      };
 
-    const key = `${doclist.type}_${doclist.period}_${doclist.year}`;
-    mapOfDocs[key] = doclist;
-  });
+      const key = `${doclist.type}_${doclist.period}_${doclist.year}`;
+      mapOfDocs[key] = doclist;
+    });
+  }
 
   return mapOfDocs;
 }
@@ -122,6 +124,10 @@ export default class FormList extends Component {
     this.popupClose = this.popupClose.bind(this);
     this.keyDownClose = this.keyDownClose.bind(this);
   }
+
+  // componentDidMount() {
+  //   console.log(this.props.doclist);
+  // }
 
 
   getcurDocData({ target }) {
@@ -148,7 +154,8 @@ export default class FormList extends Component {
   }
 
   getCurDoc(id) {
-    return this.props.docList[id];
+    const docList_v2 = createDocList(this.props.doclist);
+    return docList_v2[id];
   }
 
   setLabel(status) {
@@ -205,9 +212,15 @@ export default class FormList extends Component {
       curDocObj,
       popupIsShow
     } = this.state;
-    const { formsList, dataPeriodAndYear, docHeadersList } = this.props;
+
+    const {
+      formsList,
+      dataPeriodAndYear,
+      doclist
+    } = this.props;
+
     const forms = generateFormList(formsList);
-    const docList_v2 = createDocList(docHeadersList);
+    const docList_v2 = createDocList(doclist);
 
     return (
       <div
@@ -237,3 +250,4 @@ export default class FormList extends Component {
     );
   }
 }
+

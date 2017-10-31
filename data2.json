@@ -1,48 +1,35 @@
-{
-  "title": "Отчет о финансовых результатах",
-  "description": "Документ заполняется в тысячах рублей",
-  "tableHeaders": ["", "[название периода]"],
-  "attributes": [
-    {
-      "id": "id1",
-      "label": "id1",
-      "type": "number",
-      "state": "input-field",
-      "value": "500"
-    }, {
-      "id": "id2",
-      "label": "id2",
-      "type": "number",
-      "state": "input-field",
-      "value": "1000"
-    }, {
-      "id": "id8",
-      "label": "id8 = id3 + id4 + id5 + id1",
-      "type": "number",
-      "state": "calculated-field",
-      "value": "",
-      "formula": "id3 + id4 + id5 + id1"
-    }, {
-      "id": "id4",
-      "label": "id4 = id1 + id2",
-      "type": "number",
-      "state": "calculated-field",
-      "value": "",
-      "formula": "id1 + id2"
-    }, {
-      "id": "id5",
-      "label": "id5 = id4 + id1",
-      "type": "number",
-      "state": "calculated-field",
-      "value": "",
-      "formula": "id4 + id1"
-    },{
-      "id": "id3",
-      "label": "id3 = id4 + id2",
-      "type": "number",
-      "state": "calculated-field",
-      "value": "",
-      "formula": "id4 + id2"
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "status": 0,
+    "version": "1",
+    "period": "1",
+    "year": "2017",
+    "client": "Клиент 1",
+    "type": "FORM01",
+    "creation_date": "09.09.2014",
+    "modify_date": "09.09.2014"
+  },
+  {
+    "id": 2,
+    "status": 0,
+    "version": "1",
+    "period": "3",
+    "year": "2017",
+    "client": "Клиент 6",
+    "type": "FORM01",
+    "creation_date": "09.09.2014",
+    "modify_date": "09.09.2014"
+  },
+  {
+    "id": 3,
+    "status": 7,
+    "version": "1",
+    "period": "2",
+    "year": "2016",
+    "client": "Клиент 2",
+    "type": "FORM02",
+    "creation_date": "09.09.2014",
+    "modify_date": "09.09.2014"
+  }
+];

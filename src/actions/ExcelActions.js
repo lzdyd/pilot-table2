@@ -1,4 +1,5 @@
-import { getDataAPI } from 'api/getData';
+import { getDataAPI, getDocAPI } from 'api/getData';
+import axios from 'axios';
 
 import {
   GET_DATA_REQUEST,
@@ -41,25 +42,27 @@ export function updateStoreData(id, data) {
 }
 
 
-// export function getDataUsers() {
-//     return ((dispatch) => {
-//         dispatch({
-//             type: 'GET_USER_REQUEST',
-//             payload: 'Loading...'
-//         });
-//
-//         getDataAPI()
-//             .then((response) => {
-//                 dispatch({
-//                     type: 'GET_USER_SUCCESS',
-//                     payload: JSON.parse(response)
-//                 });
-//             })
-//             .catch((err) => {
-//                 dispatch({
-//                     type: 'GET_USER_FAILURE',
-//                     payload: err
-//                 });
-//             });
-//     });
-// }
+export function getDocList() {
+  return ((dispatch) => {
+    dispatch({
+      type: 'GET_DOCLIST_REQUEST',
+      payload: 'Loading...'
+    });
+
+
+
+    axios.get('../../data.json')
+      .then((response) => {
+        dispatch({
+          type: 'GET_DOCLIST_SUCCESS',
+          payload: response.data
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: 'GET_DOCLIST_FAILURE',
+          payload: err
+        });
+      });
+  });
+}
