@@ -8,7 +8,7 @@ import Excel from '../components/Excel/index';
 
 class App extends Component {
   componentDidMount() {
-    this.props.excelActions.getData();
+    this.props.excelActions.getDocumentData(window.location.href);
   }
 
   onCellChange(id, value) {

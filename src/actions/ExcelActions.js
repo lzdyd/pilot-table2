@@ -1,4 +1,4 @@
-import getDataAPI from 'api/getData';
+import getDocumentDataAPI from 'api/getDocumentData';
 
 import {
   GET_DATA_REQUEST,
@@ -10,14 +10,30 @@ import {
   UPDATE_STORE
 } from '../constants/index';
 
-export function getData() {
+export function getDocumentData(url) {
   return ((dispatch) => {
     dispatch({
       type: GET_DATA_REQUEST,
       payload: 'Loading...'
     });
 
-    getDataAPI('./doctype_view_opu.xml')
+    getDocumentDataAPI(url)
+      .then((response) => {
+        dispatch({
+          type: GET_DATA_SUCCESS,
+          payload: {
+            response
+          }
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: GET_DATA_FAILURE,
+          payload: err
+        });
+      });
+
+/*    getDataAPI('./doctype_view_opu.xml')
       .then((response) => {
         dispatch({
           type: GET_XML_DATA_SUCCESS,
@@ -68,7 +84,7 @@ export function getData() {
           type: GET_DATA_FAILURE,
           payload: err
         });
-      });
+      });*/
   });
 }
 
