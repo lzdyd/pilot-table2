@@ -10,30 +10,14 @@ import {
   UPDATE_STORE
 } from '../constants/index';
 
-export function getDocumentData(url) {
+export function getDocumentData() {
   return ((dispatch) => {
     dispatch({
       type: GET_DATA_REQUEST,
       payload: 'Loading...'
     });
 
-    getDocumentDataAPI(url)
-      .then((response) => {
-        dispatch({
-          type: GET_DATA_SUCCESS,
-          payload: {
-            response
-          }
-        });
-      })
-      .catch((err) => {
-        dispatch({
-          type: GET_DATA_FAILURE,
-          payload: err
-        });
-      });
-
-/*    getDataAPI('./doctype_view_opu.xml')
+    getDocumentDataAPI('./doctype_view_opu.xml')
       .then((response) => {
         dispatch({
           type: GET_XML_DATA_SUCCESS,
@@ -50,7 +34,7 @@ export function getDocumentData(url) {
         });
       });
 
-    getDataAPI('./doctype_opu.xml')
+    getDocumentDataAPI('./doctype_opu.xml')
       .then((response) => {
         dispatch({
           type: GET_XML_DATA_SUCCESS,
@@ -67,7 +51,7 @@ export function getDocumentData(url) {
         });
       });
 
-    getDataAPI('./doc-data_opu.json')
+    getDocumentDataAPI('./doc-data_opu.json')
       .then((response) => {
         dispatch({
           type: GET_DATA_SUCCESS,
@@ -84,7 +68,7 @@ export function getDocumentData(url) {
           type: GET_DATA_FAILURE,
           payload: err
         });
-      });*/
+      });
   });
 }
 
