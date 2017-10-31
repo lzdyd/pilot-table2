@@ -5,8 +5,8 @@ import { bindActionCreators } from 'redux';
 import * as ExcelActions from '../actions/ExcelActions';
 import { evaluatesDependence } from '../services/evalDependence';
 
-// import Excel from '../components/Excel/index';
-import Authentication from './Authentication';
+import Excel from '../components/Excel/index';
+// import Authentication from './Authentication';
 import { DocList } from './DocList';
 
 class App extends Component {
@@ -44,13 +44,19 @@ class App extends Component {
 
 
   render() {
-    // const excel = this.props.excel;
-    // const getData = this.props.excelActions.getData;
-    // const updateStoreData = this.props.excelActions.updateStoreData;
+    const excel = this.props.excel;
+    const getData = this.props.excelActions.getData;
+    const updateStoreData = this.props.excelActions.updateStoreData;
 
     return (
       <div className="main-app">
         <DocList />
+        <Excel
+          data={ excel && excel }
+          fetching={ excel && excel.fetching }
+          getData={ getData }
+          updateStoreData={ updateStoreData }
+        />
       </div>
     );
   }
