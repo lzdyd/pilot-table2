@@ -34,7 +34,10 @@ function renderFormList(data, docList_v2) {
           className="doc"
           data-key={key}
         >
-          <div className={`doc-status ${doc.status === 0 ? 'red-status' : 'green-status'}`}></div>
+          <div className={`doc-status ${doc.status === 0 ?
+            'red-status' : 'green-status'}`}
+          >
+          </div>
           <div className="doc-date">{doc.modify_date}</div>
           <div className="doc-version">вер.:{doc.version}</div>
         </div>
@@ -56,7 +59,8 @@ function renderFormList(data, docList_v2) {
           key={i}
           data-key={key}
           id={`${formId}_${i}`}
-        >{docRender(key, isExist, docList_v2)}
+        >
+          {docRender(key, isExist, docList_v2)}
         </span>
       );
     }
@@ -122,7 +126,7 @@ export default class FormList extends Component {
     this.getcurDocData = this.getcurDocData.bind(this);
     this.setLabel = this.setLabel.bind(this);
     this.popupClose = this.popupClose.bind(this);
-    this.keyDownClose = this.keyDownClose.bind(this);
+    // this.keyDownClose = this.keyDownClose.bind(this);
   }
 
   // componentDidMount() {
@@ -146,12 +150,12 @@ export default class FormList extends Component {
     });
   }
 
-  keyDownClose(e) {
-    if (e.keyCode === 27) {
-      // this.popupClose();
-      console.log(e);
-    }
-  }
+  // keyDownClose(e) {
+  //   if (e.keyCode === 27) {
+  //     this.popupClose();
+  //     console.log(e);
+  //   }
+  // }
 
   getCurDoc(id) {
     const docList_v2 = createDocList(this.props.doclist);
@@ -184,9 +188,20 @@ export default class FormList extends Component {
 
   getActionCurStatus(curDocObj, curDoc) {
     if (curDocObj.status === 0) {
-      return <button onClick={this.EditDocs.bind(this, curDocObj, curDoc)}>Редактировать</button>;
+      return (
+        <button
+          onClick={this.EditDocs.bind(this, curDocObj, curDoc)}>
+          Редактировать
+        </button>
+      );
     }
-    return <button onClick={this.createDocs.bind(this, curDocObj, curDoc)}>Создать</button>;
+
+    return (
+      <button
+        onClick={this.createDocs.bind(this, curDocObj, curDoc)}>
+        Создать
+      </button>
+    );
   }
 
 
@@ -226,17 +241,25 @@ export default class FormList extends Component {
       <div
         onKeyPress={this.keyDownClose}
         className="TBL"
-        onClick={this.getcurDocData}>
+        onClick={this.getcurDocData}
+      >
         {dataPeriodAndYear && renderFormList(forms, docList_v2)}
         <div className={`popup ${popupIsShow ? 'popup-show' : null}`}>
           <p className="popup-text">
-            {popupIsShow && curDocObj && this.setLabel(curDocObj.status) || this.setLabelDefault()}
+            {
+              popupIsShow && curDocObj &&
+                this.setLabel(curDocObj.status) || this.setLabelDefault()
+            }
           </p>
           <div className="popup-btn">
-            {popupIsShow && curDocObj && this.getActionCurStatus(curDocObj, curDoc)}
+            {
+              popupIsShow && curDocObj &&
+                this.getActionCurStatus(curDocObj, curDoc)
+            }
             <button
               onClick={this.createDocs.bind(this, curDoc)}
-              className={`${popupIsShow && curDocObj && 'none'}`}>Создать
+              className={`${popupIsShow && curDocObj && 'none'}`}
+            >Создать
             </button>
             <button
               onClick={this.lookDocs.bind(this, curDocObj, curDoc)}

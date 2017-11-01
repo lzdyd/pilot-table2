@@ -36,8 +36,8 @@ export default class ListItemsClients extends Component {
     const {
       listClient,
       clientShow,
-      handlerOnClickHide,
-      clickHandlerClientRemove,
+      handlerOnClickHide
+      // clickHandlerClientRemove,
     } = this.props;
 
     const clientItems = Object.keys(listClient).map((item, i) => {
@@ -63,7 +63,7 @@ export default class ListItemsClients extends Component {
           <button
             className="receiveBtn"
             onClick={this.handleClientChecked}
-            disabled={isChecked ? false : true}
+            disabled={!isChecked}
           > Выбрать
           </button>
           <button onClick={this.clickHandlerClientRemove}>Очистить</button>

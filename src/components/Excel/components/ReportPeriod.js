@@ -1,31 +1,47 @@
 import React from 'react';
 
 import '../style.scss';
-import axios from 'axios';
+// import axios from 'axios';
 export default function ReportPeriod({
   isPeriod,
-  maxLastYear,
-  curYear,
+  // maxLastYear,
+  // curYear,
   handlerPeriodIsChecked,
   handlerYearIsChecked,
   receiveOnClick,
-  clientIsChecked,
-  getdocList,
-  createMapOfDocs_v3,
-  docHeadersList,
-  setDocsList
+  // clientIsChecked,
+  getdocList
+  // createMapOfDocs_v3,
+  // docHeadersList,
+  // setDocsList
 }) {
-
   const curPeriod = Math.ceil((new Date().getMonth() + 1) / 3);
 
   const perodItemsTemplate = Object.keys(isPeriod).map((item, i) => {
-    return <option value={item} key={i}>{isPeriod[item]}</option>;
+    return (
+      <option
+        value={item}
+        key={i}
+      >{isPeriod[item]}
+      </option>
+    );
   });
+
+  const currentTime = new Date();
+  const curYear = currentTime.getFullYear();
+  const limitYear = 1996;
 
   function getYear() {
     const periods = [];
-    for (let i = +curYear; i >= maxLastYear; i--) {
-      periods.push(<option value={i} key={i}>{i}</option>);
+
+    for (let i = +curYear; i >= limitYear; i--) {
+      periods.push(
+        <option
+          value={i}
+          key={i}
+        >{i}
+        </option>
+      );
     }
 
     return periods;
@@ -46,12 +62,14 @@ export default function ReportPeriod({
         className="select-periods"
         defaultValue={curPeriod}
         onChange={handlerPeriodIsChecked}
-      >{ perodItemsTemplate }
+      >
+        { perodItemsTemplate }
       </select>
       <select
         defaultValue={curYear}
         onChange={handlerYearIsChecked}
-      >{ getYear() }
+      >
+        { getYear() }
       </select>
       <button onClick={getDocs}>применить ✔</button>
       <button>◄ назад</button>

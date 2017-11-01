@@ -14,7 +14,7 @@ export default class Report extends Component {
 
   setAnalyticYear() {
     if (!this.isCheckAnalyticYear(this.inputYear.value)) {
-     return;
+      return;
     }
 
     this.props.setAnalitycReportYear(this.inputYear.value);
@@ -46,9 +46,9 @@ export default class Report extends Component {
         </p>
         {
           isChecked &&
-          <span className="year-popup-error">
-            Поле "Год" должно быть в диапазоне от 1996 года и не позже текущего года!
-          </span>
+            <span className="year-popup-error">
+              Поле "Год" должно быть в диапазоне от 1996 года и не позже текущего года!
+            </span>
         }
         <label className="label-year-popup">
           Год

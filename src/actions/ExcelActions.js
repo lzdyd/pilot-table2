@@ -49,8 +49,6 @@ export function getDocList() {
       payload: 'Loading...'
     });
 
-
-
     axios.get('../../data.json')
       .then((response) => {
         dispatch({

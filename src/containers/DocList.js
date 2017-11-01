@@ -5,7 +5,7 @@ import Report from './Report';
 import DocTable from './DocTable';
 import './style.css';
 
-const curPeriod = Math.ceil((new Date().getMonth() + 1) / 3);
+// const curPeriod = Math.ceil((new Date().getMonth() + 1) / 3);
 export let data;
 
 const clients = {
@@ -36,71 +36,71 @@ const formsList = [
     // perivCode:
   }
 ];
+//
+// const currentTime = new Date();
+// const month = currentTime.getMonth();
+// const day = currentTime.getDay();
+// const year = currentTime.getFullYear();
+// const formatDate = `${month}.${day}.${year}`;
 
-const currentTime = new Date();
-const month = currentTime.getMonth();
-const day = currentTime.getDay();
-const year = currentTime.getFullYear();
-const formatDate = `${month}.${day}.${year}`;
 
-
-const docHeadersList = [
-  {
-    id: 1,
-    status: 0,
-    version: '1',
-    period: '1',
-    year: '2017',
-    client: 'Клиент 1',
-    type: 'FORM01',
-    creation_date: formatDate,
-    modify_date: formatDate
-  },
-  {
-    id: 2,
-    status: 0,
-    version: '1',
-    period: '3',
-    year: '2017',
-    client: 'Клиент 6',
-    type: 'FORM01',
-    creation_date: formatDate,
-    modify_date: formatDate
-  },
-  {
-    id: 2,
-    status: 7,
-    version: '1',
-    period: '2',
-    year: '2016',
-    client: 'Клиент 2',
-    type: 'FORM02',
-    creation_date: formatDate,
-    modify_date: formatDate
-  },
-  {
-    id: 6,
-    status: 7,
-    version: '1',
-    period: '4',
-    year: '2015',
-    client: 'Клиент 2',
-    type: 'FORM02',
-    creation_date: formatDate,
-    modify_date: formatDate
-  },
-  {
-    id: 2,
-    status: 7,
-    version: '1',
-    period: '2',
-    year: '2017',
-    client: 'Клиент 2',
-    type: 'FORM01',
-    creation_date: formatDate,
-    modify_date: formatDate
-  }
-];
+// const docHeadersList = [
+//   {
+//     id: 1,
+//     status: 0,
+//     version: '1',
+//     period: '1',
+//     year: '2017',
+//     client: 'Клиент 1',
+//     type: 'FORM01',
+//     creation_date: formatDate,
+//     modify_date: formatDate
+//   },
+//   {
+//     id: 2,
+//     status: 0,
+//     version: '1',
+//     period: '3',
+//     year: '2017',
+//     client: 'Клиент 6',
+//     type: 'FORM01',
+//     creation_date: formatDate,
+//     modify_date: formatDate
+//   },
+//   {
+//     id: 2,
+//     status: 7,
+//     version: '1',
+//     period: '2',
+//     year: '2016',
+//     client: 'Клиент 2',
+//     type: 'FORM02',
+//     creation_date: formatDate,
+//     modify_date: formatDate
+//   },
+//   {
+//     id: 6,
+//     status: 7,
+//     version: '1',
+//     period: '4',
+//     year: '2015',
+//     client: 'Клиент 2',
+//     type: 'FORM02',
+//     creation_date: formatDate,
+//     modify_date: formatDate
+//   },
+//   {
+//     id: 2,
+//     status: 7,
+//     version: '1',
+//     period: '2',
+//     year: '2017',
+//     client: 'Клиент 2',
+//     type: 'FORM01',
+//     creation_date: formatDate,
+//     modify_date: formatDate
+//   }
+// ];
 
 
 export class DocList extends Component {
@@ -110,18 +110,18 @@ export class DocList extends Component {
     this.state = {
       listClient: clients,
       isPeriod: period,
-      curYear: currentTime.getFullYear(),
-      curPeriod,
-      maxLastYear: 1996,
+      // curYear: currentTime.getFullYear(),
+      // curPeriod,
+      // maxLastYear: 1996,
       clientShow: false,
       clientIsChecked: null,
       periodIsChecked: null,
       yearIsChecked: null,
       dataPeriodAndYear: null,
       formsList,
-      docHeadersList: this.props.docList,
+      // docHeadersList: this.props.docList,
       docPeriods: null,
-      docList: null,
+      // docList: null,
       showGenerateReport: false,
       analyticReportYear: null
     };
@@ -137,49 +137,50 @@ export class DocList extends Component {
     this.showGenerateAnalyticReport = this.showGenerateAnalyticReport.bind(this);
     this.HideGenerateAnalyticReport = this.HideGenerateAnalyticReport.bind(this);
     this.setAnalitycReportYear = this.setAnalitycReportYear.bind(this);
-    this.createMapOfDocs_v3 = this.createMapOfDocs_v3.bind(this);
-    this.setDocsList = this.setDocsList.bind(this);
+    // this.createMapOfDocs_v3 = this.createMapOfDocs_v3.bind(this);
+    // this.setDocsList = this.setDocsList.bind(this);
   }
 
-  setDocsList() {
-    this.setState({
-      docHeadersList: this.props.docList
-    });
-  }
+  // setDocsList() {
+  //   this.setState({
+  //     docHeadersList: this.props.docList
+  //   });
+  // }
 
 
-  createMapOfDocs_v3(data) {
-    const listDocs = {};
-    let doclist;
+  // createMapOfDocs_v3(data) {
+  //   const listDocs = {};
+  //   let doclist;
+  //
+  //   if (data) {
+  //     data.forEach((item) => {
+  //       doclist = {
+  //         id: item.id,
+  //         status: item.status,
+  //         version: item.version,
+  //         period: item.period,
+  //         year: item.year,
+  //         client: item.client,
+  //         type: item.type,
+  //         creation_date: item.creation_date,
+  //         modify_date: item.modify_date
+  //       };
+  //
+  //       const key = `${doclist.type}_${doclist.period}_${doclist.year}`;
+  //
+  //       listDocs[key] = doclist;
+  //     });
+  //   }
+  //
+  //   this.setState({
+  //     docList: listDocs
+  //   });
+  // }
 
-    if (data) {
-      data.forEach((item) => {
-        doclist = {
-          id: item.id,
-          status: item.status,
-          version: item.version,
-          period: item.period,
-          year: item.year,
-          client: item.client,
-          type: item.type,
-          creation_date: item.creation_date,
-          modify_date: item.modify_date
-        };
+  // componentDidMount() {
+  //   // this.createMapOfDocs_v3(this.state.docHeadersList);
+  // }
 
-        const key = `${doclist.type}_${doclist.period}_${doclist.year}`;
-
-        listDocs[key] = doclist;
-      });
-    }
-
-    this.setState({
-      docList: listDocs
-    });
-  }
-
-  componentDidMount() {
-    // this.createMapOfDocs_v3(this.state.docHeadersList);
-  }
 
   setAnalitycReportYear(date) {
     this.setState({
@@ -202,9 +203,9 @@ export class DocList extends Component {
 
   receiveOnClick() {
     const obj = {
-      clients: this.state.clientIsChecked && this.state.clientIsChecked,
-      year: this.state.yearIsChecked && this.state.yearIsChecked,
-      period: this.state.periodIsChecked && this.state.periodIsChecked
+      client: this.state.clientIsChecked,
+      year: this.state.yearIsChecked,
+      period: this.state.periodIsChecked
     };
 
     this.setState({
@@ -259,19 +260,23 @@ export class DocList extends Component {
 
 
   render() {
-    const { getdocList, doclist } = this.props;
+    const {
+      getdocList,
+      doclist
+    } = this.props;
+
     const {
       listClient,
       clientShow,
       clientIsChecked,
       isPeriod,
-      maxLastYear,
-      curYear,
+      // maxLastYear,
+      // curYear,
       dataPeriodAndYear,
       formsList,
-      docList,
-      curPeriod,
-      showGenerateReport,
+      // docList,
+      // curPeriod,
+      showGenerateReport
     } = this.state;
 
 
@@ -287,28 +292,31 @@ export class DocList extends Component {
         </button>
         <button
           onClick={this.showGenerateAnalyticReport}
-          disabled={!this.state.clientIsChecked && 'true'}>
+          disabled={!this.state.clientIsChecked && 'true'}
+        >
           Сформировать аналитический отчет
         </button>
-        {showGenerateReport &&
+        {
+          showGenerateReport &&
           <Report
             clientIsChecked={clientIsChecked}
             setAnalitycReportYear={this.setAnalitycReportYear}
             HideGenerateAnalyticReport={this.HideGenerateAnalyticReport}
-          />}
+          />
+        }
         <ReportPeriod
           receiveOnClick={this.receiveOnClick}
           handlerYearIsChecked={this.handlerYearIsChecked}
           handlerPeriodIsChecked={this.handlerPeriodIsChecked}
-          createMapOfDocs_v3={this.createMapOfDocs_v3}
+          // createMapOfDocs_v3={this.createMapOfDocs_v3}
           isPeriod={isPeriod}
-          maxLastYear={maxLastYear}
-          curYear={curYear}
+          // maxLastYear={maxLastYear}
+          // curYear={curYear}
           clientIsChecked={clientIsChecked}
-          curPeriod={curPeriod}
+          // curPeriod={curPeriod}
           getdocList={getdocList}
-          docHeadersList={docHeadersList}
-          setDocsList={this.setDocsList}
+          // docHeadersList={docHeadersList}
+          // setDocsList={this.setDocsList}
         />
         <ListItemsClients
           handlerclientRemove={this.handlerclientRemove}
@@ -319,13 +327,13 @@ export class DocList extends Component {
           clientShow={clientShow}
         />
         <DocTable
-          setPeriods={this.setPeriods}
+          // setPeriods={this.setPeriods}
           dataPeriodAndYear={dataPeriodAndYear}
-          curYear={curYear}
+          // curYear={curYear}
           formsList={formsList}
           // docHeadersList={docHeadersList}
-          docList={docList}
-          curPeriod={curPeriod}
+          // docList={docList}
+          // curPeriod={curPeriod}
           doclist={doclist}
         />
       </div>

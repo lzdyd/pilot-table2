@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as ExcelActions from '../actions/ExcelActions';
-import { evaluatesDependence } from '../services/evalDependence';
 
-import Excel from '../components/Excel/index';
 // import Authentication from './Authentication';
 import { DocList } from './DocList';
 import axios from 'axios';

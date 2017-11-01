@@ -20,9 +20,12 @@ export class TableHeader extends Component {
    * @returns {Array.<*>}
    */
   generateHeaders() {
+    const { period, year } = this.props.dataPeriodAndYear;
     const periods = [];
-    let p = +this.props.dataPeriodAndYear.period || curPeriod;
-    let y = +this.props.dataPeriodAndYear.year || this.props.curYear;
+    const currentTime = new Date();
+    let p = +period || curPeriod;
+    let y = +year || currentTime.getFullYear();
+
     for (let i = 0; i < 10; i++) {
       periods.push({
         period: p,
@@ -71,15 +74,23 @@ export class TableHeader extends Component {
   }
 
   render() {
-    const { dataPeriodAndYear, curYear, curPeriod } = this.props;
+    const {
+      dataPeriodAndYear
+      // curYear,
+      // curPeriod
+    } = this.props;
     let Allperiod;
 
     return (
       <div className='table-header'>
-        {dataPeriodAndYear &&
-          <span className="table-header__items table-header__items-fix"></span>}
-        {dataPeriodAndYear &&
-          (Allperiod = AllPeriods = this.generateHeaders()) && this.renderHeaders(Allperiod) }
+        {
+          dataPeriodAndYear &&
+          <span className="table-header__items table-header__items-fix"></span>
+        }
+        {
+          dataPeriodAndYear &&
+          (Allperiod = AllPeriods = this.generateHeaders()) && this.renderHeaders(Allperiod)
+        }
       </div>
     );
   }
