@@ -65,21 +65,5 @@ export function getDocList() {
           payload: err
         });
       });
-
-    // getDataAPI()
-    //   .then((response) => {
-    //     dispatch({
-    //       type: GET_DATA_SUCCESS,
-    //       payload: JSON.parse(response)
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     dispatch({
-    //       type: GET_DATA_FAILURE,
-    //       payload: err
-    //     });
-    //   });
-
-
   });
 }

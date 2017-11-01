@@ -11,13 +11,7 @@ export default class Authentication extends Component {
       password: '',
       isRemember: false,
       error: false
-    };
-
-    this.handleLoginChange = this.handleLoginChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleRememberChange = this.handleRememberChange.bind(this);
-    this.signIn = this.signIn.bind(this);
-    this.handlerOnKeyDown = this.handlerOnKeyDown.bind(this);
+    }
   }
 
   handleRememberChange() {
@@ -65,7 +59,7 @@ export default class Authentication extends Component {
           placeholder="Логин"
           required="true"
           autoFocus="true"
-          onChange={this.handleLoginChange}
+          onChange={::this.handleLoginChange}
         />
         <input
           type="password"
@@ -73,21 +67,21 @@ export default class Authentication extends Component {
           className="form-control"
           placeholder="Пароль"
           required="true"
-          onChange={this.handlePasswordChange}
-          onKeyDown={this.handlerOnKeyDown}
+          onChange={::this.handlePasswordChange}
+          onKeyDown={::this.handlerOnKeyDown}
         />
         <label htmlFor="checkbox-field" className="checkbox">
           <input
             type="checkbox"
             id="checkbox-field"
-            onChange={this.handleRememberChange}
+            onChange={::this.handleRememberChange}
           />
           Запомнить
         </label>
         <button
           className="btn btn-lg btn-primary btn-block"
           type="button"
-          onClick={this.signIn}
+          onClick={::this.signIn}
         > Войти
         </button>
       </form>

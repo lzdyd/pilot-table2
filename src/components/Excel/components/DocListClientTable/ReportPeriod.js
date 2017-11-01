@@ -18,7 +18,8 @@ export default function ReportPeriod({
       <option
         value={item}
         key={i}
-      >{isPeriod[item]}
+      >
+        {isPeriod[item]}
       </option>
     );
   });

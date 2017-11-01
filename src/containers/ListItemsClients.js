@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-// import '../components/Excel/components/style.scss';
-
 export default class ListItemsClients extends Component {
   constructor(props) {
     super(props);
@@ -27,24 +25,39 @@ export default class ListItemsClients extends Component {
     this.props.handlerOnClickHide();
   }
 
+  onDubleClickHandler () {
+    this.handleClientChecked();
+    this.getclientCurrent();
+  }
+
+  filterList(event) {
+    let updatedList = this.props.listClient;
+    updatedList = updatedList.filter(function(item){
+      return item.value.toLowerCase().search(
+        event.target.value.toLowerCase()) !== -1;
+    });
+    console.log(updatedList);
+    this.props.filterListClients(updatedList);
+  }
+
   render() {
     const { isChecked } = this.state;
     const {
-      listClient,
       clientShow,
-      handlerOnClickHide
+      handlerOnClickHide,
+      listClientFiltered
     } = this.props;
 
-    const clientItems = Object.keys(listClient).map((item, i) => {
+    const clientItems = listClientFiltered.map((item, i) => {
       return (
         <li
-          className={`clients-list__item ${isChecked === item ?
+          className={`clients-list__item ${isChecked === item.id ?
             'is-checked-client' : ''}`}
           key={ i }
-          id={item}
+          id={item.id}
           onClick={::this.getclientCurrent}
-        >
-          { listClient[item] }
+          onDoubleClick={::this.onDubleClickHandler}
+        >{ item.value }
         </li>
       );
     });
@@ -53,7 +66,12 @@ export default class ListItemsClients extends Component {
       <div className={`clients ${clientShow ? 'show' : ''}`}>
         <label className="clients-search-label">
           Поиск
-          <input type="text" className="clients-search" required/>
+          <input
+            type="text"
+            className="clients-search"
+            required
+            onInput={this.filterList.bind(this)}
+          />
         </label>
         <ul className="clients-list">
           { clientItems }

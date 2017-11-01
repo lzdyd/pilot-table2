@@ -6,16 +6,28 @@ import DocTable from '../components/Excel/components/DocListClientTable/DocTable
 import './style.css';
 
 export let data;
+
+//TODO ПЕРЕДЕЛАТЬ В HELPERS getCurPeriod И getCurYear
 const curPeriod = Math.ceil((new Date().getMonth() + 1) / 3);
 const currentTime = new Date();
 const curYear = currentTime.getFullYear();
 
-const clients = {
-  '1-10KWGP': 'Эсти',
-  '1-1PALWC': 'Весенний холм',
-  '1-2DTA97': 'Брокинвестсервис',
-  '1-2W1T5D': 'СК Октябрьский'
-};
+
+const clients = [
+  {
+    id: '1-10KWGP',
+    value: 'Эсти'
+  },{
+    id: '1-1PALWC',
+    value: 'Весенний холм'
+  },{
+    id: '1-2DTA97',
+    value: 'Брокинвестсервис'
+  },{
+    id: '1-2W1T5D',
+    value: 'СК Октябрьский'
+  }
+];
 
 const periods = {
   1: '1 квартал',
@@ -46,6 +58,7 @@ export class DocList extends Component {
 
     this.state = {
       listClient: clients,
+      listClientFiltered: clients,
       isPeriod: periods,
       clientShow: false,
       clientIsChecked: null,
@@ -57,6 +70,12 @@ export class DocList extends Component {
       showGenerateReport: false,
       analyticReportYear: null
     }
+  }
+
+  filterListClients (list) {
+    this.setState({
+      listClientFiltered: list
+    });
   }
 
 
@@ -131,6 +150,14 @@ export class DocList extends Component {
     });
   }
 
+  setClient(listClient, clientId) {
+    let res;
+    listClient.forEach((item) => {
+      if (item.id === clientId) res = item.value;
+    });
+    return res;
+  }
+
 
   render() {
     const {
@@ -145,7 +172,8 @@ export class DocList extends Component {
       isPeriod,
       dataPeriodAndYear,
       formsList,
-      showGenerateReport
+      showGenerateReport,
+      listClientFiltered
     } = this.state;
 
 
@@ -155,8 +183,7 @@ export class DocList extends Component {
         <button
           onClick={::this.handlerOnClickShow}
           className='clients-items-btn'
-        >{!clientIsChecked ?
-            'Выберите клиента из справочника' : listClient[clientIsChecked]}
+        >{!clientIsChecked ? 'Выберите клиента из справочника' : ::this.setClient(listClient, clientIsChecked)}
           ▼
         </button>
         <button
@@ -186,8 +213,10 @@ export class DocList extends Component {
           handlerclientRemove={::this.handlerclientRemove}
           handlerOnClickHide={::this.handlerOnClickHide}
           handlerclientIsChecked={::this.handlerclientIsChecked}
+          filterListClients={::this.filterListClients}
           clientIsChecked={clientIsChecked}
           listClient={listClient}
+          listClientFiltered={listClientFiltered}
           clientShow={clientShow}
         />
         <DocTable
