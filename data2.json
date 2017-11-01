@@ -8,7 +8,24 @@
     "client": "Клиент 1",
     "type": "FORM01",
     "creation_date": "09.09.2014",
-    "modify_date": "09.09.2014"
+    "modify_date": "09.09.2014",
+    "versions": {
+      "1": {
+        "status": 3,
+        "modify_date": "10.06.2016",
+        "author": "user100"
+      },
+      "2": {
+        "status": 7,
+        "modify_date": "10.06.2016",
+        "author": "user100"
+      },
+      "3": {
+        "status": 3,
+        "modify_date": "10.06.2016",
+        "author": "user100"
+      }
+    }
   },
   {
     "id": 2,
@@ -19,7 +36,24 @@
     "client": "Клиент 6",
     "type": "FORM01",
     "creation_date": "09.09.2014",
-    "modify_date": "09.09.2014"
+    "modify_date": "09.09.2014",
+    "versions": {
+      "1": {
+        "status": 3,
+        "modify_date": "10.06.2016",
+        "author": "user100"
+      },
+      "2": {
+        "status": 7,
+        "modify_date": "10.06.2016",
+        "author": "user100"
+      },
+      "3": {
+        "status": 3,
+        "modify_date": "10.06.2016",
+        "author": "user100"
+      }
+    }
   },
   {
     "id": 3,
@@ -30,6 +64,23 @@
     "client": "Клиент 2",
     "type": "FORM02",
     "creation_date": "09.09.2014",
-    "modify_date": "09.09.2014"
+    "modify_date": "09.09.2014",
+    "versions": {
+      "1": {
+        "status": 3,
+        "modify_date": "10.06.2016",
+        "author": "user100"
+      },
+      "2": {
+        "status": 7,
+        "modify_date": "10.06.2016",
+        "author": "user100"
+      },
+      "3": {
+        "status": 3,
+        "modify_date": "10.06.2016",
+        "author": "user100"
+      }
+    }
   }
-];
+]

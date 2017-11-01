@@ -7,15 +7,11 @@ export default class Report extends Component {
 
     this.state = {
       isChecked: false
-    };
-
-    this.setAnalyticYear = this.setAnalyticYear.bind(this);
+    }
   }
 
   setAnalyticYear() {
-    if (!this.isCheckAnalyticYear(this.inputYear.value)) {
-      return;
-    }
+    if (!this.isCheckAnalyticYear(this.inputYear.value)) return;
 
     this.props.setAnalitycReportYear(this.inputYear.value);
     this.props.HideGenerateAnalyticReport();
@@ -60,7 +56,7 @@ export default class Report extends Component {
         </label>
         <div className="report-btn">
           <button
-            onClick={this.setAnalyticYear}
+            onClick={::this.setAnalyticYear}
             className="create-report">Создать
           </button>
           <button

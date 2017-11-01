@@ -43,13 +43,16 @@ export function updateStoreData(id, data) {
 
 
 export function getDocList() {
+  const url = 'http://192.168.235.188:9081/prototype/docList?clientName=CLIENT1&Q=4&year=2017';
+  const url2 = './data2.json';
+
   return ((dispatch) => {
     dispatch({
       type: 'GET_DOCLIST_REQUEST',
       payload: 'Loading...'
     });
 
-    axios.get('../../data.json')
+    axios.get(url2, {crossdomain: true})
       .then((response) => {
         dispatch({
           type: 'GET_DOCLIST_SUCCESS',
@@ -62,5 +65,21 @@ export function getDocList() {
           payload: err
         });
       });
+
+    // getDataAPI()
+    //   .then((response) => {
+    //     dispatch({
+    //       type: GET_DATA_SUCCESS,
+    //       payload: JSON.parse(response)
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     dispatch({
+    //       type: GET_DATA_FAILURE,
+    //       payload: err
+    //     });
+    //   });
+
+
   });
 }

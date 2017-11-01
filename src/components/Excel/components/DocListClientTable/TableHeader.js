@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
 
-import '../style.scss';
+import '../../style.scss';
 
 export let AllPeriods;
 
 const curPeriod = Math.ceil((new Date().getMonth() + 1) / 3);
 
 export class TableHeader extends Component {
-  constructor() {
-    super();
-
-    this.generateHeaders = this.generateHeaders.bind(this);
-    this.renderHeaders = this.renderHeaders.bind(this);
-  }
-
 
   /**
    * Generate headers for table
@@ -74,11 +67,7 @@ export class TableHeader extends Component {
   }
 
   render() {
-    const {
-      dataPeriodAndYear
-      // curYear,
-      // curPeriod
-    } = this.props;
+    const { dataPeriodAndYear } = this.props;
     let Allperiod;
 
     return (
@@ -89,7 +78,7 @@ export class TableHeader extends Component {
         }
         {
           dataPeriodAndYear &&
-          (Allperiod = AllPeriods = this.generateHeaders()) && this.renderHeaders(Allperiod)
+          (Allperiod = AllPeriods = ::this.generateHeaders()) && ::this.renderHeaders(Allperiod)
         }
       </div>
     );

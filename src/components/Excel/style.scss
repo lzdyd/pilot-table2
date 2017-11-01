@@ -418,7 +418,8 @@ select {
 }
 
 .show {
-  display: block !important;
+  display: flex;
+  flex-direction: column;
 }
 
 .clients-list__item {

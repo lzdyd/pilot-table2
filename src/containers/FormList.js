@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { AllPeriods } from '../components/Excel/components/TableHeader';
+import { AllPeriods } from '../components/Excel/components/DocListClientTable/TableHeader';
 
 function generateFormList(data) {
   const formsArray = [];
@@ -72,7 +72,11 @@ function renderFormList(data, docList_v2) {
   const rowsTemplate = data.map((item, i) => {
     if (item.type !== null && item.type === 'INPUT') {
       return (
-        <div id={item.formid} key={i} className="table-rows-item">
+        <div
+          id={item.formid}
+          key={i}
+          className="table-rows-item"
+        >
           <span
             className="table-header__items  table-header__items-fix"
           >{item.fullName}
@@ -112,7 +116,6 @@ function createDocList(data) {
   return mapOfDocs;
 }
 
-
 export default class FormList extends Component {
   constructor(props) {
     super(props);
@@ -126,12 +129,26 @@ export default class FormList extends Component {
     this.getcurDocData = this.getcurDocData.bind(this);
     this.setLabel = this.setLabel.bind(this);
     this.popupClose = this.popupClose.bind(this);
-    // this.keyDownClose = this.keyDownClose.bind(this);
   }
 
-  // componentDidMount() {
-  //   console.log(this.props.doclist);
-  // }
+  componentDidMount() {
+    const row = document.querySelectorAll('.table-rows__items');
+
+    for ( let i = 0, len = row.length; i < len; i++ ) {
+      let taskItem = row[i];
+      this.contextMenuListener(taskItem);
+    }
+    let menu = document.querySelector("#context-menu");
+    let menuState = 0;
+    let active = "context-menu--active";
+
+  }
+
+  contextMenuListener(el) {
+    el.addEventListener( "contextmenu", function(e) {
+      console.log(e, el);
+    });
+  }
 
 
   getcurDocData({ target }) {
@@ -149,13 +166,6 @@ export default class FormList extends Component {
       popupIsShow: false
     });
   }
-
-  // keyDownClose(e) {
-  //   if (e.keyCode === 27) {
-  //     this.popupClose();
-  //     console.log(e);
-  //   }
-  // }
 
   getCurDoc(id) {
     const docList_v2 = createDocList(this.props.doclist);
@@ -177,19 +187,23 @@ export default class FormList extends Component {
     }
   }
 
-  // generateTextLabel() {
-  //
-  // }
 
   setLabelDefault() {
     return 'Документ \'Отчёт о финансовых результатах\' отсутствует в выбранном периоде, ' +
       'создать новый документ ?';
   }
 
+  contextMenu(e) {
+    const dataKey = e.target.dataset.key || e.target.parentNode.dataset.key;
+    console.log(e);
+    console.log(dataKey);
+  }
+
   getActionCurStatus(curDocObj, curDoc) {
     if (curDocObj.status === 0) {
       return (
         <button
+          // onContextMenu={::this.contextMenu}
           onClick={this.EditDocs.bind(this, curDocObj, curDoc)}>
           Редактировать
         </button>
@@ -239,7 +253,7 @@ export default class FormList extends Component {
 
     return (
       <div
-        onKeyPress={this.keyDownClose}
+        onContextMenu={::this.contextMenu}
         className="TBL"
         onClick={this.getcurDocData}
       >
@@ -269,6 +283,27 @@ export default class FormList extends Component {
             <button onClick={this.popupClose}>Отмена</button>
           </div>
         </div>
+
+        <nav id="context-menu">
+          <ul className="context-menu__items">
+            <li className="context-menu__item">
+              <a href="#" className="context-menu__link">
+                <i className="fa fa-eye"></i> View Task
+              </a>
+            </li>
+            <li className="context-menu__item">
+              <a href="#" className="context-menu__link">
+                <i className="fa fa-edit"></i> Edit Task
+              </a>
+            </li>
+            <li className="context-menu__item">
+              <a href="#" className="context-menu__link">
+                <i className="fa fa-times"></i> Delete Task
+              </a>
+            </li>
+          </ul>
+        </nav>
+        
       </div>
     );
   }

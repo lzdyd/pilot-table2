@@ -27,19 +27,22 @@
 
 .checkbox {
     align-self: flex-start;
-/*<<<<<<< HEAD*/
-    /*margin-bottom: 10px;*/
-/*}*/
-
-/*.error {*/
-    /*margin: 0;*/
-    /*margin-bottom: 10px;*/
-    /*color: red;*/
-/*=======*/
 }
 
 .clients-items-btn {
     margin-bottom: 20px;
+}
+
+.clients-search {
+    margin-left: 10px;
+    flex-grow: 1;
+}
+
+.clients-search-label {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid darkgray;
+    display: flex;
 }
 
 .table {
@@ -125,11 +128,6 @@
     /*margin-top: 10%;*/
 }
 
-/*.doc-date,*/
-/*.doc-version {*/
-    /*text-align: center;*/
-/*}*/
-
 .doc-date-version {
     display: flex;
     flex-direction: column;
@@ -150,7 +148,6 @@
 .popup {
     display: none;
     padding: 30px;
-    /*border: 1px solid;*/
     box-shadow: -5px -5px 20px rgba(0, 0, 0, 0.2), 5px 5px 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -219,5 +216,32 @@
 .year-popup-error {
     color: red;
     text-align: center;
+    display: block;
+}
+
+.tasks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: solid 1px #dfdfdf;
+}
+
+.task:last-child {
+    border-bottom: none;
+}
+
+.context-menu {
+    display: none;
+    position: absolute;
+    z-index: 10;
+}
+
+.context-menu--active {
     display: block;
 }

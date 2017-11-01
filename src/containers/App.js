@@ -15,34 +15,20 @@ class App extends Component {
     this.state = {
       invalid: false
     };
-
   }
 
-  onClickHandler() {
-    this.setState({
-      invalid: !this.state.invalid
-    });
-  }
+  // onClickHandler() {
+  //   this.setState({
+  //     invalid: !this.state.invalid
+  //   });
+  // }
 
-  // <Excel
-  // data={ excel && excel }
-  // fetching={ excel && excel.fetching }
-  // getData={ getData }
-  // updateStoreData={ updateStoreData }
-  // />
-  // {!this.state.invalid ?
-  // <Authentication onClick={this.onClickHandler.bind(this)}/> :
-  //
   // {!this.state.invalid ?
   // <Authentication onClick={this.onClickHandler.bind(this)}/> : <DocList /> }
 
 
   render() {
     const { getDocList } = this.props.excelActions;
-    // const excel = this.props.excel;
-    // const getData = this.props.excelActions.getData;
-    // const updateStoreData = this.props.excelActions.updateStoreData;
-    // console.log(this.props.doclist);
 
     return (
       <div className="main-app">
