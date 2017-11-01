@@ -40,6 +40,10 @@ app.get('/doctype_view_balans_edit.xml', (req, res) => {
   res.sendFile(path.join(__dirname, 'docs/doctype_view_balans_edit.xml'));
 });
 
+app.get('/dataTable.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'docs/dataTable.json'));
+});
+
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });

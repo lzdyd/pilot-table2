@@ -27,19 +27,22 @@
 
 .checkbox {
   align-self: flex-start;
-  /*<<<<<<< HEAD*/
-  /*margin-bottom: 10px;*/
-  /*}*/
-
-  /*.error {*/
-  /*margin: 0;*/
-  /*margin-bottom: 10px;*/
-  /*color: red;*/
-  /*=======*/
 }
 
 .clients-items-btn {
   margin-bottom: 20px;
+}
+
+.clients-search {
+  margin-left: 10px;
+  flex-grow: 1;
+}
+
+.clients-search-label {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid darkgray;
+  display: flex;
 }
 
 .table {
@@ -102,8 +105,9 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
   height: 100%;
+  width: 100%;
+  text-align: right;
 }
 
 .doc-status {
@@ -113,22 +117,17 @@
 }
 
 .doc-date {
+  width: 75%;
   float: right;
   margin-right: 10px;
   margin-top: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .doc-version {
   float: left;
   margin-left: 10px;
-  /*margin-top: 10%;*/
 }
-
-/*.doc-date,*/
-/*.doc-version {*/
-/*text-align: center;*/
-/*}*/
 
 .doc-date-version {
   display: flex;
@@ -150,7 +149,6 @@
 .popup {
   display: none;
   padding: 30px;
-  /*border: 1px solid;*/
   box-shadow: -5px -5px 20px rgba(0, 0, 0, 0.2), 5px 5px 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -180,4 +178,71 @@
 .popup-text {
   margin: 0;
   margin-bottom: 30px;
+}
+
+.report-popup {
+  width: 300px;
+  position: absolute;
+  background-color: white;
+  top: 50px;
+  left: 330px;
+  padding: 20px;
+  box-shadow: -5px -5px 20px rgba(0, 0, 0, 0.2), 5px 5px 20px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+.report-popup__text {
+  text-align: center;
+}
+
+.report-btn {
+  display: flex;
+  justify-content: center;
+}
+
+.create-report {
+  margin-right: 10px;
+}
+
+.label-year-popup {
+  display: block;
+  margin-bottom: 30px;
+  margin-left: 90px;
+}
+
+.label-year-popup input {
+  margin-left: 10px;
+  width: 50px;
+}
+
+.year-popup-error {
+  color: red;
+  text-align: center;
+  display: block;
+}
+
+.tasks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: solid 1px #dfdfdf;
+}
+
+.task:last-child {
+  border-bottom: none;
+}
+
+.context-menu {
+  display: none;
+  position: absolute;
+  z-index: 10;
+}
+
+.context-menu--active {
+  display: block;
 }

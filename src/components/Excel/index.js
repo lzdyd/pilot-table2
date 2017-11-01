@@ -6,6 +6,18 @@ import TableRows from './components/TableRows';
 import './style.scss';
 
 export default class Excel extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      activeCell: 1
+    }
+  }
+
+  onSaveData() {
+    this.props.onSaveData();
+  }
+
   render() {
     /**
      * If data is being fetched, render "Loading spinner"
@@ -75,6 +87,8 @@ export default class Excel extends Component {
 
         <p>{ periodType }</p>
 
+        <button onClick={ ::this.onSaveData }>Сохранить</button>
+
         <div className="excel-table">
           <TableHeaders data={ modelView }/>
 {/*          {
@@ -90,7 +104,8 @@ export default class Excel extends Component {
               if (+item.rowNumber !== 1) {
                 return (
                   <TableRows row={ item } data={ modelView } dataAttrs={ this.props.data }
-                             valuesHash={ valuesHash } key={ i } onCellChange={ this.props.onCellChange }/>
+                             valuesHash={ valuesHash } key={ i } onCellChange={ this.props.onCellChange }
+                             dataKey={ i } activeCell={ this.state.activeCell } />
                 );
               }
 

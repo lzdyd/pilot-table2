@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import ListItemsClients from './ListItemsClients';
 import ReportPeriod from './ReportPeriod';
-// import TableHeader from '../components/Excel/components/TableHeader';
+import Report from './Report';
 import DocTable from './DocTable';
-
 import './style.css';
 
-const curPeriod = Math.ceil((new Date().getMonth() + 1) / 3);
 export let data;
+const curPeriod = Math.ceil((new Date().getMonth() + 1) / 3);
+const currentTime = new Date();
+const curYear = currentTime.getFullYear();
 
 const clients = {
   '1-10KWGP': 'Эсти',
@@ -16,7 +17,7 @@ const clients = {
   '1-2W1T5D': 'СК Октябрьский'
 };
 
-const period = {
+const periods = {
   1: '1 квартал',
   2: '2 квартал',
   3: '3 квартал',
@@ -38,71 +39,6 @@ const formsList = [
   }
 ];
 
-const currentTime = new Date();
-const month = currentTime.getMonth();
-const day = currentTime.getDay();
-const year = currentTime.getFullYear();
-const formatDate = `${month}.${day}.${year}`;
-
-
-const docHeadersList = [
-  {
-    id: 1,
-    status: 0,
-    version: '1',
-    period: '1',
-    year: '2017',
-    client: 'Клиент 1',
-    type: 'FORM01',
-    creation_date: formatDate,
-    modify_date: formatDate
-  },
-  {
-    id: 2,
-    status: 0,
-    version: '1',
-    period: '3',
-    year: '2017',
-    client: 'Клиент 6',
-    type: 'FORM01',
-    creation_date: formatDate,
-    modify_date: formatDate
-  },
-  {
-    id: 2,
-    status: 7,
-    version: '1',
-    period: '2',
-    year: '2016',
-    client: 'Клиент 2',
-    type: 'FORM02',
-    creation_date: formatDate,
-    modify_date: formatDate
-  },
-  {
-    id: 6,
-    status: 7,
-    version: '1',
-    period: '4',
-    year: '2015',
-    client: 'Клиент 2',
-    type: 'FORM02',
-    creation_date: formatDate,
-    modify_date: formatDate
-  },
-  {
-    id: 2,
-    status: 7,
-    version: '1',
-    period: '2',
-    year: '2017',
-    client: 'Клиент 2',
-    type: 'FORM01',
-    creation_date: formatDate,
-    modify_date: formatDate
-  }
-];
-
 
 export class DocList extends Component {
   constructor(props) {
@@ -110,70 +46,44 @@ export class DocList extends Component {
 
     this.state = {
       listClient: clients,
-      isPeriod: period,
-      curYear: currentTime.getFullYear(),
-      curPeriod,
-      maxLastYear: 1996,
+      isPeriod: periods,
       clientShow: false,
       clientIsChecked: null,
-      periodIsChecked: null,
-      yearIsChecked: null,
+      periodIsChecked: curPeriod,
+      yearIsChecked: curYear,
       dataPeriodAndYear: null,
       formsList,
-      docHeadersList,
       docPeriods: null,
-      docList: null
-    };
-
-    this.handlerOnClickShow = this.handlerOnClickShow.bind(this);
-    this.handlerclientIsChecked = this.handlerclientIsChecked.bind(this);
-    this.handlerPeriodIsChecked = this.handlerPeriodIsChecked.bind(this);
-    this.handlerYearIsChecked = this.handlerYearIsChecked.bind(this);
-    this.receiveOnClick = this.receiveOnClick.bind(this);
-    this.handlerOnClickHide = this.handlerOnClickHide.bind(this);
-    this.handlerclientRemove = this.handlerclientRemove.bind(this);
-    this.setPeriods = this.setPeriods.bind(this);
+      showGenerateReport: false,
+      analyticReportYear: null
+    }
   }
 
 
-  createMapOfDocs_v3(data) {
-    const listDocs = {};
-    let doclist;
-
-    data.forEach((item) => {
-      doclist = {
-        id: item.id,
-        status: item.status,
-        version: item.version,
-        period: item.period,
-        year: item.year,
-        client: item.client,
-        type: item.type,
-        creation_date: item.creation_date,
-        modify_date: item.modify_date
-      };
-
-      const key = `${doclist.type}_${doclist.period}_${doclist.year}`;
-
-      listDocs[key] = doclist;
-    });
-
+  setAnalitycReportYear(date) {
     this.setState({
-      docList: listDocs
+      analyticReportYear: date
     });
   }
 
-
-  componentDidMount() {
-    // this.receiveOnClick();
-    this.createMapOfDocs_v3(this.state.docHeadersList);
+  showGenerateAnalyticReport() {
+    this.setState({
+      showGenerateReport: true
+    });
   }
+
+  HideGenerateAnalyticReport() {
+    this.setState({
+      showGenerateReport: false
+    });
+  }
+
 
   receiveOnClick() {
     const obj = {
-      clients: this.state.clientIsChecked && this.state.clientIsChecked,
-      year: this.state.yearIsChecked && this.state.yearIsChecked,
-      period: this.state.periodIsChecked && this.state.periodIsChecked
+      client: this.state.clientIsChecked,
+      year: this.state.yearIsChecked,
+      period: this.state.periodIsChecked
     };
 
     this.setState({
@@ -183,11 +93,6 @@ export class DocList extends Component {
     return obj;
   }
 
-  setPeriods(period) {
-    this.setState({
-      docPeriods: period
-    });
-  }
 
   handlerOnClickShow() {
     this.setState({
@@ -229,59 +134,66 @@ export class DocList extends Component {
 
   render() {
     const {
+      getdocList,
+      doclist
+    } = this.props;
+
+    const {
       listClient,
       clientShow,
       clientIsChecked,
       isPeriod,
-      maxLastYear,
-      curYear,
-      periodIsChecked,
-      yearIsChecked,
       dataPeriodAndYear,
       formsList,
-      docList,
-      curPeriod
+      showGenerateReport
     } = this.state;
+
 
     return (
       <div className="">
         Клиент:
         <button
-          onClick={this.handlerOnClickShow}
+          onClick={::this.handlerOnClickShow}
           className='clients-items-btn'
-        >{!this.state.clientIsChecked ?
+        >{!clientIsChecked ?
           'Выберите клиента из справочника' : listClient[clientIsChecked]}
           ▼
         </button>
-        <button disabled={!this.state.clientIsChecked && 'true'}>
+        <button
+          onClick={::this.showGenerateAnalyticReport}
+          disabled={!clientIsChecked && 'true'}
+        >
           Сформировать аналитический отчет
         </button>
+        {
+          showGenerateReport &&
+          <Report
+            clientIsChecked={clientIsChecked}
+            setAnalitycReportYear={::this.setAnalitycReportYear}
+            HideGenerateAnalyticReport={::this.HideGenerateAnalyticReport}
+          />
+        }
         <ReportPeriod
-          receiveOnClick={this.receiveOnClick}
-          handlerYearIsChecked={this.handlerYearIsChecked}
-          handlerPeriodIsChecked={this.handlerPeriodIsChecked}
+          receiveOnClick={::this.receiveOnClick}
+          handlerYearIsChecked={::this.handlerYearIsChecked}
+          handlerPeriodIsChecked={::this.handlerPeriodIsChecked}
           isPeriod={isPeriod}
-          maxLastYear={maxLastYear}
-          curYear={curYear}
           clientIsChecked={clientIsChecked}
-          curPeriod={curPeriod}
+          getdocList={getdocList}
+          dataPeriodAndYear={dataPeriodAndYear}
         />
         <ListItemsClients
-          handlerclientRemove={this.handlerclientRemove}
-          handlerOnClickHide={this.handlerOnClickHide}
-          handlerclientIsChecked={this.handlerclientIsChecked}
+          handlerclientRemove={::this.handlerclientRemove}
+          handlerOnClickHide={::this.handlerOnClickHide}
+          handlerclientIsChecked={::this.handlerclientIsChecked}
           clientIsChecked={clientIsChecked}
           listClient={listClient}
           clientShow={clientShow}
         />
         <DocTable
-          setPeriods={this.setPeriods}
           dataPeriodAndYear={dataPeriodAndYear}
-          curYear={curYear}
           formsList={formsList}
-          docHeadersList={docHeadersList}
-          docList={docList}
-          curPeriod={curPeriod}
+          doclist={doclist}
         />
       </div>
     );

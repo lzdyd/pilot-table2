@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import './style.scss';
+// import '../components/Excel/components/style.scss';
 
 export default class ListItemsClients extends Component {
   constructor(props) {
@@ -8,11 +8,7 @@ export default class ListItemsClients extends Component {
 
     this.state = {
       isChecked: null
-    };
-
-    this.clickHandlerClientRemove = this.clickHandlerClientRemove.bind(this);
-    this.getclientCurrent = this.getclientCurrent.bind(this);
-    this.handleClientChecked = this.handleClientChecked.bind(this);
+    }
   }
 
   getclientCurrent({ target }) {
@@ -36,8 +32,7 @@ export default class ListItemsClients extends Component {
     const {
       listClient,
       clientShow,
-      handlerOnClickHide,
-      clickHandlerClientRemove,
+      handlerOnClickHide
     } = this.props;
 
     const clientItems = Object.keys(listClient).map((item, i) => {
@@ -47,7 +42,7 @@ export default class ListItemsClients extends Component {
             'is-checked-client' : ''}`}
           key={ i }
           id={item}
-          onClick={this.getclientCurrent}
+          onClick={::this.getclientCurrent}
         >
           { listClient[item] }
         </li>
@@ -56,17 +51,21 @@ export default class ListItemsClients extends Component {
 
     return (
       <div className={`clients ${clientShow ? 'show' : ''}`}>
+        <label className="clients-search-label">
+          Поиск
+          <input type="text" className="clients-search" required/>
+        </label>
         <ul className="clients-list">
           { clientItems }
         </ul>
         <div className="clients-btn">
           <button
             className="receiveBtn"
-            onClick={this.handleClientChecked}
-            disabled={isChecked ? false : true}
+            onClick={::this.handleClientChecked}
+            disabled={!isChecked}
           > Выбрать
           </button>
-          <button onClick={this.clickHandlerClientRemove}>Очистить</button>
+          <button onClick={::this.clickHandlerClientRemove}>Очистить</button>
           <button onClick={handlerOnClickHide}>Отмена</button>
         </div>
       </div>

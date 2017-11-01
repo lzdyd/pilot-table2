@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as ExcelActions from '../actions/ExcelActions';
 
 // import Authentication from './Authentication';
 import { DocList } from '../components/DocList';
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
 
@@ -12,22 +16,16 @@ export default class App extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    nextProps.excel.forEach((node) => {
-      if (node.state === 'calculated-field') node.value = evaluatesDependence(node);
-    });
-  }
-
-  onClickHandler() {
-    this.setState({
-      invalid: !this.state.invalid
-    });
-  }
-
   render() {
+    const { getDocList } = this.props.excelActions;
+
     return (
       <div className="main-app">
-        <DocList />
+        <DocList
+          getdocList={ getDocList }
+          doclist={ this.props.doclist }
+        />
+
         <div>
           <ul>
             <li><a href="/balance">Бухгалтерский баланс</a></li>
@@ -38,3 +36,17 @@ export default class App extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    doclist: state.doclist.docs
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    excelActions: bindActionCreators(ExcelActions, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
