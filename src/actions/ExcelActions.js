@@ -43,7 +43,7 @@ export function updateStoreData(id, data) {
 
 
 export function getDocList() {
-  const url = 'http://192.168.235.188:9081/prototype/docList?clientName=CLIENT1&Q=4&year=2017';
+  const url = 'http://localhost:8080/test/docList?clientName=CLIENT1&Q=3&year=2017';
   const url2 = './data2.json';
 
   return ((dispatch) => {
@@ -52,7 +52,7 @@ export function getDocList() {
       payload: 'Loading...'
     });
 
-    axios.get(url2, {crossdomain: true})
+    axios.get(url, {crossdomain: true})
       .then((response) => {
         dispatch({
           type: 'GET_DOCLIST_SUCCESS',
