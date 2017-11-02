@@ -9,6 +9,7 @@ export default class ListItemsClients extends Component {
     }
   }
 
+
   getclientCurrent({ target }) {
     this.setState({
       isChecked: target.id
@@ -33,7 +34,7 @@ export default class ListItemsClients extends Component {
   filterList(event) {
     let updatedList = this.props.listClient;
     updatedList = updatedList.filter(function(item){
-      return item.value.toLowerCase().search(
+      return item.divid.toLowerCase().search(
         event.target.value.toLowerCase()) !== -1;
     });
     console.log(updatedList);
@@ -47,8 +48,8 @@ export default class ListItemsClients extends Component {
       handlerOnClickHide,
       listClientFiltered
     } = this.props;
-
-    const clientItems = listClientFiltered.map((item, i) => {
+// debugger
+    const clientItems = listClientFiltered && listClientFiltered.map((item, i) => {
       return (
         <li
           className={`clients-list__item ${isChecked === item.id ?
@@ -57,7 +58,7 @@ export default class ListItemsClients extends Component {
           id={item.id}
           onClick={::this.getclientCurrent}
           onDoubleClick={::this.onDubleClickHandler}
-        >{ item.value }
+        >{ item.descr }
         </li>
       );
     });
