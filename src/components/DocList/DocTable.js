@@ -4,11 +4,11 @@ import { TableHeader } from './TableHeader';
 import FormList from './FormList';
 
 export default function DocTable({
-                                   dataPeriodAndYear,
-                                   curYear,
-                                   formsList,
-                                   doclist
-                                 }) {
+  dataPeriodAndYear,
+  curYear,
+  formsList,
+  doclist
+  }) {
 
   return (
     <div className="table">

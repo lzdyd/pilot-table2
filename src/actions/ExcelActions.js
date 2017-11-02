@@ -17,8 +17,8 @@ import {
 } from '../constants/index';
 
 export function getDocList() {
-  // const url = 'http://localhost:8080/test/docList?clientName=CLIENT1&Q=3&year=2017';
-  const url = './dataTable.json';
+  const url = 'http://localhost:8080/test/docList?clientName=CLIENT1&Q=3&year=2017';
+  // const url = './dataTable.json';
 
   return ((dispatch) => {
     dispatch({
