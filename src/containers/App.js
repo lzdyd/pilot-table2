@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as ExcelActions from '../actions/ExcelActions';
 
 // import Authentication from './Authentication';
-import { DocList } from '../components/DocList';
+import { DocList } from '../components/DocList/DocList';
 
 class App extends Component {
   constructor(props) {
