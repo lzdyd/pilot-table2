@@ -37,6 +37,12 @@ class App extends Component {
       });
   }
 
+  filterListClients (list) {
+    this.setState({
+      listClientFiltered: list
+    });
+  }
+
   onClickHandler() {
     this.setState({
       invalid: !this.state.invalid
@@ -57,6 +63,7 @@ class App extends Component {
           <DocList
             getdocList={ getDocList }
             doclist={ this.props.doclist }
+            filterListClients={::this.filterListClients}
             listClient={listClient}
             listClientFiltered={listClientFiltered}
             formsList={formsList}

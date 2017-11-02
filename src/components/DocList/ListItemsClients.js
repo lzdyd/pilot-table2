@@ -34,7 +34,7 @@ export default class ListItemsClients extends Component {
   filterList(event) {
     let updatedList = this.props.listClient;
     updatedList = updatedList.filter(function(item){
-      return item.divid.toLowerCase().search(
+      return item.descr.toLowerCase().search(
         event.target.value.toLowerCase()) !== -1;
     });
     console.log(updatedList);

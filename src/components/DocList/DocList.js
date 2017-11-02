@@ -143,11 +143,7 @@ export class DocList extends Component {
     }
   }
 
-  filterListClients (list) {
-    this.setState({
-      listClientFiltered: list
-    });
-  }
+
 
 
   setAnalitycReportYear(date) {
@@ -239,7 +235,8 @@ export class DocList extends Component {
       doclist,
       listClientFiltered,
       listClient,
-      formsList
+      formsList,
+      filterListClients
     } = this.props;
 
     const {
@@ -291,7 +288,7 @@ export class DocList extends Component {
           handlerclientRemove={::this.handlerclientRemove}
           handlerOnClickHide={::this.handlerOnClickHide}
           handlerclientIsChecked={::this.handlerclientIsChecked}
-          filterListClients={::this.filterListClients}
+          filterListClients={filterListClients}
           clientIsChecked={clientIsChecked}
           listClient={listClient}
           listClientFiltered={listClientFiltered}
