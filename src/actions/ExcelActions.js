@@ -42,9 +42,12 @@ export function getDocList() {
   });
 }
 
-function getView() {
+function getView(formNum) {
   return ((dispatch) => {
-    getDocumentDataAPI('./doctype_view_opu.xml')
+    // getDocumentDataAPI('http://cors.io/?http://localhost:8080/prototype/getDocView?docType=FORM02')
+    // getDocumentDataAPI('./doctype_view_opu.xml')
+    // getDocumentDataAPI('http://localhost:8080/getDocModel?docType=FORM01')
+    getDocumentDataAPI(`http://localhost:8080/prototype/getDocView?docType=FORM${formNum}`)
       .then((response) => {
         dispatch({
           type: GET_XML_DATA_SUCCESS,
@@ -63,9 +66,9 @@ function getView() {
   });
 }
 
-function getDoctype() {
+function getDoctype(formNum) {
   return ((dispatch) => {
-    getDocumentDataAPI('./doctype_opu.xml')
+    getDocumentDataAPI(`http://localhost:8080/prototype/getDocModel?docType=FORM${formNum}`)
       .then((response) => {
         dispatch({
           type: GET_XML_DATA_SUCCESS,
@@ -84,18 +87,20 @@ function getDoctype() {
   });
 }
 
-export function getDocumentData() {
+export function getDocumentData(url) {
   return ((dispatch) => {
     dispatch({
       type: GET_DATA_REQUEST,
       payload: 'Loading...'
     });
 
+    const doctypeURL = url.match(/type=[^&]*/g)[0].match(/\d+/g)[0];
+
     Promise.all([
-      dispatch(getView()),
-      dispatch(getDoctype())
+      dispatch(getView(doctypeURL)),
+      dispatch(getDoctype(doctypeURL))
     ]).then(() => {
-      getDocumentDataAPI('./doc-data_opu.json')
+      getDocumentDataAPI('http://localhost:8080/prototype/getDocData?docid=430100')
         .then((response) => {
           dispatch({
             type: GET_DATA_SUCCESS,
