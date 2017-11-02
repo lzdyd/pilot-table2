@@ -238,9 +238,15 @@
 }
 
 #context-menu {
-  display: none;
+  width: 200px;
+  height: 100px;
   position: absolute;
   z-index: 10;
+  top: 0;
+  background-color: white;
+  padding: 10px;
+  left: 520px;
+  border: 1px solid;
 }
 
 .context-menu--active {

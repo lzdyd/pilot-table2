@@ -4,6 +4,7 @@ import ReportPeriod from './ReportPeriod';
 import Report from './Report';
 import DocTable from './DocTable';
 import './style.css';
+import axios from 'axios';
 
 export let data;
 
@@ -13,21 +14,21 @@ const currentTime = new Date();
 const curYear = currentTime.getFullYear();
 
 
-const clients = [
-  {
-    id: '1-10KWGP',
-    value: 'Эсти'
-  },{
-    id: '1-1PALWC',
-    value: 'Весенний холм'
-  },{
-    id: '1-2DTA97',
-    value: 'Брокинвестсервис'
-  },{
-    id: '1-2W1T5D',
-    value: 'СК Октябрьский'
-  }
-];
+// const clients = [
+//   {
+//     id: '1-10KWGP',
+//     value: 'Эсти'
+//   },{
+//     id: '1-1PALWC',
+//     value: 'Весенний холм'
+//   },{
+//     id: '1-2DTA97',
+//     value: 'Брокинвестсервис'
+//   },{
+//     id: '1-2W1T5D',
+//     value: 'СК Октябрьский'
+//   }
+// ];
 
 const periods = {
   1: '1 квартал',
@@ -36,20 +37,20 @@ const periods = {
   4: '4 квартал'
 };
 
-const formsList = [
-  {
-    formType: 'INPUT',
-    formid: 'FORM01',
-    fullName: 'Бухгалтерский баланс'
-    // perivCode:
-  },
-  {
-    formType: 'INPUT',
-    formid: 'FORM02',
-    fullName: 'Отчет о финансовых результатах'
-    // perivCode:
-  }
-];
+// const formsList = [
+//   {
+//     formType: 'INPUT',
+//     formid: 'FORM01',
+//     fullName: 'Бухгалтерский баланс'
+//     // perivCode:
+//   },
+//   {
+//     formType: 'INPUT',
+//     formid: 'FORM02',
+//     fullName: 'Отчет о финансовых результатах'
+//     // perivCode:
+//   }
+// ];
 
 
 export class DocList extends Component {
@@ -57,26 +58,92 @@ export class DocList extends Component {
     super(props);
 
     this.state = {
-      listClient: clients,
-      listClientFiltered: clients,
+      // listClient: null,
+      // listClientFiltered: null,
       isPeriod: periods,
       clientShow: false,
       clientIsChecked: null,
       periodIsChecked: curPeriod,
       yearIsChecked: curYear,
       dataPeriodAndYear: null,
-      formsList,
+      // formsList: null,
       docPeriods: null,
       showGenerateReport: false,
       analyticReportYear: null
+    };
+
+    this.onKeydownhandler = this.onKeydownhandler.bind(this);
+  }
+
+  // fetchingClientsAndForms() {
+  //   axios.all([
+  //     axios.get('http://192.168.235.188:9081/prototype/getAllTypeList'),
+  //     axios.get('http://192.168.235.188:9081/prototype/getClientList')
+  //   ])
+  //     .then(axios.spread((forms, clients) => {
+  //       this.setState({
+  //         formsList: forms.data,
+  //         listClient: clients.data,
+  //         listClientFiltered: clients.data
+  //       });
+  //     }))
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.onKeydownhandler);
+
+    // axios.all([
+    //   axios.get('http://192.168.235.188:9081/prototype/getAllTypeList'),
+    //   axios.get('http://192.168.235.188:9081/prototype/getClientList')
+    // ])
+    //   .then(axios.spread((forms, clients) => {
+    //     this.setState({
+    //       formsList: forms.data,
+    //       listClient: clients.data,
+    //       listClientFiltered: clients.data
+    //     });
+    //   }))
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+
+    // axios.get('http://192.168.235.188:9081/prototype/getAllTypeList')
+    //   .then((response) => {
+    //     this.setState({
+    //       formsList: response.data
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   })
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.onKeydownhandler)
+  }
+
+
+  onKeydownhandler(e) {
+    const { clientShow } = this.state;
+    if (e.keyCode === 27) {
+      if (this.state.clientShow) {
+        this.setState({
+          clientShow: false
+        });
+      }
+
+      if (this.state.showGenerateReport) {
+        this.setState({
+          showGenerateReport: false
+        });
+      }
     }
   }
 
-  filterListClients (list) {
-    this.setState({
-      listClientFiltered: list
-    });
-  }
+
 
 
   setAnalitycReportYear(date) {
@@ -153,7 +220,10 @@ export class DocList extends Component {
   setClient(listClient, clientId) {
     let res;
     listClient.forEach((item) => {
-      if (item.id === clientId) res = item.value;
+      if (item.id === clientId) {
+        console.log(item.descr);
+        res = item.descr;
+      }
     });
     return res;
   }
@@ -162,18 +232,22 @@ export class DocList extends Component {
   render() {
     const {
       getdocList,
-      doclist
+      doclist,
+      listClientFiltered,
+      listClient,
+      formsList,
+      filterListClients
     } = this.props;
 
     const {
-      listClient,
+      // listClient,
       clientShow,
       clientIsChecked,
       isPeriod,
       dataPeriodAndYear,
-      formsList,
+      // formsList,
       showGenerateReport,
-      listClientFiltered
+      // listClientFiltered
     } = this.state;
 
 
@@ -210,10 +284,11 @@ export class DocList extends Component {
           dataPeriodAndYear={dataPeriodAndYear}
         />
         <ListItemsClients
+          // fetchingClientsAndForms={::this.fetchingClientsAndForms}
           handlerclientRemove={::this.handlerclientRemove}
           handlerOnClickHide={::this.handlerOnClickHide}
           handlerclientIsChecked={::this.handlerclientIsChecked}
-          filterListClients={::this.filterListClients}
+          filterListClients={filterListClients}
           clientIsChecked={clientIsChecked}
           listClient={listClient}
           listClientFiltered={listClientFiltered}
