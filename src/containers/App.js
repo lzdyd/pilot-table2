@@ -68,12 +68,12 @@ class App extends Component {
             listClientFiltered={listClientFiltered}
             formsList={formsList}
           /> }
-        {/*<div>*/}
-          {/*<ul>*/}
-            {/*<li><a href="/balance">Бухгалтерский баланс</a></li>*/}
-            {/*<li><a href="/opu">Отчет о финансовых результатах</a></li>*/}
-          {/*</ul>*/}
-        {/*</div>*/}
+        <div>
+          <ul>
+            <li><a href="/getDocDataByKey?clientName=CLIENT1&type=FORM02&Q=3&year=2016">Бухгалтерский баланс</a></li>
+            <li><a href="/getDocDataByKey?clientName=CLIENT1&type=FORM02&Q=3&year=2016">Отчет о финансовых результатах</a></li>
+          </ul>
+        </div>
       </div>
     );
   }
