@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b7cd5f0f-96bd-43dc-9393-9f572fdd2ca2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/actions/ExcelActions.js" afterPath="$PROJECT_DIR$/src/actions/ExcelActions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/DocList/DocList.js" afterPath="$PROJECT_DIR$/src/components/DocList/DocList.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/DocList/FormList.js" afterPath="$PROJECT_DIR$/src/components/DocList/FormList.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/DocList/ListItemsClients.js" afterPath="$PROJECT_DIR$/src/components/DocList/ListItemsClients.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/DocList/ReportPeriod.js" afterPath="$PROJECT_DIR$/src/components/DocList/ReportPeriod.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/DocList/style.css" afterPath="$PROJECT_DIR$/src/components/DocList/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/DocList/style.scss" afterPath="$PROJECT_DIR$/src/components/DocList/style.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -144,12 +138,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1509699140469</updated>
-      <workItem from="1509699147225" duration="86000" />
+      <workItem from="1509699147225" duration="1302000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="86000" />
+    <option name="totallyTimeSpent" value="1302000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1600" height="900" extended-state="6" />
