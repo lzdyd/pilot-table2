@@ -1,45 +1,27 @@
 import React, { Component } from 'react';
 
-import TableCell from './components/TableCell/index';
-import Diagram from './components/Diagram/index';
+import TableHeaders from './components/TableHeaders';
+import TableRows from './components/TableRows';
 
 import './style.scss';
 
 export default class Excel extends Component {
-  /**
-   *@description State for Recharts
-   * @property { Array } sum - Data for creating column diagram
-   */
   constructor(props) {
     super(props);
 
     this.state = {
-      editing: false,
-      sum: []
-    };
+      activeCell: 1
+    }
   }
 
-  componentDidMount() {
-    this.props.getData();
-  }
-
-  /**
-   * Evaluates JavaScript function received via REST API and saves its result to component's state
-   * @param { string } func - JS func to evaluate
-   */
-  calculateSum(func) {
-    const cellData = this.props.data.data;
-
-    const sum = eval('(' + func + ')');
-
-    this.state.sum.push({
-      value: sum
-    });
-
-    return sum;
+  onSaveData() {
+    this.props.onSaveData();
   }
 
   render() {
+    /**
+     * If data is being fetched, render "Loading spinner"
+     */
     if (this.props.fetching) {
       return (
         <div className="loading">
@@ -62,52 +44,96 @@ export default class Excel extends Component {
       );
     }
 
-    if (!this.props.data) {
+    /**
+     If data was not received, inform user about it
+     */
+    if (this.props.data === undefined) {
       return <h1>Something went wrong</h1>;
     }
 
-    const tableData = this.props.data.data.map((item, i) => {
-      const itemValues = Object.values(item);
+    const data = this.props.data;
+    const modelView = this.props.modelView;
+    const valuesHash = this.props.valuesHash;
 
-      return (
-        <div
-          className={ 'table-row' }
-          key={ i }>
-          {
-            itemValues.map((cellData, key) => {
-/*              return (
-                <div className="table-cell" key={ key }>{ cellData }</div>
-              );*/
+    // TODO: remove this code to reducer
+    let periodType;
+
+    switch (data.periodType) {
+      case 'Q1':
+        periodType = `За 1 квартал (${this.props.jsonData.year})`;
+        break;
+
+      case 'Q2':
+        periodType = `За 1 полугодие (${this.props.jsonData.year})`;
+        break;
+
+      case 'Q3':
+        periodType = `За 9 месяцев (${this.props.jsonData.year})`;
+        break;
+
+      case 'Q4':
+        periodType = `За год (${this.props.jsonData.year})`;
+        break;
+
+      default:
+        break;
+    }
+
+    return (
+      <div className="excel">
+        <h1>{ data.name }</h1>
+
+        <p>Документ заполняется в тысячах рублей</p>
+
+        <p>{ periodType }</p>
+
+        <button onClick={ ::this.onSaveData }>Сохранить</button>
+
+        <div className="excel-table">
+          <TableHeaders data={ modelView }/>
+{/*          {
+            data.attributes.map((item) => {
               return (
-                <TableCell data={ cellData } key={ key }/>
+                <TableRows data={ item } value={ valuesHash[item.id].value } key={ item.id }
+                           onCellChange={ this.props.onCellChange}/>
+              );
+            })
+          }*/}
+          {
+            modelView.table.rowParams.map((item, i) => {
+              if (+item.rowNumber !== 1) {
+                return (
+                  <TableRows row={ item } data={ modelView } dataAttrs={ this.props.data }
+                             valuesHash={ valuesHash } key={ i } onCellChange={ this.props.onCellChange }
+                             dataKey={ i } activeCell={ this.state.activeCell } />
+                );
+              }
+
+              return null;
+            })
+          }
+        </div>
+      </div>
+    );
+/*
+    return (
+      <div className="excel">
+        <h1>{ data.title }</h1>
+
+        <p>{ data.description }</p>
+
+        <div className="excel-table">
+          <TableHeaders data={ data.tableHeaders }/>
+          {
+            data.attributes.map((item) => {
+              return (
+                <TableRows data={ item } value={ valuesHash[`id${item.id}`].value } key={ item.id }
+                           onCellChange={ this.props.onCellChange } />
               );
             })
           }
         </div>
-      );
-    });
-
-    return (
-      <div className="excel">
-        <div className="table employees-table">
-          { tableData }
-        </div>
-
-        <div className="sum-field">String 1 sum:
-          <span> { ::this.calculateSum(this.props.data.mathFunctions.string1_sum) }</span>
-        </div>
-
-        <div className="sum-field">String 2 sum:
-          <span> { ::this.calculateSum(this.props.data.mathFunctions.string2_sum) }</span>
-        </div>
-
-        <div className="sum-field">String 3 sum:
-          <span> { ::this.calculateSum(this.props.data.mathFunctions.string3_sum) }</span>
-        </div>
-
-        <Diagram data={ this.state.sum }/>
-
       </div>
-    );
+    );*/
   }
 }

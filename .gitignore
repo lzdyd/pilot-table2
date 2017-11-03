@@ -1,1 +1,9 @@
+<<<<<<< HEAD
 node_modules/
+=======
+.gitignore
+.idea
+node_modules
+old
+docs
+>>>>>>> 6472eb3e8c676ecb060549ec6827125ab4ffc52e

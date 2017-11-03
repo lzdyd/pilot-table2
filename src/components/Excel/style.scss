@@ -3,28 +3,13 @@
     margin-top: 10px;
   }
 
-  .table.employees-table {
+  .excel-table {
     display: table;
-    border: 1px solid #ddd;
+    //border: 1px solid #ddd;
     border-radius: 5px;
 
     .table-row {
       display: table-row;
-
-      &:nth-child(even) {
-        background-color: #f8f8f8;
-      }
-
-      .table-cell {
-        display: table-cell;
-        min-width: 80px;
-        padding: 10px;
-        text-align: left;
-
-        &:not(:last-child) {
-          border-right: 1px solid #ddd;
-        }
-      }
     }
 
     .table-row.selected {
