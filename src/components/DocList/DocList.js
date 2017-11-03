@@ -14,22 +14,6 @@ const currentTime = new Date();
 const curYear = currentTime.getFullYear();
 
 
-// const clients = [
-//   {
-//     id: '1-10KWGP',
-//     value: 'Эсти'
-//   },{
-//     id: '1-1PALWC',
-//     value: 'Весенний холм'
-//   },{
-//     id: '1-2DTA97',
-//     value: 'Брокинвестсервис'
-//   },{
-//     id: '1-2W1T5D',
-//     value: 'СК Октябрьский'
-//   }
-// ];
-
 const periods = {
   1: '1 квартал',
   2: '2 квартал',
@@ -37,36 +21,18 @@ const periods = {
   4: '4 квартал'
 };
 
-// const formsList = [
-//   {
-//     formType: 'INPUT',
-//     formid: 'FORM01',
-//     fullName: 'Бухгалтерский баланс'
-//     // perivCode:
-//   },
-//   {
-//     formType: 'INPUT',
-//     formid: 'FORM02',
-//     fullName: 'Отчет о финансовых результатах'
-//     // perivCode:
-//   }
-// ];
-
 
 export class DocList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      // listClient: null,
-      // listClientFiltered: null,
       isPeriod: periods,
       clientShow: false,
       clientIsChecked: null,
       periodIsChecked: curPeriod,
       yearIsChecked: curYear,
       dataPeriodAndYear: null,
-      // formsList: null,
       docPeriods: null,
       showGenerateReport: false,
       analyticReportYear: null
@@ -75,50 +41,9 @@ export class DocList extends Component {
     this.onKeydownhandler = this.onKeydownhandler.bind(this);
   }
 
-  // fetchingClientsAndForms() {
-  //   axios.all([
-  //     axios.get('http://192.168.235.188:9081/prototype/getAllTypeList'),
-  //     axios.get('http://192.168.235.188:9081/prototype/getClientList')
-  //   ])
-  //     .then(axios.spread((forms, clients) => {
-  //       this.setState({
-  //         formsList: forms.data,
-  //         listClient: clients.data,
-  //         listClientFiltered: clients.data
-  //       });
-  //     }))
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
 
   componentDidMount() {
     document.addEventListener('keydown', this.onKeydownhandler);
-
-    // axios.all([
-    //   axios.get('http://192.168.235.188:9081/prototype/getAllTypeList'),
-    //   axios.get('http://192.168.235.188:9081/prototype/getClientList')
-    // ])
-    //   .then(axios.spread((forms, clients) => {
-    //     this.setState({
-    //       formsList: forms.data,
-    //       listClient: clients.data,
-    //       listClientFiltered: clients.data
-    //     });
-    //   }))
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-
-    // axios.get('http://192.168.235.188:9081/prototype/getAllTypeList')
-    //   .then((response) => {
-    //     this.setState({
-    //       formsList: response.data
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
   }
 
   componentWillUnmount() {
@@ -128,6 +53,7 @@ export class DocList extends Component {
 
   onKeydownhandler(e) {
     const { clientShow } = this.state;
+
     if (e.keyCode === 27) {
       if (this.state.clientShow) {
         this.setState({
@@ -142,8 +68,6 @@ export class DocList extends Component {
       }
     }
   }
-
-
 
 
   setAnalitycReportYear(date) {
@@ -221,7 +145,6 @@ export class DocList extends Component {
     let res;
     listClient.forEach((item) => {
       if (item.id === clientId) {
-        console.log(item.descr);
         res = item.descr;
       }
     });
@@ -240,14 +163,13 @@ export class DocList extends Component {
     } = this.props;
 
     const {
-      // listClient,
       clientShow,
       clientIsChecked,
       isPeriod,
       dataPeriodAndYear,
-      // formsList,
       showGenerateReport,
-      // listClientFiltered
+      periodIsChecked,
+      yearIsChecked
     } = this.state;
 
 
@@ -282,9 +204,10 @@ export class DocList extends Component {
           clientIsChecked={clientIsChecked}
           getdocList={getdocList}
           dataPeriodAndYear={dataPeriodAndYear}
+          periodIsChecked={periodIsChecked}
+          yearIsChecked={yearIsChecked}
         />
         <ListItemsClients
-          // fetchingClientsAndForms={::this.fetchingClientsAndForms}
           handlerclientRemove={::this.handlerclientRemove}
           handlerOnClickHide={::this.handlerOnClickHide}
           handlerclientIsChecked={::this.handlerclientIsChecked}

@@ -3,14 +3,16 @@ import React from 'react';
 import './style.scss';
 
 export default function ReportPeriod({
-                                       isPeriod,
-                                       handlerPeriodIsChecked,
-                                       handlerYearIsChecked,
-                                       receiveOnClick,
-                                       getdocList,
-                                       clientIsChecked,
-                                       dataPeriodAndYear
-                                     }) {
+  isPeriod,
+  handlerPeriodIsChecked,
+  handlerYearIsChecked,
+  receiveOnClick,
+  getdocList,
+  clientIsChecked,
+  dataPeriodAndYear,
+  yearIsChecked,
+  periodIsChecked
+}) {
   const curPeriod = Math.ceil((new Date().getMonth() + 1) / 3);
 
   const perodItemsTemplate = Object.keys(isPeriod).map((item, i) => {
@@ -44,9 +46,14 @@ export default function ReportPeriod({
   }
 
   function getDocs() {
-    // const { period, year } = dataPeriodAndYear;
+    const dataObjForRequst = {
+      client: clientIsChecked,
+      year: yearIsChecked,
+      period: periodIsChecked
+    };
+
     receiveOnClick();
-    getdocList();
+    getdocList(dataObjForRequst);
   }
 
   return (

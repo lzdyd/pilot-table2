@@ -16,9 +16,10 @@ import {
   UPDATE_STORE
 } from '../constants/index';
 
-export function getDocList() {
-  const url = 'http://localhost:8080/test/docList?clientName=CLIENT1&Q=3&year=2017';
-  // const url = './dataTable.json';
+export function getDocList(options) {
+  // const url = 'http://localhost:8080/test/docList?clientName=CLIENT1&Q=3&year=2017';
+  const url =
+    `http://192.168.235.188:9081/prototype/docList?clientName=${options.client}&Q=${options.period}&year=${options.year}`;
 
   return ((dispatch) => {
     dispatch({
