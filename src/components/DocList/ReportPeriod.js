@@ -30,8 +30,8 @@ export default class ReportPeriod extends Component {
       period: this.props.periodIsChecked
     };
 
-     this.props.receiveOnClick();
      this.props.getdocList(dataObjForRequst);
+      this.props.receiveOnClick();
   }
 
   changePeriodsPrev() {
