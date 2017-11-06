@@ -14,10 +14,6 @@ export default class Authentication extends Component {
     }
   }
 
-  componentDidMount() {
-    // this.props.fetchingClientsAndForms();
-  }
-
   handleRememberChange() {
     this.setState({ isRemember: !this.state.isRemember });
   }
@@ -51,8 +47,6 @@ export default class Authentication extends Component {
         error: !this.state.error
       });
     }
-
-    // this.props.fetchingClientsAndForms();
   }
 
   render() {

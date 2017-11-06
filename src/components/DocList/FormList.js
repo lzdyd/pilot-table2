@@ -325,10 +325,10 @@ export default class FormList extends Component {
         <div className={`popup ${popupIsShow ? 'popup-show' : null}`}>
           {popupIsShow && !curDocObj && ::this.setTitleForDocsDefault(curDoc)}
           {popupIsShow && curDocObj &&
-          ::this.setTitleForDocs(curDocObj.status, curDoc)}
+            ::this.setTitleForDocs(curDocObj.status, curDoc)}
           <div className="popup-btn">
             {popupIsShow && curDocObj &&
-            this.getActionCurStatus(curDocObj, curDoc)}
+              this.getActionCurStatus(curDocObj, curDoc)}
             <button
               onClick={this.createDocs.bind(this, curDoc)}
               className={`${popupIsShow && curDocObj && 'none'}`}

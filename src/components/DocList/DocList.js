@@ -4,11 +4,11 @@ import ReportPeriod from './ReportPeriod';
 import Report from './Report';
 import DocTable from './DocTable';
 import './style.css';
-import axios from 'axios';
+// import axios from 'axios';
 
 export let data;
 
-//TODO ПЕРЕДЕЛАТЬ В HELPERS getCurPeriod И getCurYear
+//TODO ПЕРЕДЕЛАТЬ В UTILS getCurPeriod И getCurYear
 const curPeriod = Math.ceil((new Date().getMonth() + 1) / 3);
 const currentTime = new Date();
 const curYear = currentTime.getFullYear();
@@ -41,13 +41,36 @@ export class DocList extends Component {
     this.onKeydownhandler = this.onKeydownhandler.bind(this);
   }
 
-
   componentDidMount() {
     document.addEventListener('keydown', this.onKeydownhandler);
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.onKeydownhandler)
+  }
+
+  changePeriodsOnNext() {
+    let { periodIsChecked, yearIsChecked } = this.state;
+
+    if (periodIsChecked !== 4) {
+      this.setState({periodIsChecked: ++periodIsChecked});
+      return;
+    }
+    if (yearIsChecked !== curYear) {
+      this.setState({periodIsChecked: 1, yearIsChecked: ++yearIsChecked});
+    }
+  }
+
+  changePeriodsOnPrev() {
+    let { periodIsChecked, yearIsChecked } = this.state;
+
+    if (periodIsChecked !== 1) {
+      this.setState({periodIsChecked: --periodIsChecked});
+      return;
+    }
+    if (yearIsChecked !== 1996) {
+      this.setState({periodIsChecked: 4, yearIsChecked: --yearIsChecked});
+    }
   }
 
 
@@ -179,7 +202,8 @@ export class DocList extends Component {
         <button
           onClick={::this.handlerOnClickShow}
           className='clients-items-btn'
-        >{!clientIsChecked ? 'Выберите клиента из справочника' : ::this.setClient(listClient, clientIsChecked)}
+        >{!clientIsChecked ? 'Выберите клиента из справочника' :
+            ::this.setClient(listClient, clientIsChecked)}
           ▼
         </button>
         <button
@@ -197,13 +221,15 @@ export class DocList extends Component {
           />
         }
         <ReportPeriod
+          changePeriodsOnPrev={::this.changePeriodsOnPrev}
+          changePeriodsOnNext={::this.changePeriodsOnNext}
           receiveOnClick={::this.receiveOnClick}
           handlerYearIsChecked={::this.handlerYearIsChecked}
           handlerPeriodIsChecked={::this.handlerPeriodIsChecked}
           isPeriod={isPeriod}
           clientIsChecked={clientIsChecked}
           getdocList={getdocList}
-          dataPeriodAndYear={dataPeriodAndYear}
+          // dataPeriodAndYear={dataPeriodAndYear}
           periodIsChecked={periodIsChecked}
           yearIsChecked={yearIsChecked}
         />

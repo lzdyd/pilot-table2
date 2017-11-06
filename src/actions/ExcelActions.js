@@ -17,9 +17,7 @@ import {
 } from '../constants/index';
 
 export function getDocList(options) {
-  // const url = 'http://localhost:8080/test/docList?clientName=CLIENT1&Q=3&year=2017';
-  const url =
-    `http://192.168.235.188:9081/prototype/docList?clientName=${options.client}&Q=${options.period}&year=${options.year}`;
+  const url = `http://192.168.235.188:9081/prototype/docList?clientName=${options.client}&Q=${options.period}&year=${options.year}`;
 
   return ((dispatch) => {
     dispatch({
@@ -27,7 +25,7 @@ export function getDocList(options) {
       payload: 'Loading...'
     });
 
-    axios.get(url, { crossdomain: true })
+    axios.get(url)
       .then((response) => {
         dispatch({
           type: GET_DOCLIST_SUCCESS,

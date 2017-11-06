@@ -260,3 +260,8 @@
 .popup-title {
   font-weight: bold;
 }
+
+.test {
+  display: inline-block;
+  margin-right: 20px;
+}
