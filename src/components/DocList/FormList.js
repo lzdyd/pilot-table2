@@ -246,7 +246,7 @@ export default class FormList extends Component {
 
     this.setState({
       curDoc: dataKey,
-      menuPositionX: menuPosition.x - 100 + "px",
+      menuPositionX: menuPosition.x + "px",
       menuPositionY: menuPosition.y + "px"
     });
   }
@@ -254,10 +254,12 @@ export default class FormList extends Component {
   getActionCurStatus(curDocObj, curDoc) {
     if (curDocObj.status === 0) {
       return (
-        <button
+        <a
+          href={`getDocDataByKey?clientName=CLIENT1&type=FORM02&Q=3&year=2016`}
+          target="_blank"
           onClick={this.EditDocs.bind(this, curDocObj)}>
           Редактировать
-        </button>
+        </a>
       );
     }
 
@@ -274,6 +276,7 @@ export default class FormList extends Component {
     console.log(curDocObj);
   }
 
+
   EditDocs(curDocObj) {
     console.log(curDocObj);
   }
@@ -286,7 +289,6 @@ export default class FormList extends Component {
   foo(curDoc, curDocObj, e) {
     console.log(this.getCurDoc(curDoc));
   }
-
 
   render() {
     const {
@@ -319,14 +321,14 @@ export default class FormList extends Component {
         className="TBL"
         onClick={this.getcurDocData}
       >
-        {dataPeriodAndYear && renderFormList(forms, docList_v2)}
+        {dataPeriodAndYear.client && renderFormList(forms, docList_v2)}
         <div className={`popup ${popupIsShow ? 'popup-show' : null}`}>
           {popupIsShow && !curDocObj && ::this.setTitleForDocsDefault(curDoc)}
           {popupIsShow && curDocObj &&
-          ::this.setTitleForDocs(curDocObj.status, curDoc)}
+            ::this.setTitleForDocs(curDocObj.status, curDoc)}
           <div className="popup-btn">
             {popupIsShow && curDocObj &&
-            this.getActionCurStatus(curDocObj, curDoc)}
+              this.getActionCurStatus(curDocObj, curDoc)}
             <button
               onClick={this.createDocs.bind(this, curDoc)}
               className={`${popupIsShow && curDocObj && 'none'}`}

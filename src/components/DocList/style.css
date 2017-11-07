@@ -1,4 +1,8 @@
 .form-signin {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   max-width: 250px;
@@ -255,4 +259,9 @@
 
 .popup-title {
   font-weight: bold;
+}
+
+.test {
+  display: inline-block;
+  margin-right: 20px;
 }

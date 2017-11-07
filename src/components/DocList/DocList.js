@@ -4,31 +4,15 @@ import ReportPeriod from './ReportPeriod';
 import Report from './Report';
 import DocTable from './DocTable';
 import './style.css';
-import axios from 'axios';
+// import axios from 'axios';
 
 export let data;
 
-//TODO ПЕРЕДЕЛАТЬ В HELPERS getCurPeriod И getCurYear
+//TODO ПЕРЕДЕЛАТЬ В UTILS getCurPeriod И getCurYear
 const curPeriod = Math.ceil((new Date().getMonth() + 1) / 3);
 const currentTime = new Date();
 const curYear = currentTime.getFullYear();
 
-
-// const clients = [
-//   {
-//     id: '1-10KWGP',
-//     value: 'Эсти'
-//   },{
-//     id: '1-1PALWC',
-//     value: 'Весенний холм'
-//   },{
-//     id: '1-2DTA97',
-//     value: 'Брокинвестсервис'
-//   },{
-//     id: '1-2W1T5D',
-//     value: 'СК Октябрьский'
-//   }
-// ];
 
 const periods = {
   1: '1 квартал',
@@ -37,36 +21,18 @@ const periods = {
   4: '4 квартал'
 };
 
-// const formsList = [
-//   {
-//     formType: 'INPUT',
-//     formid: 'FORM01',
-//     fullName: 'Бухгалтерский баланс'
-//     // perivCode:
-//   },
-//   {
-//     formType: 'INPUT',
-//     formid: 'FORM02',
-//     fullName: 'Отчет о финансовых результатах'
-//     // perivCode:
-//   }
-// ];
-
 
 export class DocList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      // listClient: null,
-      // listClientFiltered: null,
       isPeriod: periods,
       clientShow: false,
       clientIsChecked: null,
       periodIsChecked: curPeriod,
       yearIsChecked: curYear,
       dataPeriodAndYear: null,
-      // formsList: null,
       docPeriods: null,
       showGenerateReport: false,
       analyticReportYear: null
@@ -75,59 +41,42 @@ export class DocList extends Component {
     this.onKeydownhandler = this.onKeydownhandler.bind(this);
   }
 
-  // fetchingClientsAndForms() {
-  //   axios.all([
-  //     axios.get('http://192.168.235.188:9081/prototype/getAllTypeList'),
-  //     axios.get('http://192.168.235.188:9081/prototype/getClientList')
-  //   ])
-  //     .then(axios.spread((forms, clients) => {
-  //       this.setState({
-  //         formsList: forms.data,
-  //         listClient: clients.data,
-  //         listClientFiltered: clients.data
-  //       });
-  //     }))
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
-
   componentDidMount() {
     document.addEventListener('keydown', this.onKeydownhandler);
-
-    // axios.all([
-    //   axios.get('http://192.168.235.188:9081/prototype/getAllTypeList'),
-    //   axios.get('http://192.168.235.188:9081/prototype/getClientList')
-    // ])
-    //   .then(axios.spread((forms, clients) => {
-    //     this.setState({
-    //       formsList: forms.data,
-    //       listClient: clients.data,
-    //       listClientFiltered: clients.data
-    //     });
-    //   }))
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-
-    // axios.get('http://192.168.235.188:9081/prototype/getAllTypeList')
-    //   .then((response) => {
-    //     this.setState({
-    //       formsList: response.data
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.onKeydownhandler)
   }
 
+  changePeriodsOnNext() {
+    let { periodIsChecked, yearIsChecked } = this.state;
+
+    if (periodIsChecked !== 4) {
+      this.setState({periodIsChecked: ++periodIsChecked});
+      return;
+    }
+    if (yearIsChecked !== curYear) {
+      this.setState({periodIsChecked: 1, yearIsChecked: ++yearIsChecked});
+    }
+  }
+
+  changePeriodsOnPrev() {
+    let { periodIsChecked, yearIsChecked } = this.state;
+
+    if (periodIsChecked !== 1) {
+      this.setState({periodIsChecked: --periodIsChecked});
+      return;
+    }
+    if (yearIsChecked !== 1996) {
+      this.setState({periodIsChecked: 4, yearIsChecked: --yearIsChecked});
+    }
+  }
+
 
   onKeydownhandler(e) {
     const { clientShow } = this.state;
+
     if (e.keyCode === 27) {
       if (this.state.clientShow) {
         this.setState({
@@ -142,8 +91,6 @@ export class DocList extends Component {
       }
     }
   }
-
-
 
 
   setAnalitycReportYear(date) {
@@ -221,7 +168,6 @@ export class DocList extends Component {
     let res;
     listClient.forEach((item) => {
       if (item.id === clientId) {
-        console.log(item.descr);
         res = item.descr;
       }
     });
@@ -240,14 +186,13 @@ export class DocList extends Component {
     } = this.props;
 
     const {
-      // listClient,
       clientShow,
       clientIsChecked,
       isPeriod,
       dataPeriodAndYear,
-      // formsList,
       showGenerateReport,
-      // listClientFiltered
+      periodIsChecked,
+      yearIsChecked
     } = this.state;
 
 
@@ -257,7 +202,8 @@ export class DocList extends Component {
         <button
           onClick={::this.handlerOnClickShow}
           className='clients-items-btn'
-        >{!clientIsChecked ? 'Выберите клиента из справочника' : ::this.setClient(listClient, clientIsChecked)}
+        >{!clientIsChecked ? 'Выберите клиента из справочника' :
+            ::this.setClient(listClient, clientIsChecked)}
           ▼
         </button>
         <button
@@ -275,16 +221,19 @@ export class DocList extends Component {
           />
         }
         <ReportPeriod
+          changePeriodsOnPrev={::this.changePeriodsOnPrev}
+          changePeriodsOnNext={::this.changePeriodsOnNext}
           receiveOnClick={::this.receiveOnClick}
           handlerYearIsChecked={::this.handlerYearIsChecked}
           handlerPeriodIsChecked={::this.handlerPeriodIsChecked}
           isPeriod={isPeriod}
           clientIsChecked={clientIsChecked}
           getdocList={getdocList}
-          dataPeriodAndYear={dataPeriodAndYear}
+          // dataPeriodAndYear={dataPeriodAndYear}
+          periodIsChecked={periodIsChecked}
+          yearIsChecked={yearIsChecked}
         />
         <ListItemsClients
-          // fetchingClientsAndForms={::this.fetchingClientsAndForms}
           handlerclientRemove={::this.handlerclientRemove}
           handlerOnClickHide={::this.handlerOnClickHide}
           handlerclientIsChecked={::this.handlerclientIsChecked}

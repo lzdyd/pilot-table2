@@ -12,7 +12,7 @@ export default class ListItemsClients extends Component {
 
   getclientCurrent({ target }) {
     this.setState({
-      isChecked: target.id
+      isChecked: target.dataset.descr
     });
   }
 
@@ -37,7 +37,7 @@ export default class ListItemsClients extends Component {
       return item.descr.toLowerCase().search(
         event.target.value.toLowerCase()) !== -1;
     });
-    console.log(updatedList);
+    // console.log(updatedList);
     this.props.filterListClients(updatedList);
   }
 
@@ -56,6 +56,7 @@ export default class ListItemsClients extends Component {
             'is-checked-client' : ''}`}
           key={ i }
           id={item.id}
+          data-descr={item.divid}
           onClick={::this.getclientCurrent}
           onDoubleClick={::this.onDubleClickHandler}
         >{ item.descr }
